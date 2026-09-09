@@ -1,8 +1,20 @@
 <!--
+OUTFLOW V7 — ARQUITECTURA
+- index.html = estructura de la página.
+- css/main.css = estilos y responsive.
+- js/app.js = comportamiento general, carrito y animaciones.
+- js/language.js = selector de idioma.
+- data/products.json = catálogo preparado para separar datos.
+- data/translations.json = textos preparados para traducciones.
+- assets/images = imágenes del sitio.
+- pages = páginas adicionales futuras.
+- Shopify = integración futura, separada de la presentación.
+-->
+<!--
 ╔══════════════════════════════════════════════════════════════╗
 ║                    OUTFLOW — GUÍA DEL CÓDIGO               ║
 ╠══════════════════════════════════════════════════════════════╣
-║ ESTE ARCHIVO ES LA V1/V3 VISUAL DE LA TIENDA.               ║
+║ ESTE ARCHIVO ES LA V7 VISUAL DE LA TIENDA.               ║
 ║                                                              ║
 ║ ATAJOS PARA ENCONTRAR COSAS (Ctrl + F):                     ║
 ║  [FUENTES Y COLORES]      → tipografías + paleta            ║
@@ -25,7 +37,7 @@
 ║ products.jpg manteniendo el mismo nombre de archivo.        ║
 ║ CAMBIAR COLORES: ve a [FUENTES Y COLORES].                  ║
 ║                                                              ║
-║ ⚠️ Esta V3 sigue siendo un frontend/prototipo.              ║
+║ ⚠️ Esta V7 sigue siendo un frontend/prototipo.              ║
 ║ El checkout real todavía debe conectarse a Shopify.         ║
 ╚══════════════════════════════════════════════════════════════╝
 -->
@@ -36,138 +48,152 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>OUTFLOW — Streetwear</title>
 <meta name="description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
-<style>
-/* ==========================================================
-   [FUENTES Y COLORES]
-   Paleta, tipografías y variables globales.
-   --bg = fondo | --text = texto | --muted = texto secundario
-   ========================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--bg:#080808;--card:#121212;--text:#f4f4f2;--muted:#9c9c99;--line:#292929;--white:#fff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}
-/* [HEADER / TOPBAR] — aviso superior y redes */
-.topbar{height:38px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;position:relative}
-.topbar .social{position:absolute;right:4.5vw;display:flex;gap:18px}
-/* [HEADER] — logo, menú, buscador y carrito */
-.header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 4.5vw;gap:48px;position:sticky;top:0;z-index:30;background:rgba(8,8,8,.88);backdrop-filter:blur(14px)}
-.logo{font:31px/1 "Archivo Black",sans-serif;letter-spacing:-.065em;white-space:nowrap}.logo sup{font:9px Inter;font-weight:700;vertical-align:top;letter-spacing:0}
-.nav{display:flex;gap:34px;align-items:center;font-size:11px;font-weight:700;text-transform:uppercase}.nav a:hover{opacity:.65}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:15px}.search{height:38px;width:260px;border:1px solid var(--line);background:#151515;display:flex;align-items:center;padding:0 13px;color:#aaa}.search input{background:none;border:0;outline:0;color:white;width:100%;font-size:11px}.icon{height:38px;width:45px;border-left:1px solid var(--line);display:grid;place-items:center;font-size:20px}.cart-btn{height:38px;background:none;border:0;color:white;cursor:pointer;font-size:20px;position:relative}.cart-num{position:absolute;right:-7px;top:-7px;background:#eee;color:#111;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:10px Inter;font-weight:800}
-/* [HERO] — portada principal, imagen, título y CTA */
-.hero{min-height:640px;position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:#111 url("hero.jpg") center/cover no-repeat}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050505 0%,rgba(5,5,5,.88) 22%,rgba(5,5,5,.18) 62%,rgba(5,5,5,.35) 100%)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#080808 0%,transparent 20%);pointer-events:none}
-.hero-copy{position:relative;z-index:2;padding:100px 4.5vw 45px;max-width:760px}.eyebrow{font-size:10px;letter-spacing:.2em;font-weight:700;margin:0 0 22px}.hero h1{font:clamp(64px,8.2vw,125px)/.78 "Archivo Black";letter-spacing:-.075em;margin:0 0 32px;text-transform:uppercase}.hero h1 .outline{-webkit-text-stroke:1.5px white;color:transparent}.hero p{font-size:15px;line-height:1.55;color:#ddd;max-width:360px;margin:0 0 30px}.cta{display:inline-flex;align-items:center;gap:25px;background:#f2f2ef;color:#090909;padding:15px 20px;font-size:11px;font-weight:800;letter-spacing:.06em}.cta span{font-size:19px}
-.hero-side{position:absolute;right:3.8vw;top:120px;z-index:2;writing-mode:vertical-rl;font-size:11px;letter-spacing:.24em;font-weight:800}.hero-mark{position:absolute;right:4.5vw;bottom:85px;z-index:2;font-size:9px;line-height:1.65;letter-spacing:.08em}.slider{position:absolute;z-index:3;bottom:52px;left:4.5vw;display:flex;align-items:center;gap:18px}.thumbs{display:flex;gap:5px}.thumbs span{display:block;width:46px;height:36px;background:rgba(255,255,255,.2);border:1px solid #555}.slide-line{width:70px;height:1px;background:#aaa}.numbers{font-size:10px;word-spacing:12px}
-/* [BENEFICIOS] — envío, pago, seguridad y cambios */
-.benefits{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}.benefit{min-height:75px;padding:17px 5vw;display:flex;gap:16px;align-items:center;border-right:1px solid var(--line)}.benefit:last-child{border:0}.benefit .ico{font-size:22px}.benefit strong{display:block;font-size:10px;letter-spacing:.04em}.benefit small{color:#777;font-size:9px;display:block;margin-top:5px}
-/* [SECCIONES GENERALES] — espaciado y títulos */
-.section{padding:62px 3.8vw}.section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:24px}.section-title h2{font:36px "Archivo Black";letter-spacing:-.055em;margin:0}.see{font-size:10px;font-weight:800;letter-spacing:.08em}
-/* [CATEGORÍAS] — bloques visuales de camisetas/jeans/etc. */
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.cat{height:180px;position:relative;overflow:hidden;background:#222;background-image:url("categories.jpg");background-size:400% 100%;filter:grayscale(.2)}.cat:nth-child(1){background-position:0 50%}.cat:nth-child(2){background-position:33.33% 50%}.cat:nth-child(3){background-position:66.66% 50%}.cat:nth-child(4){background-position:100% 50%}.cat:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82),transparent 70%)}.cat-info{position:absolute;z-index:2;bottom:16px;left:18px}.cat-info h3{font:22px "Archivo Black";margin:0 0 7px}.cat-info span{font-size:10px;font-weight:700}
-/* [PRODUCTOS] — grilla de productos */
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.product{background:var(--card);position:relative;cursor:pointer}.product-photo{height:390px;background-image:url("products.jpg");background-size:400% 100%;background-position:0 50%;position:relative;overflow:hidden}.product:nth-child(1) .product-photo{background-position:0 50%}.product:nth-child(2) .product-photo{background-position:33.33% 50%}.product:nth-child(3) .product-photo{background-position:66.66% 50%}.product:nth-child(4) .product-photo{background-position:100% 50%}.tag{position:absolute;top:12px;left:12px;background:#202020;border:1px solid #444;border-radius:20px;padding:7px 11px;font-size:8px;font-weight:800;letter-spacing:.08em}.heart{position:absolute;top:12px;right:12px;font-size:19px}.product-info{padding:14px 15px 17px}.product-name{font-size:12px;font-weight:700}.product-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:#aaa}.price{color:#fff;font-weight:700}
-/* [MANIFIESTO] — filosofía / identidad de marca */
-.manifesto{margin:20px 3.8vw 70px;padding:90px 7vw;border:1px solid var(--line);background:linear-gradient(110deg,#101010,#080808);display:grid;grid-template-columns:1.2fr .8fr;gap:10vw;align-items:end}.manifesto h2{font:clamp(40px,6vw,80px)/.86 "Archivo Black";letter-spacing:-.07em;margin:0}.manifesto p{color:#999;font-size:13px;line-height:1.8;margin:0}
-/* [NEWSLETTER] — captura de correos */
-.newsletter{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:50px 4vw;display:flex;justify-content:space-between;align-items:center;gap:30px}.newsletter h2{font:30px "Archivo Black";margin:0}.form{display:flex;border-bottom:1px solid #777;width:360px}.form input{background:none;border:0;outline:0;color:#fff;padding:12px 0;width:100%;font-size:12px}.form button{background:none;border:0;color:#fff;font-weight:800;cursor:pointer}
-/* [FOOTER] — pie de página */
-footer{padding:45px 4vw;display:grid;grid-template-columns:1fr 1fr 1fr;color:#777;font-size:10px}.footer-logo{color:#fff}.footer-col{display:flex;flex-direction:column;gap:12px}.footer-col strong{color:#fff;font-size:10px;letter-spacing:.1em}.toast{position:fixed;right:22px;bottom:22px;background:#f4f4f2;color:#090909;padding:14px 18px;font-size:11px;font-weight:700;transform:translateY(130%);transition:.3s;z-index:100}.toast.show{transform:translateY(0)}
-/* [CARRITO CSS] — panel lateral y animación */
-.cart-drawer{position:fixed;right:0;top:0;width:min(430px,100%);height:100vh;background:#101010;border-left:1px solid #333;z-index:80;transform:translateX(100%);transition:.35s;padding:25px;display:flex;flex-direction:column}.cart-drawer.open{transform:translateX(0)}.cart-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding-bottom:18px}.cart-head h2{font:25px "Archivo Black";margin:0}.close{background:none;border:0;color:#fff;font-size:30px;cursor:pointer}.cart-list{flex:1;overflow:auto}.cart-row{display:grid;grid-template-columns:75px 1fr auto;gap:13px;padding:17px 0;border-bottom:1px solid #292929}.cart-thumb{background:#222;height:90px}.cart-row h3{font-size:11px;margin:2px 0 8px}.cart-row p{font-size:10px;color:#999;margin:0}.remove{border:0;background:none;color:#888;text-decoration:underline;font-size:9px;cursor:pointer}.cart-total{padding-top:18px;display:flex;justify-content:space-between;font-size:15px}.checkout{margin-top:16px;padding:16px;border:0;background:#f4f4f2;color:#080808;font-size:10px;font-weight:800;letter-spacing:.1em;cursor:pointer}/* [OVERLAY] — fondo detrás del carrito */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:70;display:none}.overlay.open{display:block}
-@media(max-width:900px){.header{gap:18px}.nav{display:none}.search{width:190px}.benefits{grid-template-columns:repeat(2,1fr)}.benefit{border-bottom:1px solid var(--line)}.categories,.product-grid{grid-template-columns:repeat(2,1fr)}.product-photo{height:300px}.manifesto{grid-template-columns:1fr;gap:35px}}
-@media(max-width:600px){.topbar .social{display:none}.header{height:62px;padding:0 18px}.logo{font-size:25px}.header-right{gap:5px}.search{display:none}.hero{min-height:650px}.hero-copy{padding:85px 22px 40px}.hero h1{font-size:58px}.hero-side{display:none}.benefits{grid-template-columns:1fr}.benefit{border-right:0}.section{padding:48px 18px}.section-title h2{font-size:28px}.categories,.product-grid{grid-template-columns:1fr 1fr;gap:8px}.cat{height:145px}.cat-info h3{font-size:18px}.product-photo{height:240px}.product-info{padding:10px}.manifesto{margin:10px 18px 45px;padding:60px 25px}.newsletter{display:block;padding:45px 18px}.form{width:100%;margin-top:25px}footer{grid-template-columns:1fr;gap:30px;padding:40px 18px}}
+<meta name="theme-color" content="#080808">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OUTFLOW — Streetwear">
+<meta property="og:description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OUTFLOW — Streetwear">
+<meta name="twitter:description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 
-/* OUTFLOW MOTION */
-body{overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:#080808;animation:pageIn .75s ease forwards}
-@keyframes pageIn{to{opacity:0}}
-.hero-copy>*{opacity:0;transform:translateY(28px);animation:heroUp .8s cubic-bezier(.2,.8,.2,1) forwards}
-.hero-copy .eyebrow{animation-delay:.15s}.hero-copy h1{animation-delay:.25s}.hero-copy p{animation-delay:.4s}.hero-copy .cta{animation-delay:.52s}
-@keyframes heroUp{to{opacity:1;transform:none}}
-.hero{animation:heroZoom 1.5s cubic-bezier(.2,.7,.2,1) both}
-@keyframes heroZoom{from{background-size:112%}to{background-size:cover}}
-.logo{transition:.4s}.logo:hover{letter-spacing:-.02em;transform:translateX(3px)}
-.nav a{position:relative}.nav a:after{content:"";position:absolute;left:0;bottom:-7px;width:100%;height:1px;background:#fff;transform:scaleX(0);transform-origin:right;transition:.35s}.nav a:hover:after{transform:scaleX(1);transform-origin:left}
-.cta{transition:transform .3s,background .3s,color .3s;position:relative;overflow:hidden}.cta:before{content:"";position:absolute;inset:0;background:#111;transform:translateX(-101%);transition:.4s}.cta:hover:before{transform:translateX(0)}.cta>*{position:relative;z-index:1}.cta:hover{color:#fff}
-.benefit{transition:.35s}.benefit:hover{background:#111;transform:translateY(-3px)}.benefit:hover strong,.benefit:hover small{color:#fff}
-.cat{transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .5s}.cat:hover{transform:translateY(-7px);filter:grayscale(0)}
-.product{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}.product:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,.35)}.product-photo{transition:transform .6s}.product:hover .product-photo{transform:scale(1.025)}
-.heart{transition:.25s}.product:hover .heart{transform:scale(1.2)}
-.manifesto{overflow:hidden}.manifesto:before{content:"OUTFLOW";position:absolute;right:-5%;bottom:-18%;font:220px "Archivo Black";color:#fff;opacity:.025;pointer-events:none;transition:1s}.manifesto:hover:before{transform:translateX(-4%)}
-.newsletter{transition:.5s}.newsletter:hover{background:#101010}
-/* [ANIMACIONES] — aparición al hacer scroll */
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}.reveal.visible{opacity:1;transform:none}
-.stagger>*{opacity:0;transform:translateY(22px)}.stagger.visible>*{animation:staggerIn .65s cubic-bezier(.2,.8,.2,1) forwards}
-.stagger.visible>*:nth-child(1){animation-delay:.05s}.stagger.visible>*:nth-child(2){animation-delay:.12s}.stagger.visible>*:nth-child(3){animation-delay:.19s}.stagger.visible>*:nth-child(4){animation-delay:.26s}.stagger.visible>*:nth-child(5){animation-delay:.33s}.stagger.visible>*:nth-child(6){animation-delay:.4s}.stagger.visible>*:nth-child(7){animation-delay:.47s}.stagger.visible>*:nth-child(8){animation-delay:.54s}
-@keyframes staggerIn{to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <!-- [HEADER] TOPBAR -->
-<div class="topbar">ENVÍOS A TODO CHILE · MANTENTE AL TANTO EN NUESTRAS REDES CON LOS NUEVOS DROPS<div class="social">◎　♪</div></div>
+<div class="topbar"><span data-i18n="topbar">ENVÍOS A TODO CHILE · NUEVOS INGRESOS CADA SEMANA</span> <div class="social">◎　♪</div></div>
 
 <!-- [HEADER] NAVEGACIÓN PRINCIPAL -->
 <header class="header">
   <a class="logo" href="#">OUTFLOW<sup>®</sup></a>
   <nav class="nav">
-    <a href="#tienda">Tienda</a><a href="#novedades">Novedades</a><a href="#categorias">Categorías⌄</a><a href="#nosotros">Nosotros</a>
-  </nav>
+    <a href="#tienda" data-i18n="nav_shop">Tienda</a><a href="#novedades" data-i18n="nav_new">Novedades</a><div class="nav-dropdown"><button type="button" class="nav-drop-btn" data-i18n="nav_categories">Categorías⌄</button><div class="nav-drop-menu"><button type="button" data-category-link="all">TODAS</button><button type="button" data-category-link="Camisetas">CAMISETAS</button><button type="button" data-category-link="Jeans">JEANS</button><button type="button" data-category-link="Polerones">POLERONES</button><button type="button" data-category-link="Zapatillas">ZAPATILLAS</button></div></div><a href="#nosotros" data-i18n="nav_about">Nosotros</a>
+  
+<!-- [SELECTOR DE IDIOMA] -->
+<div class="language-switcher" aria-label="Language selector">
+  <button id="languageToggle" type="button" aria-expanded="false">ES ▾</button>
+  <div class="language-menu" id="languageMenu">
+    <button type="button" data-set-lang="es">🇪🇸 Español</button>
+    <button type="button" data-set-lang="en">🇺🇸 English</button>
+    <button type="button" data-set-lang="pt">🇧🇷 Português</button>
+  </div>
+</div>
+
+</nav>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button>
   <div class="header-right">
-    <label class="search">⌕ <input id="search" placeholder="Buscar productos..."></label>
-    <div class="icon">♙</div>
+    <label class="search">⌕ <input id="search" data-i18n-placeholder="search_placeholder" placeholder="Buscar productos..."></label>
+    <button class="icon account-btn" id="accountBtn" type="button" aria-label="Favoritos">♙</button>
     <button class="cart-btn" id="openCart">🛒<span class="cart-num" id="cartNum">0</span></button>
   </div>
 </header>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-head"><span>OUTFLOW®</span><button id="mobileMenuClose" type="button">×</button></div>
+  <a href="#tienda">TIENDA</a><a href="#novedades">NOVEDADES</a><a href="#categorias">CATEGORÍAS</a><a href="#nosotros">NOSOTROS</a><div class="mobile-category-links"><button data-category-link="Camisetas">CAMISETAS</button><button data-category-link="Jeans">JEANS</button><button data-category-link="Polerones">POLERONES</button><button data-category-link="Zapatillas">ZAPATILLAS</button></div>
+</div>
+
 
 <!-- [HERO] PORTADA PRINCIPAL -->
-<section class="hero" id="novedades">
+<section class="hero" id="novedades" data-drop="001">
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+  <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-copy">
-    <p class="eyebrow">OUTFLOW/ 001</p>
-    <h1>VISTE<br><span class="outline">FUERA</span><br>DE LO COMÚN.</h1>
-    <p>Streetwear seleccionado para quienes no quieren verse como todos.</p>
-    <a class="cta" href="#tienda">EXPLORAR COLECCIÓN <span>→</span></a>
+    <p class="eyebrow" id="heroDropLabel">OUTFLOW / 001</p>
+    <h1 data-i18n="hero_title">VISTE<br><span class="outline">FUERA</span><br>DE LO COMÚN.</h1>
+    <p data-i18n="hero_description">Streetwear seleccionado para quienes no quieren verse como todos.</p>
+    <div class="hero-product-label" id="heroProductLabel">ZIP-UP HOODIE · DROP 001</div>
+    <div class="hero-actions">
+      <a class="cta" href="#tienda" id="heroDropCta">VER DROP <span>→</span></a>
+      <a class="cta cta-ghost" href="#tienda" data-i18n="explore_collection">EXPLORAR TIENDA</a>
+    </div>
   </div>
   <div class="hero-side">◎　OUTFLOW®　EST. 2026</div>
   <div class="hero-mark">ROPA<br>IDEAS<br>DISCIPLINA<br>ESTILO DE VIDA.</div>
+  <div class="hero-scroll">SCROLL<span></span></div>
+  <div class="hero-video-status" aria-hidden="true">Ⅱ</div>
   <div class="slider"><div class="thumbs"><span></span><span></span><span></span></div><div class="slide-line"></div><div class="numbers">01　02　03</div></div>
 </section>
 
 <!-- [BENEFICIOS] -->
 <section class="benefits">
-  <div class="benefit"><div class="ico">♧</div><div><strong>ENVÍOS A TODO CHILE</strong><small>Rápidos y seguros.</small></div></div>
-  <div class="benefit"><div class="ico">▣</div><div><strong>PAGA COMO QUIERAS</strong><small>Webpay, transferencia, etc.</small></div></div>
-  <div class="benefit"><div class="ico">♢</div><div><strong>COMPRA SEGURA</strong><small>Tus datos protegidos.</small></div></div>
-  <div class="benefit"><div class="ico">□</div><div><strong>CAMBIOS Y DEVOLUCIONES</strong><small>Sin complicaciones.</small></div></div>
+  <div class="benefit"><div class="ico">♧</div><div><strong><span data-i18n="shipping_chile">ENVÍOS A TODO CHILE</span></strong><small data-i18n="shipping_sub">Rápidos y seguros.</small></div></div>
+  <div class="benefit"><div class="ico">▣</div><div><strong><span data-i18n="pay">PAGA COMO QUIERAS</span></strong><small data-i18n="pay_sub">Webpay, transferencia, etc.</small></div></div>
+  <div class="benefit"><div class="ico">♢</div><div><strong><span data-i18n="secure">COMPRA SEGURA</span></strong><small data-i18n="secure_sub">Tus datos protegidos.</small></div></div>
+  <div class="benefit"><div class="ico">□</div><div><strong><span data-i18n="returns">CAMBIOS Y DEVOLUCIONES</span></strong><small data-i18n="returns_sub">Sin complicaciones.</small></div></div>
+</section>
+
+
+<!-- [DROP DESTACADO] — se genera automáticamente desde products.json -->
+<section class="drop-showcase reveal" id="drop-showcase">
+  <div class="drop-showcase-bg" aria-hidden="true"></div>
+  <div class="drop-showcase-head">
+    <div><p class="eyebrow">OUTFLOW / DROP</p><h2>NUEVO DROP</h2></div>
+    <p>PIEZAS SELECCIONADAS.<br>DISEÑADAS PARA DESTACAR.</p>
+  </div>
+  <div class="drop-grid" id="dropProducts"></div>
+  <a class="drop-all" href="#tienda">VER COLECCIÓN COMPLETA <span>→</span></a>
 </section>
 
 <!-- [CATEGORÍAS] -->
 <section class="section reveal" id="categorias">
-  <div class="section-title"><h2>CATEGORÍAS</h2><a class="see" href="#tienda">VER TODAS →</a></div>
+  <div class="section-title"><h2 data-i18n="categories_title">CATEGORÍAS</h2><a class="see" href="#tienda" data-i18n="see_all">VER TODAS →</a></div>
   <div class="categories stagger">
-    <a class="cat" href="#tienda"><div class="cat-info"><h3>CAMISETAS</h3><span>Ver colección →</span></div></a>
-    <a class="cat" href="#tienda"><div class="cat-info"><h3>JEANS</h3><span>Ver colección →</span></div></a>
-    <a class="cat" href="#tienda"><div class="cat-info"><h3>POLERONES</h3><span>Ver colección →</span></div></a>
-    <a class="cat" href="#tienda"><div class="cat-info"><h3>ZAPATILLAS</h3><span>Ver colección →</span></div></a>
+    <a class="cat" href="#tienda" data-category-link="Camisetas"><div class="cat-info"><h3><span data-i18n="tshirts">CAMISETAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
+    <a class="cat" href="#tienda" data-category-link="Jeans"><div class="cat-info"><h3 data-i18n="jeans">JEANS</h3><span data-i18n="view_collection">Ver colección →</span></div></a>
+    <a class="cat" href="#tienda" data-category-link="Polerones"><div class="cat-info"><h3><span data-i18n="hoodies">POLERONES</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
+    <a class="cat" href="#tienda" data-category-link="Zapatillas"><div class="cat-info"><h3><span data-i18n="sneakers">ZAPATILLAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
   </div>
 </section>
 
 <!-- [PRODUCTOS] -->
 <section class="section reveal" id="tienda">
-  <div class="section-title"><h2>PRODUCTOS DESTACADOS</h2><a class="see" href="#tienda">VER TODOS →</a></div>
-  <div class="product-grid stagger" id="products"></div>
+  <div class="section-title"><h2 data-i18n="featured_products">PRODUCTOS DESTACADOS</h2><a class="see" href="#tienda" data-i18n="see_all_products">VER TODOS →</a></div>
+  <div class="catalog-tools" aria-label="Filtros de catálogo">
+  <div class="filter-tabs" id="categoryFilters">
+    <button type="button" class="filter-tab active" data-category="all">TODOS</button>
+    <button type="button" class="filter-tab" data-category="Camisetas">CAMISETAS</button>
+    <button type="button" class="filter-tab" data-category="Jeans">JEANS</button>
+    <button type="button" class="filter-tab" data-category="Polerones">POLERONES</button>
+    <button type="button" class="filter-tab" data-category="Zapatillas">ZAPATILLAS</button>
+  </div>
+  <div class="filter-row">
+    <label class="filter-field"><span>PRECIO MÁX.</span><select id="priceFilter"><option value="0">SIN LÍMITE</option><option value="30000">$30.000</option><option value="50000">$50.000</option><option value="60000">$60.000</option><option value="70000">$70.000</option></select></label>
+    <label class="filter-field"><span>TALLA</span><select id="sizeFilter"><option value="all">TODAS</option></select></label>
+    <label class="filter-field"><span>ORDENAR</span><select id="sortFilter"><option value="featured">DESTACADOS</option><option value="price-asc">PRECIO: MENOR</option><option value="price-desc">PRECIO: MAYOR</option><option value="name">NOMBRE A–Z</option></select></label>
+    <button type="button" class="clear-filters" id="clearFilters">LIMPIAR</button>
+  </div>
+  <div class="catalog-status"><span id="catalogCount"></span><button type="button" id="favoritesToggle" class="favorites-toggle">♡ FAVORITOS <span id="favoritesCount">0</span></button></div>
+</div>
+<div class="product-grid stagger" id="products"></div>
+  <p class="catalog-note" data-i18n="catalog_note">Selecciona un producto para ver tallas, detalles y agregarlo al carrito.</p>
 </section>
 
-<!-- [MANIFIESTO] -->
-<section class="manifesto reveal" id="nosotros">
-  <div><p class="eyebrow">OUTFLOW / PHILOSOPHY</p><h2>NO SE TRATA<br>DE SEGUIR<br>LA MODA.</h2></div>
-  <p>Se trata de encontrar tu propia forma de llevarla. OUTFLOW comienza con una selección de prendas y evoluciona hacia piezas propias.</p>
+<!-- [NOSOTROS / BRAND EXPERIENCE] -->
+<section class="brand-story reveal" id="nosotros">
+  <div class="brand-story-top">
+    <div><p class="eyebrow">OUTFLOW / IDENTITY</p><span class="brand-story-index">001 — 003</span></div>
+    <p class="brand-story-kicker">ROPA · IDEAS · DISCIPLINA · ESTILO DE VIDA</p>
+  </div>
+  <div class="brand-story-main">
+    <div class="brand-story-title"><span>NO SE TRATA</span><span>DE SEGUIR</span><span>EL FLUJO.</span></div>
+    <div class="brand-story-copy">
+      <p class="brand-story-lead">OUTFLOW nace para quienes prefieren construir su propia dirección.</p>
+      <p>Una selección de prendas, siluetas y objetos pensados para salir de lo predecible. Empezamos curando piezas y evolucionamos hacia diseños propios.</p>
+      <a class="brand-story-link" href="#tienda">EXPLORAR OUTFLOW <span>→</span></a>
+    </div>
+  </div>
+  <div class="brand-story-grid">
+    <div class="brand-story-panel panel-number"><span>EST. 2026</span><strong>01</strong><small>INDEPENDENT<br>STREETWEAR</small></div>
+    <div class="brand-story-panel panel-word"><span>OUTFLOW®</span><strong>MOVE<br>DIFFERENT.</strong></div>
+    <div class="brand-story-panel panel-number"><span>DROP SYSTEM</span><strong>02</strong><small>LIMITED<br>SELECTIONS</small></div>
+  </div>
 </section>
 
 <!-- [NEWSLETTER] -->
 <section class="newsletter reveal">
-  <h2>ENTRA AL DROP.</h2>
-  <form class="form" id="newsletter"><input type="email" required placeholder="Tu correo electrónico"><button>UNIRME →</button></form>
+  <h2 data-i18n="newsletter_title">ENTRA AL DROP.</h2>
+  <form class="form" id="newsletter"><input type="email" required data-i18n-placeholder="email_placeholder" placeholder="Tu correo electrónico"><button data-i18n="join">UNIRME →</button></form>
 </section>
 
 <!-- [FOOTER] -->
@@ -176,6 +202,42 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <div class="footer-col"><strong>SHOP</strong><a href="#categorias">Camisetas</a><a href="#categorias">Jeans</a><a href="#categorias">Polerones</a><a href="#categorias">Zapatillas</a></div>
   <div class="footer-col"><strong>INFO</strong><a>Envíos</a><a>Cambios y devoluciones</a><a>Contacto</a><a>Instagram · TikTok</a></div>
 </footer>
+
+<!-- [DETALLE DE PRODUCTO] -->
+<div class="product-modal" id="productModal" aria-hidden="true">
+  <div class="product-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+    <button class="product-modal-close" id="closeProduct" type="button" aria-label="Cerrar">×</button>
+    <div class="modal-product-gallery">
+      <div class="modal-product-media" id="modalProductMedia"></div>
+      <div class="modal-media-thumbs" id="modalMediaThumbs" aria-label="Galería del producto"></div>
+    </div>
+    <div class="modal-product-content">
+      <span class="modal-category" id="modalCategory"></span>
+      <h2 id="modalProductName"></h2>
+      <p class="modal-variant" id="modalProductVariant"></p>
+      <strong class="modal-price" id="modalProductPrice"></strong>
+      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-detail"><span>MATERIAL</span><strong id="modalMaterial">—</strong></div>
+      <div class="modal-detail"><span>FIT</span><strong id="modalFit">—</strong></div>
+      <div class="product-accordions">
+        <details open><summary><span data-i18n="product_details">DETALLES DEL PRODUCTO</span> <span>＋</span></summary><ul id="modalDetails"></ul></details>
+        <details><summary><span data-i18n="size_guide">GUÍA DE TALLAS</span> <span>＋</span></summary><div id="modalSizeGuide" class="size-guide"></div><p class="size-note" data-i18n="size_note">Medidas referenciales en cm. La tabla se reemplazará por las medidas reales.</p></details>
+        <details><summary><span data-i18n="care">CUIDADOS</span> <span>＋</span></summary><ul id="modalCare"></ul></details>
+        <details><summary><span data-i18n="shipping_returns">ENVÍOS Y CAMBIOS</span> <span>＋</span></summary><p id="modalShipping"></p><p data-i18n="returns_note">Los cambios y devoluciones estarán sujetos a la política final de OUTFLOW.</p></details>
+      </div>
+      <div class="variant-heading"><strong data-i18n="size">TALLA</strong><span id="modalVariantHint">Selecciona una talla para continuar.</span></div>
+      <div class="variant-list" id="modalVariants"></div>
+      <div class="modal-actions">
+        <div class="quantity-control detail-quantity">
+          <button type="button" class="quantity-btn" id="detailMinus" aria-label="Disminuir cantidad">−</button>
+          <input class="quantity-input" id="detailQuantity" type="number" min="1" max="999" value="1" aria-label="Cantidad">
+          <button type="button" class="quantity-btn" id="detailPlus" aria-label="Aumentar cantidad">+</button>
+        </div>
+        <button class="modal-add" id="modalAdd" type="button" disabled data-i18n="add_to_cart">AGREGAR AL CARRITO →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- [CARRITO HTML] -->
 <div class="overlay" id="overlay"></div>
@@ -187,79 +249,14 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;b
 </aside>
 <div class="toast" id="toast">Añadido al carrito.</div>
 
-<script>
-/* ==========================================================
-   [DATOS DE PRODUCTOS]
-   Aquí cambias nombres, precios y datos de cada producto.
-   p = precio en pesos chilenos.
-   i = índice visual de la imagen de producto.
-   ========================================================== */
-const products=[
-{id:1,n:"Camiseta Oversized — Black",p:29990,i:0},
-{id:2,n:"Jeans Baggy — Washed",p:49990,i:1},
-{id:3,n:"Heavy Hoodie — Graphite",p:54990,i:2},
-{id:4,n:"Runner 01 — Black",p:69990,i:3},
-{id:5,n:"Camiseta Oversized — Bone",p:29990,i:0},
-{id:6,n:"Jeans Baggy — Dark",p:49990,i:1},
-{id:7,n:"Heavy Hoodie — Washed",p:54990,i:2},
-{id:8,n:"Runner 01 — Grey",p:69990,i:3}
-];
-/* ==========================================================
-   [CARRITO / ESTADO]
-   Guarda temporalmente los productos seleccionados.
-   ========================================================== */
-let cart=JSON.parse(localStorage.getItem("outflow-cart")||"[]");
-const money=n=>new Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP",maximumFractionDigits:0}).format(n);
-const grid=document.getElementById("products");
-function renderProducts(filter=""){
- const q=filter.toLowerCase();
- grid.innerHTML=products.filter(p=>p.n.toLowerCase().includes(q)).map(p=>`
- <article class="product" onclick="add(${p.id})">
-   <div class="product-photo"><span class="tag">NUEVO</span><span class="heart">♡</span></div>
-   <div class="product-info"><div class="product-name">${p.n}</div><div class="product-meta"><span>OUTFLOW</span><span class="price">${money(p.p)}</span></div></div>
- </article>`).join("");
-}
-/* [FUNCIONES DEL CARRITO] — añadir producto */
-function add(id){let x=cart.find(a=>a.id===id);x?x.q++:cart.push({id,q:1});save();openCart();toast();}
-/* [FUNCIONES DEL CARRITO] — guardar carrito */
-function save(){localStorage.setItem("outflow-cart",JSON.stringify(cart));renderCart();}
-/* [FUNCIONES DEL CARRITO] — dibujar carrito */
-function renderCart(){
- document.getElementById("cartNum").textContent=cart.reduce((a,x)=>a+x.q,0);
- let total=0;
- document.getElementById("cartList").innerHTML=cart.length?cart.map(x=>{let p=products.find(a=>a.id===x.id);total+=p.p*x.q;return `<div class="cart-row"><div class="cart-thumb"></div><div><h3>${p.n}</h3><p>${money(p.p)} · Cantidad: ${x.q}</p></div><button class="remove" onclick="removeItem(${p.id})">Eliminar</button></div>`}).join(""):`<div style="text-align:center;color:#777;padding:70px 10px;font-size:12px">Tu carrito está vacío.</div>`;
- document.getElementById("cartTotal").textContent=money(total);
-}
-/* [FUNCIONES DEL CARRITO] — eliminar producto */
-function removeItem(id){cart=cart.filter(x=>x.id!==id);save()}
-/* [CARRITO] — abrir panel */
-function openCart(){document.getElementById("drawer").classList.add("open");document.getElementById("overlay").classList.add("open")}
-/* [CARRITO] — cerrar panel */
-function closeCart(){document.getElementById("drawer").classList.remove("open");document.getElementById("overlay").classList.remove("open")}
-function toast(){const t=document.getElementById("toast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1500)}
-document.getElementById("openCart").onclick=openCart;document.getElementById("closeCart").onclick=closeCart;document.getElementById("overlay").onclick=closeCart;
-document.getElementById("checkout").onclick=()=>alert("El checkout real se conectará a Shopify en la siguiente etapa.");
-document.getElementById("search").addEventListener("input",e=>renderProducts(e.target.value));
-document.getElementById("newsletter").addEventListener("submit",e=>{e.preventDefault();alert("¡Listo! Te avisaremos de los próximos drops.");e.target.reset()});
-renderProducts();renderCart();
 
-/* ==========================================================
-   [ANIMACIONES]
-   IntersectionObserver hace que secciones/productos aparezcan
-   cuando entran en pantalla. También hay movimiento suave
-   del hero con el mouse.
-   ========================================================== */
-const revealObserver=new IntersectionObserver(entries=>{
- entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");revealObserver.unobserve(e.target)}})
-},{threshold:.14,rootMargin:"0px 0px -40px 0px"});
-document.querySelectorAll(".reveal,.stagger").forEach(el=>revealObserver.observe(el));
 
-const hero=document.querySelector(".hero");
-hero.addEventListener("mousemove",e=>{
- const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
- document.querySelector(".hero-copy").style.transform=`translate(${x*7}px,${y*5}px)`;
-});
-hero.addEventListener("mouseleave",()=>document.querySelector(".hero-copy").style.transform="");
-</script>
+
+
+<script src="js/language.js" defer></script>
+<script src="js/products.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/product-page.js" defer></script>
+<script src="js/app.js" defer></script>
 </body>
 </html>
