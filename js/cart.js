@@ -18,6 +18,7 @@ function addToCart(productId, variant, quantity = 1){
   saveCart();
   openCart();
   showToast('Añadido al carrito.');
+  pulseCartButton();
 }
 
 function saveCart(){
@@ -48,29 +49,45 @@ function removeItem(key){
 
 function renderCart(){
   const cartCount = cart.reduce((sum, item) => sum + item.q, 0);
-  document.getElementById('cartNum').textContent = cartCount;
+  const countEl = document.getElementById('cartNum');
+  const headCount = document.getElementById('cartHeadCount');
+  if(countEl) countEl.textContent = cartCount;
+  if(headCount) headCount.textContent = cartCount;
   const list = document.getElementById('cartList');
+  const checkout = document.getElementById('checkout');
   let total = 0;
 
   if(!cart.length){
-    list.innerHTML = '<div class="cart-empty"><strong>TU CARRITO ESTÁ VACÍO</strong><span>Agrega productos para comenzar.</span></div>';
+    list.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-mark" aria-hidden="true">○</div>
+        <strong>TU CARRITO ESTÁ VACÍO</strong>
+        <span>Descubre piezas y añade tu próxima selección.</span>
+        <button type="button" class="cart-empty-cta" id="emptyCartShop">VER TIENDA →</button>
+      </div>`;
     document.getElementById('cartTotal').textContent = money(0);
+    if(checkout) checkout.disabled = true;
+    document.getElementById('emptyCartShop')?.addEventListener('click',()=>{
+      closeCart();
+      document.getElementById('tienda')?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
     return;
   }
 
+  if(checkout) checkout.disabled = false;
   list.innerHTML = cart.map(item => {
     const product = getProduct(item.id);
     if(!product) return '';
     const lineTotal = product.price * item.q;
     total += lineTotal;
     return `
-      <article class="cart-row">
+      <article class="cart-row" data-cart-key="${item.key}">
         <div class="cart-thumb" style="${getProductImageStyle(product)}"></div>
         <div class="cart-item-info">
           <div class="cart-item-top">
             <div>
               <h3>${product.name}</h3>
-              <p class="cart-price">${item.variant} · ${money(product.price)} c/u</p>
+              <p class="cart-price">Talla ${item.variant} · ${money(product.price)}</p>
             </div>
             <strong class="cart-line-total">${money(lineTotal)}</strong>
           </div>
@@ -89,6 +106,9 @@ function renderCart(){
   document.getElementById('cartTotal').textContent = money(total);
 }
 
-function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
-function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.classList.add('cart-is-open'); }
+function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); document.body.classList.remove('cart-is-open'); }
+function pulseCartButton(){ const btn=document.getElementById('openCart'); if(!btn) return; btn.classList.remove('cart-pulse'); void btn.offsetWidth; btn.classList.add('cart-pulse'); }
+
+renderCart();
 function showToast(message){ const toast=document.getElementById('toast'); toast.textContent=message; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1500); }
