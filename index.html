@@ -58,6 +58,9 @@ OUTFLOW V7 — ARQUITECTURA
 <meta name="twitter:description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 
+<script>
+  (()=>{try{const t=localStorage.getItem('outflow-theme');const system=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t||system}catch(e){document.documentElement.dataset.theme='dark'}})();
+</script>
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -79,6 +82,7 @@ OUTFLOW V7 — ARQUITECTURA
     <button type="button" data-set-lang="pt">🇧🇷 Português</button>
   </div>
 </div>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">TEMA</span></button>
 
 </nav>
   <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button>

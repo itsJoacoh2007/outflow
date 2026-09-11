@@ -1,3 +1,25 @@
+
+/* V15.1 — TEMA DARK / LIGHT */
+function initTheme(){
+  const root=document.documentElement;
+  const btn=document.getElementById('themeToggle');
+  if(!btn) return;
+  const system=()=>window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+  const apply=(theme,save=true)=>{
+    root.dataset.theme=theme;
+    if(save) localStorage.setItem('outflow-theme',theme);
+    btn.setAttribute('aria-pressed',String(theme==='light'));
+    btn.setAttribute('aria-label',theme==='light'?'Cambiar a modo oscuro':'Cambiar a modo claro');
+    const icon=btn.querySelector('.theme-icon');
+    if(icon) icon.textContent=theme==='light'?'☼':'◐';
+  };
+  const saved=localStorage.getItem('outflow-theme');
+  apply(saved || root.dataset.theme || system(),false);
+  btn.addEventListener('click',()=>apply(root.dataset.theme==='light'?'dark':'light'));
+  const media=window.matchMedia('(prefers-color-scheme: light)');
+  media.addEventListener?.('change',()=>{if(!localStorage.getItem('outflow-theme')) apply(system(),false)});
+}
+
 /* OUTFLOW V11 — APP / INICIALIZACIÓN / ANIMACIONES */
 
 document.getElementById('openCart').onclick=openCart;
@@ -53,6 +75,7 @@ document.addEventListener('keydown',event=>{ if(event.key==='Escape'){ closeProd
   initDropShowcase();
   initMobileMenu();
   initNavigation();
+  initTheme();
 })();
 
 /* HERO / DROP FEATURE — el video del producto marcado como drop=true se muestra en portada. */
