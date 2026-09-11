@@ -265,3 +265,46 @@ body,.header,.search,.product,.cart-drawer,.mobile-menu,.drop-showcase,.brand-st
 }
 :root[data-theme="light"] .mobile-language-options button:hover,
 :root[data-theme="light"] .mobile-language-options button.active{background:#111;color:#fff;border-color:#111}
+
+/* ==========================================================
+   [V15.6 PRODUCT CARDS] — catálogo / interacción editorial
+   ========================================================== */
+.product{isolation:isolate;outline:0;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s, border-color .35s}
+.product:focus-visible{outline:1px solid var(--text);outline-offset:3px}
+.product-photo{background-color:var(--panel);transition:transform .65s cubic-bezier(.22,1,.36,1),filter .45s;will-change:transform}
+.product:hover .product-photo{transform:scale(1.028)}
+.product-photo-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 35%,rgba(0,0,0,.68) 100%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.product:hover .product-photo-shade{opacity:1}
+.tag{z-index:2;transition:transform .3s ease,background .3s ease}
+.product:hover .tag{transform:translateY(-2px)}
+.tag-drop{background:#f2f2ef;color:#090909;border-color:#f2f2ef}
+.heart{z-index:4;width:34px;height:34px;display:grid;place-items:center;border:1px solid transparent;border-radius:50%;font-size:19px;transition:background .25s,border-color .25s,transform .25s,color .25s}
+.product:hover .heart{background:rgba(0,0,0,.38);border-color:rgba(255,255,255,.22)}
+.heart:hover{transform:scale(1.08);border-color:#777!important}
+.heart.is-favorite{color:#fff}
+.product-info{padding:15px 15px 17px}
+.product-name-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.product-color{font-size:8px;color:#666;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.product-meta{align-items:center;gap:10px}
+.product-sizes{font-size:8px;color:#777;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.view-product{display:inline-flex;align-items:center;gap:9px;position:relative;overflow:hidden}
+.view-product span,.card-quick-view span{transition:transform .3s ease}
+.view-product:hover span,.card-quick-view:hover span{transform:translateX(4px)}
+.card-quick-view{position:absolute;z-index:3;left:14px;right:14px;bottom:14px;height:39px;border:1px solid rgba(255,255,255,.45);background:rgba(8,8,8,.78);backdrop-filter:blur(8px);color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;display:flex;align-items:center;justify-content:space-between;padding:0 13px;cursor:pointer;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s cubic-bezier(.22,1,.36,1),background .25s ease}
+.product:hover .card-quick-view,.product:focus-within .card-quick-view{opacity:1;transform:none}
+.card-quick-view:hover{background:#f2f2ef;color:#090909;border-color:#f2f2ef}
+:root[data-theme="light"] .card-quick-view{background:rgba(255,255,255,.88);color:#111;border-color:#bbb}
+:root[data-theme="light"] .card-quick-view:hover{background:#111;color:#fff;border-color:#111}
+:root[data-theme="light"] .product-photo-shade{background:linear-gradient(180deg,rgba(0,0,0,.02) 35%,rgba(0,0,0,.58) 100%)}
+@media(max-width:600px){
+  .product:hover{transform:none;box-shadow:none}
+  .product:hover .product-photo{transform:none}
+  .card-quick-view{opacity:1;transform:none;bottom:10px;left:10px;right:10px;height:35px;font-size:8px}
+  .product-photo-shade{opacity:.35}
+  .product-info{padding:11px 9px 14px}
+  .product-name-row{display:block}
+  .product-color{display:block;margin-top:4px}
+  .product-meta{margin-top:9px}
+  .product-sizes{font-size:7px}
+  .view-product{display:none}
+}

@@ -198,11 +198,21 @@ function renderProducts(filter){
   const fc=document.getElementById('favoritesCount'); if(fc) fc.textContent=favorites.length;
   grid.innerHTML=visible.length ? visible.map(product=>{
     const fav=favorites.includes(product.id);
+    const isDrop=Boolean(product.drop);
+    const tagLabel=isDrop ? `DROP ${product.dropNumber || ''}`.trim() : T('new_tag');
+    const sizes=(product.sizes||[]).join(' · ');
     return `<article class="product" tabindex="0" role="button" aria-label="${T('view_product')} ${product.name}" data-product-id="${product.id}">
       <div class="product-photo" style="${getProductImageStyle(product)}">
-        <span class="tag">${T('new_tag')}</span><button type="button" class="heart ${fav?'is-favorite':''}" data-favorite="${product.id}" aria-label="${fav?'Quitar de favoritos':'Agregar a favoritos'}">${fav?'♥':'♡'}</button>
+        <div class="product-photo-shade" aria-hidden="true"></div>
+        <span class="tag ${isDrop?'tag-drop':''}">${tagLabel}</span>
+        <button type="button" class="heart ${fav?'is-favorite':''}" data-favorite="${product.id}" aria-label="${fav?'Quitar de favoritos':'Agregar a favoritos'}" aria-pressed="${fav}">${fav?'♥':'♡'}</button>
+        <button type="button" class="card-quick-view" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
       </div>
-      <div class="product-info"><div class="product-name">${product.name}</div><div class="product-meta"><span>${product.color || product.category}</span><span class="price">${money(product.price)}</span></div><button type="button" class="view-product" data-view-product="${product.id}">${T('view_product')}</button></div>
+      <div class="product-info">
+        <div class="product-name-row"><div class="product-name">${product.name}</div><span class="product-color">${product.color || product.category}</span></div>
+        <div class="product-meta"><span class="product-sizes">${sizes ? `TALLAS ${sizes}` : 'VER DETALLES'}</span><span class="price">${money(product.price)}</span></div>
+        <button type="button" class="view-product" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
+      </div>
     </article>`;
   }).join('') : `<div class="catalog-empty"><strong>NO HAY RESULTADOS</strong><span>Prueba otra búsqueda o limpia los filtros.</span></div>`;
   grid.querySelectorAll('.product').forEach(card=>{
@@ -210,7 +220,15 @@ function renderProducts(filter){
     card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openProduct(card.dataset.productId)}});
   });
   grid.querySelectorAll('[data-view-product]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();openProduct(btn.dataset.viewProduct)}));
-  grid.querySelectorAll('[data-favorite]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();toggleFavorite(btn.dataset.favorite)}));
+  grid.querySelectorAll('[data-favorite]').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    toggleFavorite(btn.dataset.favorite);
+    const isFav=favorites.includes(btn.dataset.favorite);
+    btn.classList.toggle('is-favorite',isFav);
+    btn.setAttribute('aria-pressed',String(isFav));
+    btn.textContent=isFav?'♥':'♡';
+    btn.animate([{transform:'scale(.82)'},{transform:'scale(1.14)'},{transform:'scale(1)'}],{duration:280,easing:'cubic-bezier(.22,1,.36,1)'});
+  }));
 }
 
 window.addEventListener('outflow:languagechange',()=>{
