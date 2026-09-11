@@ -308,3 +308,20 @@ body,.header,.search,.product,.cart-drawer,.mobile-menu,.drop-showcase,.brand-st
   .product-sizes{font-size:7px}
   .view-product{display:none}
 }
+
+
+/* V15.7 — QA / MOBILE SEARCH / INTERACTION POLISH */
+#novedades,#categorias,#tienda,#nosotros{scroll-margin-top:82px}
+.mobile-search-wrap{display:none}
+.mobile-search{height:42px;border:1px solid var(--line);background:var(--input);display:flex;align-items:center;padding:0 12px;color:var(--muted);gap:8px}
+.mobile-search input{width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:11px}
+.mobile-search:focus-within{border-color:#777}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+body.menu-open,body.modal-open,body.cart-is-open{overscroll-behavior:none}
+@media(max-width:600px){
+  .mobile-search-wrap{display:block;margin-bottom:8px}
+  .mobile-search{width:100%}
+  #novedades,#categorias,#tienda,#nosotros{scroll-margin-top:66px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

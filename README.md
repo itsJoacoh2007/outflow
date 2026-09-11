@@ -1,20 +1,12 @@
-# OUTFLOW V14 — NAVIGATION + SHOPPING UX
+# OUTFLOW V15.7 — QA + UX POLISH
 
-V14 continúa sobre V13.
+Based on V15.6.1 stable.
 
-## Cambios
-- Navegación de categorías funcional desde header, tarjetas de categorías y menú móvil.
-- Menú desplegable de categorías en desktop.
-- Acceso rápido desde el icono de usuario/favoritos.
-- Barra de filtros del catálogo con comportamiento sticky para facilitar navegación.
-- Mantiene Drop dinámico, video hero, galería, variantes, carrito e i18n/SEO de versiones anteriores.
-
-## Datos
-El catálogo continúa centralizado en `data/products.json`.
-
-## Próximo bloque
-Página de marca / experiencia editorial (`Nosotros`) y luego preparación de integración Shopify.
-
-
-## V15 — Brand Experience
-La sección Nosotros fue convertida en una experiencia editorial de marca: identidad, manifiesto, principios visuales y bloques de identidad. No requiere backend ni nuevos assets.
+Changes:
+- QA pass without changing the product/cart architecture.
+- Added a mobile product search inside the mobile menu.
+- Mobile search stays synchronized with desktop search.
+- Improved anchor scroll offset for the sticky header.
+- Improved focus-visible states and touch interaction polish.
+- Added overscroll containment for open menu/modal/cart states.
+- Preserved Dark/Light, language, product click, favorites and cart behavior.

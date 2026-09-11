@@ -31,7 +31,13 @@ document.getElementById('openCart').onclick=openCart;
 document.getElementById('closeCart').onclick=closeCart;
 document.getElementById('overlay').onclick=closeCart;
 document.getElementById('checkout').onclick=()=>alert('El checkout real se conectará a Shopify en la siguiente etapa.');
-document.getElementById('search').addEventListener('input',e=>renderProducts(e.target.value));
+document.getElementById('search')?.addEventListener('input',e=>renderProducts(e.target.value));
+const mobileSearch=document.getElementById('mobileSearch');
+mobileSearch?.addEventListener('input',e=>{
+  const desktopSearch=document.getElementById('search');
+  if(desktopSearch) desktopSearch.value=e.target.value;
+  renderProducts(e.target.value);
+});
 
 // V14 — navegación por categorías y acceso rápido a favoritos
 function initNavigation(){
