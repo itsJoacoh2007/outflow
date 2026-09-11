@@ -2,20 +2,25 @@
 /* V15.1 — TEMA DARK / LIGHT */
 function initTheme(){
   const root=document.documentElement;
-  const btn=document.getElementById('themeToggle');
-  if(!btn) return;
+  const buttons=[document.getElementById('themeToggle'),document.getElementById('mobileThemeToggle')].filter(Boolean);
+  if(!buttons.length) return;
   const system=()=>window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
   const apply=(theme,save=true)=>{
     root.dataset.theme=theme;
     if(save) localStorage.setItem('outflow-theme',theme);
-    btn.setAttribute('aria-pressed',String(theme==='light'));
-    btn.setAttribute('aria-label',theme==='light'?'Cambiar a modo oscuro':'Cambiar a modo claro');
-    const icon=btn.querySelector('.theme-icon');
-    if(icon) icon.textContent=theme==='light'?'☼':'◐';
+    const isLight=theme==='light';
+    buttons.forEach(btn=>{
+      btn.setAttribute('aria-pressed',String(isLight));
+      btn.setAttribute('aria-label',isLight?'Cambiar a modo oscuro':'Cambiar a modo claro');
+      const icon=btn.querySelector('.theme-icon');
+      if(icon) icon.textContent=isLight?'☼':'◐';
+      const copy=btn.querySelector('.mobile-theme-copy');
+      if(copy) copy.textContent=isLight?'TEMA CLARO':'TEMA OSCURO';
+    });
   };
   const saved=localStorage.getItem('outflow-theme');
   apply(saved || root.dataset.theme || system(),false);
-  btn.addEventListener('click',()=>apply(root.dataset.theme==='light'?'dark':'light'));
+  buttons.forEach(btn=>btn.addEventListener('click',()=>apply(root.dataset.theme==='light'?'dark':'light')));
   const media=window.matchMedia('(prefers-color-scheme: light)');
   media.addEventListener?.('change',()=>{if(!localStorage.getItem('outflow-theme')) apply(system(),false)});
 }
@@ -161,5 +166,5 @@ function initMobileMenu(){
   const set=open=>{menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));document.body.classList.toggle('menu-open',open)};
   btn.addEventListener('click',()=>set(true));
   close?.addEventListener('click',()=>set(false));
-  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>set(false)));
+  menu.querySelectorAll('a, [data-category-link]').forEach(el=>el.addEventListener('click',()=>set(false)));
 }

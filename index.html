@@ -93,8 +93,22 @@ OUTFLOW V7 — ARQUITECTURA
   </div>
 </header>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-head"><span>OUTFLOW®</span><button id="mobileMenuClose" type="button">×</button></div>
-  <a href="#tienda">TIENDA</a><a href="#novedades">NOVEDADES</a><a href="#categorias">CATEGORÍAS</a><a href="#nosotros">NOSOTROS</a><div class="mobile-category-links"><button data-category-link="Camisetas">CAMISETAS</button><button data-category-link="Jeans">JEANS</button><button data-category-link="Polerones">POLERONES</button><button data-category-link="Zapatillas">ZAPATILLAS</button></div>
+  <div class="mobile-menu-head"><span>OUTFLOW®</span><button id="mobileMenuClose" type="button" aria-label="Cerrar menú">×</button></div>
+  <a href="#tienda" data-mobile-nav>TIENDA</a><a href="#novedades" data-mobile-nav>NOVEDADES</a><a href="#categorias" data-mobile-nav>CATEGORÍAS</a><a href="#nosotros" data-mobile-nav>NOSOTROS</a>
+  <div class="mobile-category-label">CATEGORÍAS</div>
+  <div class="mobile-category-links"><button data-category-link="Camisetas">CAMISETAS</button><button data-category-link="Jeans">JEANS</button><button data-category-link="Polerones">POLERONES</button><button data-category-link="Zapatillas">ZAPATILLAS</button></div>
+  <div class="mobile-menu-tools">
+    <div class="mobile-tool-group">
+      <span class="mobile-tool-label">IDIOMA</span>
+      <div class="mobile-language-options" role="group" aria-label="Seleccionar idioma">
+        <button type="button" data-set-lang="es">ES</button><button type="button" data-set-lang="en">EN</button><button type="button" data-set-lang="pt">PT</button>
+      </div>
+    </div>
+    <div class="mobile-tool-group mobile-theme-group">
+      <span class="mobile-tool-label">APARIENCIA</span>
+      <button class="mobile-theme-toggle" id="mobileThemeToggle" type="button" aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">◐</span><span class="mobile-theme-copy">TEMA OSCURO</span></button>
+    </div>
+  </div>
 </div>
 
 

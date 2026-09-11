@@ -204,3 +204,61 @@ body,.header,.search,.product,.cart-drawer,.mobile-menu,.drop-showcase,.brand-st
 @keyframes accordionContentIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
 .product-accordions .accordion-trigger:focus-visible{outline:1px solid currentColor;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.product-accordions .accordion-panel,.product-accordions .accordion-inner,.product-accordions .accordion-icon{transition:none}.product-accordions .accordion-item.is-open .accordion-inner>*{animation:none}}
+
+/* V15.4 — MOBILE EXPERIENCE */
+.mobile-category-label{margin:26px 0 8px;color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.16em}
+.mobile-menu-tools{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1.5fr;gap:12px}
+.mobile-tool-group{display:flex;flex-direction:column;gap:9px}
+.mobile-tool-label{font-size:8px;color:var(--muted);font-weight:800;letter-spacing:.14em}
+.mobile-language-options{display:flex;gap:6px}
+.mobile-language-options button,.mobile-theme-toggle{height:38px;border:1px solid var(--line);background:var(--input);color:var(--text);cursor:pointer;font-size:9px;font-weight:800;letter-spacing:.08em;transition:background-color .25s,color .25s,border-color .25s,transform .25s}
+.mobile-language-options button{flex:1}
+.mobile-language-options button:hover,.mobile-language-options button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.mobile-theme-toggle{display:flex;align-items:center;justify-content:center;gap:9px;padding:0 12px}
+.mobile-theme-toggle:hover{transform:translateY(-1px);border-color:#777}
+.mobile-theme-toggle .theme-icon{font-size:14px}
+.mobile-theme-copy{font-size:8px}
+@media(max-width:600px){
+  .mobile-menu{overflow-y:auto}
+  .mobile-menu a{font-size:34px;padding:14px 0}
+  .mobile-category-links{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .mobile-category-links button{min-height:36px}
+  .mobile-menu-tools{margin-top:28px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+  .cart-drawer{padding:20px 18px}
+  .cart-row{grid-template-columns:68px 1fr;gap:11px}
+  .cart-thumb{height:82px}
+  .cart-item-top{gap:8px}
+  .cart-line-total{font-size:10px}
+  .quantity-control{height:36px}
+  .quantity-btn{width:34px;height:34px}
+}
+
+/* V15.4 — MOBILE EXPERIENCE */
+.mobile-category-label{margin:26px 0 8px;color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.16em}
+.mobile-menu-tools{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1.5fr;gap:12px}
+.mobile-tool-group{display:flex;flex-direction:column;gap:9px}
+.mobile-tool-label{font-size:8px;color:var(--muted);font-weight:800;letter-spacing:.14em}
+.mobile-language-options{display:flex;gap:6px}
+.mobile-language-options button,.mobile-theme-toggle{height:38px;border:1px solid var(--line);background:var(--input);color:var(--text);cursor:pointer;font-size:9px;font-weight:800;letter-spacing:.08em;transition:background-color .25s,color .25s,border-color .25s,transform .25s}
+.mobile-language-options button{flex:1}
+.mobile-language-options button:hover,.mobile-language-options button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.mobile-theme-toggle{display:flex;align-items:center;justify-content:center;gap:9px;padding:0 12px;width:100%}
+.mobile-theme-toggle:hover{transform:translateY(-1px);border-color:#777}
+.mobile-theme-toggle .theme-icon{font-size:14px}
+.mobile-theme-copy{font-size:8px}
+@media(max-width:600px){
+  .mobile-menu{overflow-y:auto}
+  .mobile-menu a{font-size:34px;padding:14px 0}
+  .mobile-category-links{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .mobile-category-links button{min-height:36px}
+  .mobile-menu-tools{margin-top:28px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+  .cart-drawer{padding:20px 18px}
+  .cart-row{grid-template-columns:68px 1fr;gap:11px}
+  .cart-thumb{height:82px}
+  .cart-item-top{gap:8px}
+  .cart-line-total{font-size:10px}
+  .quantity-control{height:36px}
+  .quantity-btn{width:34px;height:34px}
+}
+:root[data-theme="light"] .mobile-language-options button:hover,
+:root[data-theme="light"] .mobile-language-options button.active{background:#111;color:#fff;border-color:#111}
