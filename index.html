@@ -216,10 +216,8 @@ OUTFLOW V7 — ARQUITECTURA
       <div class="modal-media-thumbs" id="modalMediaThumbs" aria-label="Galería del producto"></div>
     </div>
     <div class="modal-product-content">
-      <span class="modal-category" id="modalCategory"></span>
-      <h2 id="modalProductName"></h2>
-      <p class="modal-variant" id="modalProductVariant"></p>
-      <strong class="modal-price" id="modalProductPrice"></strong>
+      <div class="modal-title-row"><div><span class="modal-category" id="modalCategory"></span><h2 id="modalProductName"></h2><p class="modal-variant" id="modalProductVariant"></p></div><button class="modal-favorite" id="modalFavorite" type="button" aria-label="Agregar a favoritos" aria-pressed="false">♡</button></div>
+      <div class="modal-price-row"><strong class="modal-price" id="modalProductPrice"></strong><span class="modal-stock" id="modalStock">DISPONIBLE</span></div>
       <p class="modal-description" id="modalDescription"></p>
       <div class="modal-detail"><span>MATERIAL</span><strong id="modalMaterial">—</strong></div>
       <div class="modal-detail"><span>FIT</span><strong id="modalFit">—</strong></div>
@@ -251,6 +249,7 @@ OUTFLOW V7 — ARQUITECTURA
       </div>
       <div class="variant-heading"><strong data-i18n="size">TALLA</strong><span id="modalVariantHint">Selecciona una talla para continuar.</span></div>
       <div class="variant-list" id="modalVariants"></div>
+      <div class="modal-trust-row"><span>✓ PAGO SEGURO</span><span>✓ ENVÍOS A TODO CHILE</span><span>✓ SOPORTE OUTFLOW</span></div>
       <div class="modal-actions">
         <div class="quantity-control detail-quantity">
           <button type="button" class="quantity-btn" id="detailMinus" aria-label="Disminuir cantidad">−</button>
