@@ -223,11 +223,31 @@ OUTFLOW V7 — ARQUITECTURA
       <p class="modal-description" id="modalDescription"></p>
       <div class="modal-detail"><span>MATERIAL</span><strong id="modalMaterial">—</strong></div>
       <div class="modal-detail"><span>FIT</span><strong id="modalFit">—</strong></div>
-      <div class="product-accordions">
-        <details open><summary><span data-i18n="product_details">DETALLES DEL PRODUCTO</span> <span>＋</span></summary><ul id="modalDetails"></ul></details>
-        <details><summary><span data-i18n="size_guide">GUÍA DE TALLAS</span> <span>＋</span></summary><div id="modalSizeGuide" class="size-guide"></div><p class="size-note" data-i18n="size_note">Medidas referenciales en cm. La tabla se reemplazará por las medidas reales.</p></details>
-        <details><summary><span data-i18n="care">CUIDADOS</span> <span>＋</span></summary><ul id="modalCare"></ul></details>
-        <details><summary><span data-i18n="shipping_returns">ENVÍOS Y CAMBIOS</span> <span>＋</span></summary><p id="modalShipping"></p><p data-i18n="returns_note">Los cambios y devoluciones estarán sujetos a la política final de OUTFLOW.</p></details>
+      <div class="product-accordions" data-accordion-group>
+        <div class="accordion-item is-open">
+          <button class="accordion-trigger" type="button" aria-expanded="true">
+            <span data-i18n="product_details">DETALLES DEL PRODUCTO</span><span class="accordion-icon">＋</span>
+          </button>
+          <div class="accordion-panel"><div class="accordion-inner"><ul id="modalDetails"></ul></div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span data-i18n="size_guide">GUÍA DE TALLAS</span><span class="accordion-icon">＋</span>
+          </button>
+          <div class="accordion-panel"><div class="accordion-inner"><div id="modalSizeGuide" class="size-guide"></div><p class="size-note" data-i18n="size_note">Medidas referenciales en cm. La tabla se reemplazará por las medidas reales.</p></div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span data-i18n="care">CUIDADOS</span><span class="accordion-icon">＋</span>
+          </button>
+          <div class="accordion-panel"><div class="accordion-inner"><ul id="modalCare"></ul></div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span data-i18n="shipping_returns">ENVÍOS Y CAMBIOS</span><span class="accordion-icon">＋</span>
+          </button>
+          <div class="accordion-panel"><div class="accordion-inner"><p id="modalShipping"></p><p data-i18n="returns_note">Los cambios y devoluciones estarán sujetos a la política final de OUTFLOW.</p></div></div>
+        </div>
       </div>
       <div class="variant-heading"><strong data-i18n="size">TALLA</strong><span id="modalVariantHint">Selecciona una talla para continuar.</span></div>
       <div class="variant-list" id="modalVariants"></div>

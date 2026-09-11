@@ -48,6 +48,28 @@ function renderSizeGuide(product){
   box.innerHTML=`<div class="size-guide-head"><span>${T('size_label')}</span>${keys.map(k=>`<span>${labels[k]||k.toUpperCase()}</span>`).join('')}</div>${entries.map(([size,values])=>`<div class="size-guide-row"><strong>${size}</strong>${keys.map(k=>`<span>${values[k] ?? '—'}</span>`).join('')}</div>`).join('')}<div class="size-guide-unit">${T('cm')}</div>`;
 }
 
+
+function initAccordions(){
+  document.querySelectorAll('[data-accordion-group]').forEach(group=>{
+    group.querySelectorAll('.accordion-trigger').forEach(trigger=>{
+      if(trigger.dataset.accordionReady) return;
+      trigger.dataset.accordionReady='1';
+      trigger.addEventListener('click',()=>{
+        const item=trigger.closest('.accordion-item');
+        const willOpen=!item.classList.contains('is-open');
+        group.querySelectorAll('.accordion-item').forEach(other=>{
+          other.classList.remove('is-open');
+          other.querySelector('.accordion-trigger')?.setAttribute('aria-expanded','false');
+        });
+        if(willOpen){
+          item.classList.add('is-open');
+          trigger.setAttribute('aria-expanded','true');
+        }
+      });
+    });
+  });
+}
+
 function openProduct(productId){
   const product = getProduct(productId);
   if(!product) return;
@@ -72,6 +94,16 @@ function openProduct(productId){
   document.getElementById('detailQuantity').value = 1;
   document.getElementById('modalAdd').disabled = true;
   document.getElementById('modalVariantHint').textContent = T('select_size');
+
+  initAccordions();
+  const firstAccordion = document.querySelector('[data-accordion-group] .accordion-item');
+  if(firstAccordion){
+    document.querySelectorAll('[data-accordion-group] .accordion-item').forEach((item,i)=>{
+      const open=i===0;
+      item.classList.toggle('is-open',open);
+      item.querySelector('.accordion-trigger')?.setAttribute('aria-expanded',String(open));
+    });
+  }
 
   document.querySelectorAll('.variant-btn').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('selected'));

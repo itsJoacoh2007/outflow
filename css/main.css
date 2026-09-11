@@ -184,8 +184,23 @@ body,.header,.search,.product,.cart-drawer,.mobile-menu,.drop-showcase,.brand-st
 :root[data-theme="light"] .toast{background:#111;color:#fff}
 :root[data-theme="light"] .overlay{background:rgba(0,0,0,.25)}
 :root[data-theme="light"] .product-modal{background:#fff;color:#111}
-:root[data-theme="light"] .product-accordions summary,:root[data-theme="light"] .modal-detail{border-color:#d5d5cf}
+:root[data-theme="light"] .product-accordions .accordion-item,:root[data-theme="light"] .modal-detail{border-color:#d5d5cf}
 :root[data-theme="light"] .product-accordions ul,:root[data-theme="light"] .product-accordions p,:root[data-theme="light"] .modal-description{color:#666}
+:root[data-theme="light"] .product-accordions .accordion-trigger{color:#111}
+:root[data-theme="light"] .product-accordions .accordion-icon{color:#666}
 :root[data-theme="light"] .size-guide{border-color:#d5d5cf}.size-guide-head{background:#f0f0ec}.size-guide-row{border-color:#d5d5cf;color:#666}.size-guide-row strong{color:#111}
-:root[data-theme="light"] .product-accordions details[open] summary span:last-child{color:#111}
-.product-accordions details[open] summary span:last-child{transform:rotate(45deg);display:inline-block}
+/* V15.2 — acordeones premium: apertura/cierre suave */
+.product-accordions{margin-top:20px;border-top:1px solid #292929}
+.product-accordions .accordion-item{border-bottom:1px solid #292929}
+.product-accordions .accordion-trigger{width:100%;border:0;background:transparent;color:var(--text);list-style:none;cursor:pointer;padding:15px 0;font:800 9px/1 Inter,sans-serif;letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;text-align:left}
+.product-accordions .accordion-trigger>span:first-child{color:var(--text)}
+.product-accordions .accordion-icon{color:#777;font-size:12px;line-height:1;transition:transform .34s cubic-bezier(.22,1,.36,1),color .25s ease}
+.product-accordions .accordion-item.is-open .accordion-icon{transform:rotate(45deg)}
+.product-accordions .accordion-panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .42s cubic-bezier(.22,1,.36,1),opacity .28s ease}
+.product-accordions .accordion-inner{min-height:0;overflow:hidden;padding:0;transition:padding .42s cubic-bezier(.22,1,.36,1)}
+.product-accordions .accordion-item.is-open .accordion-panel{grid-template-rows:1fr;opacity:1}
+.product-accordions .accordion-item.is-open .accordion-inner{padding:0 0 1px}
+.product-accordions .accordion-item.is-open .accordion-inner>*{animation:accordionContentIn .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes accordionContentIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.product-accordions .accordion-trigger:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.product-accordions .accordion-panel,.product-accordions .accordion-inner,.product-accordions .accordion-icon{transition:none}.product-accordions .accordion-item.is-open .accordion-inner>*{animation:none}}
