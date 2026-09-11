@@ -84,7 +84,7 @@ function openProduct(productId){
   document.getElementById('modalProductVariant').textContent = product.color || '';
   document.getElementById('modalProductPrice').textContent = money(product.price);
   const favBtn=document.getElementById('modalFavorite');
-  if(favBtn){ const isFav=favorites.includes(product.id); favoriteButton.textContent=isFav?'♥':'♡'; favoriteButton.classList.toggle('is-favorite',isFav); favoriteButton.setAttribute('aria-pressed',String(isFav)); favoriteButton.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }
+  if(favBtn){ const isFav=favorites.includes(product.id); favBtn.textContent=isFav?'♥':'♡'; favBtn.classList.toggle('is-favorite',isFav); favBtn.setAttribute('aria-pressed',String(isFav)); favBtn.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }
   const stockEl=document.getElementById('modalStock');
   if(stockEl) stockEl.textContent=product.stock===0?'AGOTADO':(product.stock && product.stock<=3?`ÚLTIMAS ${product.stock}`:'DISPONIBLE');
   document.getElementById('modalDescription').textContent = product.description || 'Prenda seleccionada por OUTFLOW.';
@@ -118,7 +118,7 @@ function openProduct(productId){
   }));
 
   const favoriteButton=document.getElementById('modalFavorite');
-  if(favoriteButton && !favoriteButton.dataset.ready){ favoriteButton.dataset.ready='1'; favoriteButton.addEventListener('click',()=>{ if(!selectedProduct) return; toggleFavorite(selectedProduct.id); const isFav=favorites.includes(selectedProduct.id); favoriteButton.textContent=isFav?'♥':'♡'; favoriteButton.classList.toggle('is-favorite',isFav); favoriteButton.setAttribute('aria-pressed',String(isFav)); favoriteButton.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }); }
+  if(favoriteButton && !favoriteButton.dataset.ready){ favoriteButton.dataset.ready='1'; favoriteButton.addEventListener('click',()=>{ if(!selectedProduct) return; toggleFavorite(selectedProduct.id); const isFav=favorites.includes(selectedProduct.id); favBtn.textContent=isFav?'♥':'♡'; favBtn.classList.toggle('is-favorite',isFav); favBtn.setAttribute('aria-pressed',String(isFav)); favBtn.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }); }
 
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
