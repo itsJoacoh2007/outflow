@@ -14,6 +14,7 @@ function productMedia(product){
 
 function mediaRole(item, index){
   if(item.role) return item.role.toUpperCase();
+  if(item.type==='360') return '360°';
   if(item.type==='video') return 'VIDEO';
   return ['PRIMARY','BACK','3/4','DETAIL','EDITORIAL'][index] || `VIEW ${String(index+1).padStart(2,'0')}`;
 }
@@ -32,14 +33,17 @@ function renderProductMedia(product, index=0){
   const label = document.getElementById('modalMediaLabel');
   if(!stage || !thumbs) return;
 
-  stage.innerHTML = main.type === 'video'
+  stage.innerHTML = (main.type === '360')
+    ? `<div class="product-360-stage"><video class="product-media-video product-360-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span></div>`
+    : (main.type === 'video'
     ? `<video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video>`
-    : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async">`;
+    : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async">`);
+
 
   if(label) label.textContent=`${String(activeMediaIndex+1).padStart(2,'0')} / ${mediaRole(main,activeMediaIndex)}`;
   thumbs.innerHTML = media.map((item,i)=>`
     <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${mediaRole(item,i)} — ${i+1}">
-      ${item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
+      ${item.type==='360' ? `<span class="thumb-video thumb-360"><span>360°</span></span>` : item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
       <span class="media-thumb-label">${String(i+1).padStart(2,'0')} ${mediaRole(item,i)}</span>
     </button>`).join('');
 
