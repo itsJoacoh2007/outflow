@@ -416,3 +416,8 @@ body.menu-open,body.modal-open,body.cart-is-open{overscroll-behavior:none}
   .modal-product-media{max-height:56vh}
   .object-360-hint{bottom:12px}
 }
+
+/* V19.1 object stage polish */
+.product-gallery,.product-main-media,.product-media-stage,.product-viewer,.product-stage,.product-modal-media{background:#000!important;}
+.product-gallery img,.product-main-media img,.product-media-stage img,.product-viewer img,.product-stage img,.product-modal-media img{object-fit:contain!important;object-position:center!important;filter:none!important;mix-blend-mode:normal!important;}
+.product-gallery video,.product-main-media video,.product-media-stage video,.product-viewer video,.product-stage video,.product-modal-media video{object-fit:contain!important;object-position:center!important;background:#000!important;filter:none!important;mix-blend-mode:normal!important;}

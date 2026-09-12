@@ -63,19 +63,19 @@
     "media": [
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-primary-object.png",
+        "src": "assets/images/products/nonx-nx001-primary-object-v19.png",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista frontal",
         "role": "primary"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-back-object.png",
+        "src": "assets/images/products/nonx-nx001-back-object-v19.png",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista trasera",
         "role": "back"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-34-object.png",
+        "src": "assets/images/products/nonx-nx001-34-object-v19.png",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 3/4",
         "role": "3/4"
       },
@@ -93,7 +93,7 @@
       },
       {
         "type": "360",
-        "src": "assets/images/products/nonx-nx001-360-object.mp4",
+        "src": "assets/images/products/nonx-nx001-360-v19.mp4",
         "poster": "assets/images/products/nonx-nx001-primary-object.png",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 360°",
         "role": "360°"
