@@ -35,22 +35,32 @@ function renderProductMedia(product, index=0){
 
   const prevIndex = (activeMediaIndex - 1 + media.length) % media.length;
   const nextIndex = (activeMediaIndex + 1) % media.length;
-  stage.innerHTML = (main.type === '360')
-    ? `<div class="product-360-stage"><video class="product-media-video product-360-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`
-    : (main.type === 'video'
-    ? `<div class="product-video-stage"><video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`
-    : `<div class="product-image-stage"><img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async"><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><button class="gallery-expand" type="button" data-media-jump="${activeMediaIndex}" aria-label="Ampliar imagen">⛶</button></div>`);
-
+  const src = main.src || '';
+  stage.className = `modal-product-media media-${main.type || 'image'}`;
+  if(main.type === '360'){
+    stage.innerHTML = `<div class="product-object-stage product-360-object-stage"><video class="product-media-video product-360-video product-object-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><div class="object-360-hint"><span>↔</span> ARRASTRA PARA ROTAR</div></div>`;
+    const video=stage.querySelector('video');
+    let dragging=false,lastX=0;
+    const scrub=(x)=>{ if(!video.duration) return; const dx=x-lastX; if(Math.abs(dx)<1) return; video.pause(); video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime-dx*0.015)); lastX=x; };
+    video.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;video.setPointerCapture?.(e.pointerId);video.pause();stage.classList.add('is-dragging')});
+    video.addEventListener('pointermove',e=>{if(dragging)scrub(e.clientX)});
+    const stop=()=>{if(!dragging)return;dragging=false;stage.classList.remove('is-dragging');video.play().catch(()=>{})};
+    video.addEventListener('pointerup',stop); video.addEventListener('pointercancel',stop); video.addEventListener('pointerleave',e=>{if(dragging&&e.buttons===0)stop()});
+  } else if(main.type === 'video'){
+    stage.innerHTML = `<div class="product-object-stage"><video class="product-media-video product-object-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${src}" type="video/mp4">${T('video_error')}</video><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`;
+  } else {
+    stage.innerHTML = `<div class="product-object-stage"><img class="product-media-image product-object-image" src="${src}" alt="${main.alt || product.name}" loading="eager" decoding="async"><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><button class="gallery-expand" type="button" data-media-jump="${activeMediaIndex}" aria-label="Ampliar imagen">⛶</button></div>`;
+    const img=stage.querySelector('img');
+    const setRatio=()=>{ if(img.naturalWidth&&img.naturalHeight){ stage.style.setProperty('--media-ratio',`${img.naturalWidth}/${img.naturalHeight}`); } };
+    if(img.complete)setRatio(); else img.addEventListener('load',setRatio,{once:true});
+  }
   stage.querySelectorAll('[data-media-jump]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaJump))));
-
-
   if(label) label.textContent=`${String(activeMediaIndex+1).padStart(2,'0')} / ${mediaRole(main,activeMediaIndex)}`;
   thumbs.innerHTML = media.map((item,i)=>`
     <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${mediaRole(item,i)} — ${i+1}">
       ${item.type==='360' ? `<span class="thumb-video thumb-360"><span>360°</span></span>` : item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
       <span class="media-thumb-label">${String(i+1).padStart(2,'0')} ${mediaRole(item,i)}</span>
     </button>`).join('');
-
   thumbs.querySelectorAll('[data-media-index]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaIndex))));
 }
 

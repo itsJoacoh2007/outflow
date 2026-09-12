@@ -387,3 +387,32 @@ body.menu-open,body.modal-open,body.cart-is-open{overscroll-behavior:none}
 .modal-product-identity{position:sticky;top:0;background:#0d0d0d;z-index:2;padding-top:0}
 @media(max-width:900px){.product-modal-card{grid-template-columns:1fr;width:min(760px,96vw);height:94vh;max-height:94vh}.modal-product-gallery{height:auto}.modal-product-media{aspect-ratio:1/1}.modal-product-content{height:auto;min-height:0;padding:34px 28px 28px}.modal-product-identity{position:static}.modal-product-content h2{font-size:clamp(38px,8vw,58px)}}
 @media(max-width:600px){.product-modal{padding:8px}.product-modal-card{width:100%;height:96vh;max-height:96vh}.modal-gallery-head{height:38px;flex-basis:38px;padding:9px 12px}.modal-product-media{aspect-ratio:1/1}.modal-media-thumbs{height:78px;flex-basis:78px;padding:8px}.media-thumb{flex-basis:68px;width:68px;height:60px}.gallery-arrow{width:36px;height:36px}.gallery-arrow-prev{left:10px}.gallery-arrow-next{right:10px}.gallery-expand{right:10px;bottom:10px}.modal-product-content{padding:28px 20px 22px}.modal-product-content h2{font-size:clamp(34px,10vw,48px)}}
+
+/* V18.3 — NON X OBJECT STAGE / BLACK PRODUCT PRESENTATION */
+.product-modal-card{width:min(1120px,100%);grid-template-columns:1.05fr .95fr;background:#0a0a0a}
+.modal-product-gallery{min-height:0;background:#050505;border-right:1px solid #202020}
+.modal-product-media{flex:0 0 auto;min-height:0;height:auto;aspect-ratio:var(--media-ratio, 1 / 1);max-height:68vh;background:#050505;position:relative;overflow:hidden}
+.product-object-stage{position:relative;width:100%;height:100%;display:grid;place-items:center;background:#050505;overflow:hidden;touch-action:none}
+.product-object-image,.product-object-video{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block;background:#050505}
+.product-object-image{animation:productObjectIn .42s cubic-bezier(.22,1,.36,1)}
+@keyframes productObjectIn{from{opacity:0;transform:scale(.975)}to{opacity:1;transform:scale(1)}}
+.product-360-object-stage{cursor:grab}
+.product-360-object-stage.is-dragging{cursor:grabbing}
+.product-360-object-stage .product-object-video{object-fit:contain;user-select:none;-webkit-user-drag:none}
+.object-360-hint{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);padding:9px 14px;border:1px solid #333;background:rgba(8,8,8,.78);backdrop-filter:blur(10px);color:#aaa;font-size:8px;font-weight:800;letter-spacing:.12em;white-space:nowrap;pointer-events:none}
+.object-360-hint span{font-size:13px;margin-right:7px;color:#eee}
+.modal-product-media.media-image{background:#050505}
+.modal-product-media.media-360{background:#050505}
+.modal-media-thumbs{background:#090909}
+.media-thumb{background:#111;border-color:#292929}
+.media-thumb img{background:#050505}
+.gallery-arrow{background:rgba(10,10,10,.72);border-color:#444;backdrop-filter:blur(8px)}
+.gallery-expand{background:rgba(10,10,10,.72);border-color:#444;backdrop-filter:blur(8px)}
+:root[data-theme="light"] .product-modal-card,:root[data-theme="light"] .modal-product-gallery,:root[data-theme="light"] .modal-product-media,:root[data-theme="light"] .product-object-stage{background:#050505;color:#fff}
+:root[data-theme="light"] .modal-media-thumbs{background:#090909}
+@media(max-width:700px){
+  .product-modal-card{width:100%;grid-template-columns:1fr}
+  .modal-product-gallery{border-right:0;border-bottom:1px solid #202020}
+  .modal-product-media{max-height:56vh}
+  .object-360-hint{bottom:12px}
+}
