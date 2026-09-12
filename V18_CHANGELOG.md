@@ -27,3 +27,13 @@ The 360 asset should only be added to the matching real product.
 - Marked NX-001 as DROP 001.
 - Removed the prototype Drop 001 flag from the old demo hoodie to avoid duplicate drop numbering.
 - Product commercial data is explicitly provisional and intended to be replaced with real supplier data.
+
+
+## V18.2 — PRODUCT EXPERIENCE REFINEMENT
+- Refined product modal to a larger, cleaner split layout inspired by the approved NON X product mockup.
+- Main media stage uses a stable square presentation to reduce blank space and improve framing.
+- Added previous/next gallery controls and fullscreen-style visual control.
+- Removed accidental grayscale from product media.
+- Detail images remain uncropped via contain behavior.
+- Added a portrait-format 360° asset for NX-001, preserving the original horizontal video inside a vertical presentation.
+- Kept all temporary product data clearly provisional.

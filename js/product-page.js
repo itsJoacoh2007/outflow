@@ -33,11 +33,15 @@ function renderProductMedia(product, index=0){
   const label = document.getElementById('modalMediaLabel');
   if(!stage || !thumbs) return;
 
+  const prevIndex = (activeMediaIndex - 1 + media.length) % media.length;
+  const nextIndex = (activeMediaIndex + 1) % media.length;
   stage.innerHTML = (main.type === '360')
-    ? `<div class="product-360-stage"><video class="product-media-video product-360-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span></div>`
+    ? `<div class="product-360-stage"><video class="product-media-video product-360-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`
     : (main.type === 'video'
-    ? `<video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video>`
-    : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async">`);
+    ? `<div class="product-video-stage"><video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`
+    : `<div class="product-image-stage"><img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async"><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><button class="gallery-expand" type="button" data-media-jump="${activeMediaIndex}" aria-label="Ampliar imagen">⛶</button></div>`);
+
+  stage.querySelectorAll('[data-media-jump]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaJump))));
 
 
   if(label) label.textContent=`${String(activeMediaIndex+1).padStart(2,'0')} / ${mediaRole(main,activeMediaIndex)}`;
