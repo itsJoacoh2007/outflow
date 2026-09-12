@@ -1,19 +1,7 @@
-# NON X — V17 Product Experience
+# NON X V20 — Native 360 Integration
 
-V17 is built on the stable NON X V16 base and upgrades the product detail experience around the NON X visual standard.
+Open `index.html` locally to preview the store.
 
-## New
-- Product identity: `NX-001`, `DROP 001`.
-- Media roles: `PRIMARY`, `BACK`, `3/4`, `DETAIL`, `EDITORIAL`, `VIDEO`.
-- Numbered gallery labels.
-- NON X / NOTE editorial block.
-- Optional product fields: `code`, `editorial`, and `media[].role`.
+V20 replaces the previous NX-001 360 object with the new vertical 9:16 native video. The video is intentionally NOT chroma-keyed or processed after generation; it is displayed over a black viewer background to preserve smooth edges and the original garment colors.
 
-## Workflow
-1. Replace product assets in `assets/images/products/`.
-2. Add or edit products in `data/products.json`.
-3. Test locally.
-4. Commit/push with GitHub Desktop when ready.
-5. Vercel deploys from GitHub.
-
-No Shopify checkout is connected yet. Product data is still prototype/reference data until replaced with real supplier/product information.
+This is a local preview build. Replace your local project only after testing, then commit/push through GitHub Desktop as usual.
