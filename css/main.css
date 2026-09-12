@@ -333,3 +333,23 @@ body.menu-open,body.modal-open,body.cart-is-open{overscroll-behavior:none}
 .nonx-lab{margin:0 3.8vw 85px;min-height:510px;padding:65px 7vw;display:grid;grid-template-columns:1.15fr .85fr;gap:6vw;align-items:center;border:1px solid var(--line);background:#080808;color:#f2f2ef;overflow:hidden;position:relative}.nonx-lab:after{content:"LAB";position:absolute;right:-3%;bottom:-24%;font:250px "Archivo Black";letter-spacing:-.1em;color:#fff;opacity:.025;pointer-events:none}.lab-copy{position:relative;z-index:2}.lab-copy h2{font:clamp(42px,6vw,78px)/.84 "Archivo Black";letter-spacing:-.065em;margin:12px 0 28px}.lab-copy p:not(.eyebrow){max-width:470px;color:#999;font-size:13px;line-height:1.8}.lab-copy a{display:inline-flex;gap:18px;margin-top:18px;color:#f2f2ef;text-decoration:none;font-size:9px;font-weight:800;letter-spacing:.18em}.lab-mark{height:340px;border:1px solid #333;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;transform:rotate(-4deg)}.lab-mark span{font:clamp(35px,5vw,65px) "Archivo Black";letter-spacing:-.08em}.lab-mark strong{font:clamp(70px,10vw,125px)/.8 "Archivo Black"}.lab-mark small{position:absolute;right:18px;bottom:15px;font-size:8px;letter-spacing:.2em;color:#777}.product-code{font-size:8px;letter-spacing:.18em;color:var(--muted);margin-bottom:7px}.product-name-row{align-items:baseline}
 @media(max-width:900px){.nonx-archive,.nonx-lab{margin-left:18px;margin-right:18px}.archive-grid{grid-template-columns:1fr 1fr}.archive-card:first-child{grid-column:1/-1}.nonx-lab{grid-template-columns:1fr;min-height:680px;padding:55px 7vw}.lab-mark{height:280px}}
 @media(max-width:600px){.nonx-section-head{margin-bottom:22px}.nonx-section-head h2{font-size:38px}.nonx-archive{padding:50px 18px;margin-bottom:55px}.archive-grid{grid-template-columns:1fr}.archive-card:first-child{grid-column:auto}.archive-card{min-height:245px}.nonx-lab{padding:48px 24px;margin-bottom:55px;min-height:670px}.lab-copy h2{font-size:48px}.lab-mark{height:250px}.product-code{font-size:7px}}
+
+/* V17 — NON X PRODUCT EXPERIENCE */
+.modal-gallery-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #292929;background:#0b0b0b;color:#666;font-size:8px;font-weight:800;letter-spacing:.12em}
+.modal-gallery-head span:last-child{color:#aaa}
+.media-thumb{height:82px;display:flex;align-items:stretch;position:relative}
+.media-thumb img,.media-thumb .thumb-video{height:100%;width:100%;object-fit:cover}
+.media-thumb-label{position:absolute;left:0;right:0;bottom:0;padding:7px 5px 5px;background:linear-gradient(transparent,rgba(0,0,0,.82));color:#eee;font-size:6px;font-weight:800;letter-spacing:.08em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.media-thumb.selected .media-thumb-label{color:#fff}
+.modal-product-identity{display:flex;justify-content:space-between;gap:15px;color:#666;font-size:8px;font-weight:800;letter-spacing:.12em;border-bottom:1px solid #292929;padding-bottom:12px;margin-bottom:13px}
+.modal-product-identity span:last-child{color:#999}
+.modal-editorial-block{margin-top:25px;padding:17px 0;border-top:1px solid #292929;border-bottom:1px solid #292929}
+.modal-editorial-block>div{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.modal-editorial-block span{font-size:8px;color:#666;font-weight:800;letter-spacing:.12em}
+.modal-editorial-block strong{font-size:8px;color:#999;letter-spacing:.08em}
+.modal-editorial-block p{margin:10px 0 0;color:#777;font-size:10px;line-height:1.65;max-width:430px}
+:root[data-theme="light"] .modal-gallery-head{background:#f6f6f3;border-color:#d5d5cf;color:#777}
+:root[data-theme="light"] .modal-gallery-head span:last-child,:root[data-theme="light"] .modal-product-identity span:last-child{color:#444}
+:root[data-theme="light"] .modal-product-identity,:root[data-theme="light"] .modal-editorial-block{border-color:#d5d5cf}
+:root[data-theme="light"] .modal-editorial-block p{color:#666}
+@media(max-width:700px){.modal-gallery-head{padding:10px 12px}.media-thumb{height:74px}.modal-product-identity{margin-bottom:11px}.modal-editorial-block{margin-top:20px}}

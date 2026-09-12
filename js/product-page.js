@@ -8,8 +8,19 @@ const T = (key) => window.outflowLanguage?.t(key) ?? key;
 
 function productMedia(product){
   if(product?.media?.length) return product.media;
-  if(product?.image) return [{type:'image',src:product.image,alt:product.name}];
-  return [{type:'image',src:'assets/images/products.jpg',alt:product?.name || 'Producto OUTFLOW'}];
+  if(product?.image) return [{type:'image',src:product.image,alt:product.name,role:'primary'}];
+  return [{type:'image',src:'assets/images/products.jpg',alt:product?.name || 'Producto NON X',role:'primary'}];
+}
+
+function mediaRole(item, index){
+  if(item.role) return item.role.toUpperCase();
+  if(item.type==='video') return 'VIDEO';
+  return ['PRIMARY','BACK','3/4','DETAIL','EDITORIAL'][index] || `VIEW ${String(index+1).padStart(2,'0')}`;
+}
+
+function productCode(product){
+  const idx=Math.max(1, products.indexOf(product)+1);
+  return product.code || `NX-${String(idx).padStart(3,'0')}`;
 }
 
 function renderProductMedia(product, index=0){
@@ -18,15 +29,18 @@ function renderProductMedia(product, index=0){
   const main = media[activeMediaIndex];
   const stage = document.getElementById('modalProductMedia');
   const thumbs = document.getElementById('modalMediaThumbs');
+  const label = document.getElementById('modalMediaLabel');
   if(!stage || !thumbs) return;
 
   stage.innerHTML = main.type === 'video'
     ? `<video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video>`
     : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async">`;
 
+  if(label) label.textContent=`${String(activeMediaIndex+1).padStart(2,'0')} / ${mediaRole(main,activeMediaIndex)}`;
   thumbs.innerHTML = media.map((item,i)=>`
-    <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${T(item.type==='video'?'video_label':'image_label')} ${i+1}">
+    <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${mediaRole(item,i)} — ${i+1}">
       ${item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
+      <span class="media-thumb-label">${String(i+1).padStart(2,'0')} ${mediaRole(item,i)}</span>
     </button>`).join('');
 
   thumbs.querySelectorAll('[data-media-index]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaIndex))));
@@ -82,6 +96,9 @@ function openProduct(productId){
   document.getElementById('modalCategory').textContent = product.category.toUpperCase();
   document.getElementById('modalProductName').textContent = product.name;
   document.getElementById('modalProductVariant').textContent = product.color || '';
+  const codeEl=document.getElementById('modalProductCode'); if(codeEl) codeEl.textContent=productCode(product);
+  const dropEl=document.getElementById('modalProductDrop'); if(dropEl) dropEl.textContent=product.drop ? `DROP ${product.dropNumber || ''}`.trim() : 'NON X / ARCHIVE';
+  const editorialEl=document.getElementById('modalEditorialText'); if(editorialEl) editorialEl.textContent=product.editorial || 'A documented piece within the NON X archive.';
   document.getElementById('modalProductPrice').textContent = money(product.price);
   const favBtn=document.getElementById('modalFavorite');
   if(favBtn){ const isFav=favorites.includes(product.id); favBtn.textContent=isFav?'♥':'♡'; favBtn.classList.toggle('is-favorite',isFav); favBtn.setAttribute('aria-pressed',String(isFav)); favBtn.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }

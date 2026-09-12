@@ -1,21 +1,19 @@
-# OUTFLOW V15.7 — QA + UX POLISH
+# NON X — V17 Product Experience
 
-Based on V15.6.1 stable.
+V17 is built on the stable NON X V16 base and upgrades the product detail experience around the NON X visual standard.
 
-Changes:
-- QA pass without changing the product/cart architecture.
-- Added a mobile product search inside the mobile menu.
-- Mobile search stays synchronized with desktop search.
-- Improved anchor scroll offset for the sticky header.
-- Improved focus-visible states and touch interaction polish.
-- Added overscroll containment for open menu/modal/cart states.
-- Preserved Dark/Light, language, product click, favorites and cart behavior.
+## New
+- Product identity: `NX-001`, `DROP 001`.
+- Media roles: `PRIMARY`, `BACK`, `3/4`, `DETAIL`, `EDITORIAL`, `VIDEO`.
+- Numbered gallery labels.
+- NON X / NOTE editorial block.
+- Optional product fields: `code`, `editorial`, and `media[].role`.
 
+## Workflow
+1. Replace product assets in `assets/images/products/`.
+2. Add or edit products in `data/products.json`.
+3. Test locally.
+4. Commit/push with GitHub Desktop when ready.
+5. Vercel deploys from GitHub.
 
-## V15.8 — Performance + SEO
-- Preconnect y carga de tipografías optimizada.
-- Poster del hero para una carga inicial más estable.
-- `theme-color` sincronizado con Dark/Light.
-- Imágenes dinámicas con `decoding=async`.
-- Datos estructurados JSON-LD para la organización, sitio y catálogo actual.
-- Sitemap/canonical se dejan para cuando exista el dominio final de OUTFLOW; no se inventa una URL.
+No Shopify checkout is connected yet. Product data is still prototype/reference data until replaced with real supplier/product information.
