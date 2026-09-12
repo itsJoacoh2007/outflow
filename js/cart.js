@@ -1,6 +1,6 @@
 /* OUTFLOW V8 — CARRITO
    El carrito guarda producto + variante + cantidad. */
-let cart = JSON.parse(localStorage.getItem('outflow-cart') || '[]');
+let cart = JSON.parse(localStorage.getItem('nonx-cart') || localStorage.getItem('outflow-cart') || '[]');
 const money = n => new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(n);
 
 function cartKey(productId, variant){
@@ -22,7 +22,7 @@ function addToCart(productId, variant, quantity = 1){
 }
 
 function saveCart(){
-  localStorage.setItem('outflow-cart', JSON.stringify(cart));
+  localStorage.setItem('nonx-cart', JSON.stringify(cart));
   renderCart();
 }
 

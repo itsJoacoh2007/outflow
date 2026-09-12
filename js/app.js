@@ -7,8 +7,10 @@ function initTheme(){
   const system=()=>window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
   const apply=(theme,save=true)=>{
     root.dataset.theme=theme;
-    if(save) localStorage.setItem('outflow-theme',theme);
+    if(save) localStorage.setItem('nonx-theme',theme);
     const isLight=theme==='light';
+    const themeMeta=document.getElementById('themeColor');
+    if(themeMeta) themeMeta.setAttribute('content', isLight ? '#f4f4f2' : '#080808');
     buttons.forEach(btn=>{
       btn.setAttribute('aria-pressed',String(isLight));
       btn.setAttribute('aria-label',isLight?'Cambiar a modo oscuro':'Cambiar a modo claro');
@@ -18,11 +20,11 @@ function initTheme(){
       if(copy) copy.textContent=isLight?'TEMA CLARO':'TEMA OSCURO';
     });
   };
-  const saved=localStorage.getItem('outflow-theme');
+  const saved=localStorage.getItem('nonx-theme') || localStorage.getItem('outflow-theme');
   apply(saved || root.dataset.theme || system(),false);
   buttons.forEach(btn=>btn.addEventListener('click',()=>apply(root.dataset.theme==='light'?'dark':'light')));
   const media=window.matchMedia('(prefers-color-scheme: light)');
-  media.addEventListener?.('change',()=>{if(!localStorage.getItem('outflow-theme')) apply(system(),false)});
+  media.addEventListener?.('change',()=>{if(!localStorage.getItem('nonx-theme')) apply(system(),false)});
 }
 
 /* OUTFLOW V11 — APP / INICIALIZACIÓN / ANIMACIONES */
@@ -87,7 +89,37 @@ document.addEventListener('keydown',event=>{ if(event.key==='Escape'){ closeProd
   initMobileMenu();
   initNavigation();
   initTheme();
+  injectStructuredData();
 })();
+
+
+function injectStructuredData(){
+  if(!Array.isArray(products) || !products.length) return;
+  const items=products.slice(0,24).map(product=>({
+    '@type':'Product',
+    name:product.name,
+    description:product.description || '',
+    image: product.image ? [new URL(product.image, document.baseURI).href] : [],
+    sku:product.id,
+    brand:{'@type':'Brand',name:'NON X'},
+    offers:{'@type':'Offer',priceCurrency:product.currency || 'CLP',price:Number(product.price),availability:'https://schema.org/InStock',url:window.location.href+'#producto-'+encodeURIComponent(product.id)}
+  }));
+  const data={
+    '@context':'https://schema.org',
+    '@graph':[
+      {'@type':'Organization',name:'NON X',url:window.location.href},
+      {'@type':'WebSite',name:'NON X',url:window.location.href},
+      ...items
+    ]
+  };
+  const existing=document.getElementById('nonx-structured-data');
+  if(existing) existing.remove();
+  const script=document.createElement('script');
+  script.id='nonx-structured-data';
+  script.type='application/ld+json';
+  script.textContent=JSON.stringify(data);
+  document.head.appendChild(script);
+}
 
 /* HERO / DROP FEATURE — el video del producto marcado como drop=true se muestra en portada. */
 function initDropHero(){
@@ -108,7 +140,7 @@ function initDropHero(){
   const eyebrow=document.getElementById('heroDropLabel');
   const label=document.getElementById('heroProductLabel');
   const cta=document.getElementById('heroDropCta');
-  if(eyebrow) eyebrow.textContent=`OUTFLOW / ${drop.dropNumber || '001'}`;
+  if(eyebrow) eyebrow.textContent=`NON X / ${drop.dropNumber || '001'}`;
   if(label) label.textContent=`${String(drop.dropLabel || drop.name).toUpperCase()} · DROP ${drop.dropNumber || '001'}`;
   if(cta) cta.addEventListener('click',()=>{
     const card=document.querySelector(`[data-product-id="${drop.id}"]`);
@@ -156,7 +188,7 @@ function initDropShowcase(){
     const image=p.image || p.media?.find(m=>m.type==='image')?.src || 'assets/images/products.jpg';
     return `<article class="drop-card ${i===0?'drop-card-featured':''}" data-product-id="${p.id}">
       <button class="drop-card-media" type="button" aria-label="Ver ${p.name}" data-open-product="${p.id}">
-        <img src="${image}" alt="${p.name} — ${p.color||''}" loading="lazy">
+        <img src="${image}" alt="${p.name} — ${p.color||''}" loading="lazy" decoding="async">
         ${p.id===drop.id && p.heroMedia ? '<span class="drop-play">▶ VIDEO</span>' : ''}
       </button>
       <div class="drop-card-info"><div><span>${String(p.category||'').toUpperCase()}</span><h3>${p.name}</h3></div><button type="button" data-open-product="${p.id}">VER PRODUCTO →</button></div>

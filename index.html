@@ -1,5 +1,5 @@
 <!--
-OUTFLOW V7 — ARQUITECTURA
+NON X V7 — ARQUITECTURA
 - index.html = estructura de la página.
 - css/main.css = estilos y responsive.
 - js/app.js = comportamiento general, carrito y animaciones.
@@ -12,7 +12,7 @@ OUTFLOW V7 — ARQUITECTURA
 -->
 <!--
 ╔══════════════════════════════════════════════════════════════╗
-║                    OUTFLOW — GUÍA DEL CÓDIGO               ║
+║                    NON X — GUÍA DEL CÓDIGO               ║
 ╠══════════════════════════════════════════════════════════════╣
 ║ ESTE ARCHIVO ES LA V7 VISUAL DE LA TIENDA.               ║
 ║                                                              ║
@@ -23,7 +23,7 @@ OUTFLOW V7 — ARQUITECTURA
 ║  [BENEFICIOS]             → envíos / pagos / seguridad      ║
 ║  [CATEGORÍAS]             → camisetas / jeans / etc.        ║
 ║  [PRODUCTOS]              → tarjetas + productos            ║
-║  [MANIFIESTO]             → filosofía de OUTFLOW             ║
+║  [MANIFIESTO]             → filosofía de NON X             ║
 ║  [NEWSLETTER]             → formulario de correo            ║
 ║  [FOOTER]                 → pie de página                   ║
 ║  [CARRITO HTML]           → panel lateral del carrito       ║
@@ -46,20 +46,25 @@ OUTFLOW V7 — ARQUITECTURA
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OUTFLOW — Streetwear</title>
-<meta name="description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
-<meta name="theme-color" content="#080808">
+<title>NON X — Streetwear</title>
+<meta name="description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta name="theme-color" content="#080808" id="themeColor">
+<meta name="color-scheme" content="dark light">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="website">
-<meta property="og:title" content="OUTFLOW — Streetwear">
-<meta property="og:description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta property="og:title" content="NON X — Streetwear">
+<meta property="og:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta property="og:site_name" content="NON X">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="OUTFLOW — Streetwear">
-<meta name="twitter:description" content="OUTFLOW — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta name="twitter:title" content="NON X — Streetwear">
+<meta name="twitter:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 
 <script>
-  (()=>{try{const t=localStorage.getItem('outflow-theme');const system=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t||system}catch(e){document.documentElement.dataset.theme='dark'}})();
+  (()=>{try{const t=localStorage.getItem('nonx-theme') || localStorage.getItem('outflow-theme');const system=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t||system}catch(e){document.documentElement.dataset.theme='dark'}})();
 </script>
 <link rel="stylesheet" href="css/main.css">
 </head>
@@ -69,9 +74,9 @@ OUTFLOW V7 — ARQUITECTURA
 
 <!-- [HEADER] NAVEGACIÓN PRINCIPAL -->
 <header class="header">
-  <a class="logo" href="#">OUTFLOW<sup>®</sup></a>
+  <a class="logo" href="#">NON X<sup>®</sup></a>
   <nav class="nav">
-    <a href="#tienda" data-i18n="nav_shop">Tienda</a><a href="#novedades" data-i18n="nav_new">Novedades</a><div class="nav-dropdown"><button type="button" class="nav-drop-btn" data-i18n="nav_categories">Categorías⌄</button><div class="nav-drop-menu"><button type="button" data-category-link="all">TODAS</button><button type="button" data-category-link="Camisetas">CAMISETAS</button><button type="button" data-category-link="Jeans">JEANS</button><button type="button" data-category-link="Polerones">POLERONES</button><button type="button" data-category-link="Zapatillas">ZAPATILLAS</button></div></div><a href="#nosotros" data-i18n="nav_about">Nosotros</a>
+    <a href="#tienda" data-i18n="nav_shop">Tienda</a><a href="#novedades" data-i18n="nav_new">Novedades</a><a href="#archive">Archive</a><a href="#lab">Lab</a><div class="nav-dropdown"><button type="button" class="nav-drop-btn" data-i18n="nav_categories">Categorías⌄</button><div class="nav-drop-menu"><button type="button" data-category-link="all">TODAS</button><button type="button" data-category-link="Camisetas">CAMISETAS</button><button type="button" data-category-link="Jeans">JEANS</button><button type="button" data-category-link="Polerones">POLERONES</button><button type="button" data-category-link="Zapatillas">ZAPATILLAS</button></div></div><a href="#nosotros" data-i18n="nav_about">Nosotros</a>
   
 <!-- [SELECTOR DE IDIOMA] -->
 <div class="language-switcher" aria-label="Language selector">
@@ -93,8 +98,8 @@ OUTFLOW V7 — ARQUITECTURA
   </div>
 </header>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-head"><span>OUTFLOW®</span><button id="mobileMenuClose" type="button" aria-label="Cerrar menú">×</button></div>
-  <a href="#tienda" data-mobile-nav>TIENDA</a><a href="#novedades" data-mobile-nav>NOVEDADES</a><a href="#categorias" data-mobile-nav>CATEGORÍAS</a><a href="#nosotros" data-mobile-nav>NOSOTROS</a>
+  <div class="mobile-menu-head"><span>NON X</span><button id="mobileMenuClose" type="button" aria-label="Cerrar menú">×</button></div>
+  <a href="#tienda" data-mobile-nav>TIENDA</a><a href="#novedades" data-mobile-nav>NOVEDADES</a><a href="#archive" data-mobile-nav>ARCHIVE</a><a href="#lab" data-mobile-nav>LAB</a><a href="#categorias" data-mobile-nav>CATEGORÍAS</a><a href="#nosotros" data-mobile-nav>NOSOTROS</a>
   <div class="mobile-category-label">CATEGORÍAS</div>
   <div class="mobile-category-links"><button data-category-link="Camisetas">CAMISETAS</button><button data-category-link="Jeans">JEANS</button><button data-category-link="Polerones">POLERONES</button><button data-category-link="Zapatillas">ZAPATILLAS</button></div>
   <div class="mobile-search-wrap">
@@ -117,10 +122,10 @@ OUTFLOW V7 — ARQUITECTURA
 
 <!-- [HERO] PORTADA PRINCIPAL -->
 <section class="hero" id="novedades" data-drop="001">
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/images/products/heavy-hoodie-front.jpg" aria-hidden="true"></video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-copy">
-    <p class="eyebrow" id="heroDropLabel">OUTFLOW / 001</p>
+    <p class="eyebrow" id="heroDropLabel">NON X / 001</p>
     <h1 data-i18n="hero_title">VISTE<br><span class="outline">FUERA</span><br>DE LO COMÚN.</h1>
     <p data-i18n="hero_description">Streetwear seleccionado para quienes no quieren verse como todos.</p>
     <div class="hero-product-label" id="heroProductLabel">ZIP-UP HOODIE · DROP 001</div>
@@ -129,7 +134,7 @@ OUTFLOW V7 — ARQUITECTURA
       <a class="cta cta-ghost" href="#tienda" data-i18n="explore_collection">EXPLORAR TIENDA</a>
     </div>
   </div>
-  <div class="hero-side">◎　OUTFLOW®　EST. 2026</div>
+  <div class="hero-side">◎　NON X　EST. 2026</div>
   <div class="hero-mark">ROPA<br>IDEAS<br>DISCIPLINA<br>ESTILO DE VIDA.</div>
   <div class="hero-scroll">SCROLL<span></span></div>
   <div class="hero-video-status" aria-hidden="true">Ⅱ</div>
@@ -149,7 +154,7 @@ OUTFLOW V7 — ARQUITECTURA
 <section class="drop-showcase reveal" id="drop-showcase">
   <div class="drop-showcase-bg" aria-hidden="true"></div>
   <div class="drop-showcase-head">
-    <div><p class="eyebrow">OUTFLOW / DROP</p><h2>NUEVO DROP</h2></div>
+    <div><p class="eyebrow">NON X / DROP</p><h2>NUEVO DROP</h2></div>
     <p>PIEZAS SELECCIONADAS.<br>DISEÑADAS PARA DESTACAR.</p>
   </div>
   <div class="drop-grid" id="dropProducts"></div>
@@ -193,22 +198,38 @@ OUTFLOW V7 — ARQUITECTURA
 <!-- [NOSOTROS / BRAND EXPERIENCE] -->
 <section class="brand-story reveal" id="nosotros">
   <div class="brand-story-top">
-    <div><p class="eyebrow">OUTFLOW / IDENTITY</p><span class="brand-story-index">001 — 003</span></div>
+    <div><p class="eyebrow">NON X / IDENTITY</p><span class="brand-story-index">001 — 003</span></div>
     <p class="brand-story-kicker">ROPA · IDEAS · DISCIPLINA · ESTILO DE VIDA</p>
   </div>
   <div class="brand-story-main">
-    <div class="brand-story-title"><span>NO SE TRATA</span><span>DE SEGUIR</span><span>EL FLUJO.</span></div>
+    <div class="brand-story-title"><span>NON</span><span>MEETS</span><span>X.</span></div>
     <div class="brand-story-copy">
-      <p class="brand-story-lead">OUTFLOW nace para quienes prefieren construir su propia dirección.</p>
-      <p>Una selección de prendas, siluetas y objetos pensados para salir de lo predecible. Empezamos curando piezas y evolucionamos hacia diseños propios.</p>
-      <a class="brand-story-link" href="#tienda">EXPLORAR OUTFLOW <span>→</span></a>
+      <p class="brand-story-lead">NON X existe entre la ausencia y lo que todavía no tiene nombre.</p>
+      <p>Una selección de prendas, siluetas y objetos pensados para salir de lo predecible. El archivo crece con cada drop y el laboratorio queda abierto para experimentar.</p>
+      <a class="brand-story-link" href="#tienda">EXPLORAR NON X <span>→</span></a>
     </div>
   </div>
   <div class="brand-story-grid">
     <div class="brand-story-panel panel-number"><span>EST. 2026</span><strong>01</strong><small>INDEPENDENT<br>STREETWEAR</small></div>
-    <div class="brand-story-panel panel-word"><span>OUTFLOW®</span><strong>MOVE<br>DIFFERENT.</strong></div>
+    <div class="brand-story-panel panel-word"><span>NON X</span><strong>NOT<br>EVERYONE.</strong></div>
     <div class="brand-story-panel panel-number"><span>DROP SYSTEM</span><strong>02</strong><small>LIMITED<br>SELECTIONS</small></div>
   </div>
+</section>
+
+<!-- [ARCHIVE] — sistema editorial para drops pasados y presentes -->
+<section class="nonx-archive reveal" id="archive">
+  <div class="nonx-section-head"><div><p class="eyebrow">NON X / ARCHIVE</p><h2>THE ARCHIVE</h2></div><span>001 — 0∞</span></div>
+  <div class="archive-grid">
+    <article class="archive-card archive-active"><div class="archive-number">001</div><div><span>ACTIVE DROP</span><h3>ZIP-UP HOODIE</h3><p>THE FIRST ENTRY.</p></div><a href="#tienda">VIEW DROP →</a></article>
+    <article class="archive-card archive-future"><div class="archive-number">002</div><div><span>NEXT ENTRY</span><h3>CLASSIFIED</h3><p>NOT RELEASED YET.</p></div><span class="archive-status">COMING</span></article>
+    <article class="archive-card archive-future"><div class="archive-number">003</div><div><span>ARCHIVE</span><h3>UNKNOWN</h3><p>NOTHING TO SEE. YET.</p></div><span class="archive-status">LOCKED</span></article>
+  </div>
+</section>
+
+<!-- [LAB] — reservado para experimentos, prototipos y piezas intervenidas -->
+<section class="nonx-lab reveal" id="lab">
+  <div class="lab-copy"><p class="eyebrow">NON X / LAB</p><h2>EXPERIMENTS<br>WITHOUT<br>PERMISSION.</h2><p>Prototipos. Intervenciones. Materiales. Bordados. Hardware. Piezas que todavía no pertenecen al archivo.</p><a href="#tienda">ENTER THE LAB <span>→</span></a></div>
+  <div class="lab-mark" aria-hidden="true"><span>NON</span><strong>×</strong><span>X</span><small>LAB / 2026</small></div>
 </section>
 
 <!-- [NEWSLETTER] -->
@@ -219,7 +240,7 @@ OUTFLOW V7 — ARQUITECTURA
 
 <!-- [FOOTER] -->
 <footer>
-  <div><div class="logo footer-logo">OUTFLOW</div><p>© 2026 OUTFLOW. Todos los derechos reservados.</p></div>
+  <div><div class="logo footer-logo">NON X</div><p>© 2026 NON X. Todos los derechos reservados.</p></div>
   <div class="footer-col"><strong>SHOP</strong><a href="#categorias">Camisetas</a><a href="#categorias">Jeans</a><a href="#categorias">Polerones</a><a href="#categorias">Zapatillas</a></div>
   <div class="footer-col"><strong>INFO</strong><a>Envíos</a><a>Cambios y devoluciones</a><a>Contacto</a><a>Instagram · TikTok</a></div>
 </footer>
@@ -261,12 +282,12 @@ OUTFLOW V7 — ARQUITECTURA
           <button class="accordion-trigger" type="button" aria-expanded="false">
             <span data-i18n="shipping_returns">ENVÍOS Y CAMBIOS</span><span class="accordion-icon">＋</span>
           </button>
-          <div class="accordion-panel"><div class="accordion-inner"><p id="modalShipping"></p><p data-i18n="returns_note">Los cambios y devoluciones estarán sujetos a la política final de OUTFLOW.</p></div></div>
+          <div class="accordion-panel"><div class="accordion-inner"><p id="modalShipping"></p><p data-i18n="returns_note">Los cambios y devoluciones estarán sujetos a la política final de NON X.</p></div></div>
         </div>
       </div>
       <div class="variant-heading"><strong data-i18n="size">TALLA</strong><span id="modalVariantHint">Selecciona una talla para continuar.</span></div>
       <div class="variant-list" id="modalVariants"></div>
-      <div class="modal-trust-row"><span>✓ PAGO SEGURO</span><span>✓ ENVÍOS A TODO CHILE</span><span>✓ SOPORTE OUTFLOW</span></div>
+      <div class="modal-trust-row"><span>✓ PAGO SEGURO</span><span>✓ ENVÍOS A TODO CHILE</span><span>✓ SOPORTE NON X</span></div>
       <div class="modal-actions">
         <div class="quantity-control detail-quantity">
           <button type="button" class="quantity-btn" id="detailMinus" aria-label="Disminuir cantidad">−</button>
@@ -282,7 +303,7 @@ OUTFLOW V7 — ARQUITECTURA
 <!-- [CARRITO HTML] -->
 <div class="overlay" id="overlay"></div>
 <aside class="cart-drawer" id="drawer">
-  <div class="cart-head"><div><p class="cart-kicker">OUTFLOW / BAG</p><h2>TU CARRITO <span class="cart-head-count" id="cartHeadCount">0</span></h2></div><button class="close" id="closeCart" aria-label="Cerrar carrito">×</button></div>
+  <div class="cart-head"><div><p class="cart-kicker">NON X / BAG</p><h2>TU CARRITO <span class="cart-head-count" id="cartHeadCount">0</span></h2></div><button class="close" id="closeCart" aria-label="Cerrar carrito">×</button></div>
   <div class="cart-list" id="cartList"></div>
   <div class="cart-summary"><div class="cart-total"><span>Subtotal</span><strong id="cartTotal">$0</strong></div><p class="cart-summary-note">Impuestos y envío se calculan al finalizar.</p></div>
   <button class="checkout" id="checkout">CONTINUAR AL PAGO</button>

@@ -22,11 +22,11 @@ function renderProductMedia(product, index=0){
 
   stage.innerHTML = main.type === 'video'
     ? `<video class="product-media-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${main.src}" type="video/mp4">${T('video_error')}</video>`
-    : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager">`;
+    : `<img class="product-media-image" src="${main.src}" alt="${main.alt || product.name}" loading="eager" decoding="async">`;
 
   thumbs.innerHTML = media.map((item,i)=>`
     <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${T(item.type==='video'?'video_label':'image_label')} ${i+1}">
-      ${item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy">`}
+      ${item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
     </button>`).join('');
 
   thumbs.querySelectorAll('[data-media-index]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaIndex))));
@@ -118,7 +118,7 @@ function openProduct(productId){
   }));
 
   const favoriteButton=document.getElementById('modalFavorite');
-  if(favoriteButton && !favoriteButton.dataset.ready){ favoriteButton.dataset.ready='1'; favoriteButton.addEventListener('click',()=>{ if(!selectedProduct) return; toggleFavorite(selectedProduct.id); const isFav=favorites.includes(selectedProduct.id); favBtn.textContent=isFav?'♥':'♡'; favBtn.classList.toggle('is-favorite',isFav); favBtn.setAttribute('aria-pressed',String(isFav)); favBtn.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }); }
+  if(favoriteButton && !favoriteButton.dataset.ready){ favoriteButton.dataset.ready='1'; favoriteButton.addEventListener('click',()=>{ if(!selectedProduct) return; toggleFavorite(selectedProduct.id); const isFav=favorites.includes(selectedProduct.id); favoriteButton.textContent=isFav?'♥':'♡'; favoriteButton.classList.toggle('is-favorite',isFav); favoriteButton.setAttribute('aria-pressed',String(isFav)); favoriteButton.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }); }
 
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
@@ -147,11 +147,11 @@ function addSelectedProduct(){
 }
 
 let catalogState = { query:'', category:'all', maxPrice:0, size:'all', sort:'featured', favoritesOnly:false };
-let favorites = JSON.parse(localStorage.getItem('outflow-favorites') || '[]');
+let favorites = JSON.parse(localStorage.getItem('nonx-favorites') || localStorage.getItem('outflow-favorites') || '[]');
 
 function toggleFavorite(id){
   favorites = favorites.includes(id) ? favorites.filter(x=>x!==id) : [...favorites,id];
-  localStorage.setItem('outflow-favorites', JSON.stringify(favorites));
+  localStorage.setItem('nonx-favorites', JSON.stringify(favorites));
   renderProducts();
 }
 function getCatalogSizes(){
@@ -201,6 +201,8 @@ function renderProducts(filter){
     const isDrop=Boolean(product.drop);
     const tagLabel=isDrop ? `DROP ${product.dropNumber || ''}`.trim() : T('new_tag');
     const sizes=(product.sizes||[]).join(' · ');
+    const productIndex=Math.max(1, products.indexOf(product)+1);
+    const productCode=`NX-${String(productIndex).padStart(3,'0')}`;
     return `<article class="product" tabindex="0" role="button" aria-label="${T('view_product')} ${product.name}" data-product-id="${product.id}">
       <div class="product-photo" style="${getProductImageStyle(product)}">
         <div class="product-photo-shade" aria-hidden="true"></div>
@@ -209,7 +211,7 @@ function renderProducts(filter){
         <button type="button" class="card-quick-view" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
       </div>
       <div class="product-info">
-        <div class="product-name-row"><div class="product-name">${product.name}</div><span class="product-color">${product.color || product.category}</span></div>
+        <div class="product-code">${productCode}</div><div class="product-name-row"><div class="product-name">${product.name}</div><span class="product-color">${product.color || product.category}</span></div>
         <div class="product-meta"><span class="product-sizes">${sizes ? `TALLAS ${sizes}` : 'VER DETALLES'}</span><span class="price">${money(product.price)}</span></div>
         <button type="button" class="view-product" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
       </div>
