@@ -1,5 +1,107 @@
 [
   {
+    "id": "nx-001",
+    "code": "NX-001",
+    "name": "BRAZIL HALF-ZIP TRAINING TOP",
+    "color": "Mint Green / Yellow",
+    "price": 59990,
+    "currency": "CLP",
+    "category": "Polerones",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "material": "Tejido deportivo ligero",
+    "description": "A lightweight training top built around a classic athletic silhouette. Quarter-zip construction, high collar and contrast detailing define the piece, combining functional sportswear references with a contemporary archive aesthetic.",
+    "fit": "Regular Athletic",
+    "composition": "100% poliéster",
+    "care": [
+      "Lavar a máquina con agua fría",
+      "Lavar con colores similares",
+      "No usar cloro",
+      "Secar a la sombra",
+      "No planchar directamente sobre los gráficos"
+    ],
+    "details": [
+      "Cierre frontal quarter-zip",
+      "Cuello alto",
+      "Manga larga",
+      "Detalles en contraste amarillo",
+      "Gráficos en el pecho",
+      "Construcción deportiva ligera"
+    ],
+    "sizeGuide": {
+      "S": {
+        "largo": 68,
+        "pecho": 52,
+        "manga": 63
+      },
+      "M": {
+        "largo": 70,
+        "pecho": 55,
+        "manga": 64
+      },
+      "L": {
+        "largo": 72,
+        "pecho": 58,
+        "manga": 65
+      },
+      "XL": {
+        "largo": 74,
+        "pecho": 61,
+        "manga": 66
+      }
+    },
+    "shipping": "Despacho estimado: 3–7 días hábiles dentro de Chile.",
+    "dataStatus": "REFERENCIAL — reemplazar por datos reales antes de publicar",
+    "drop": true,
+    "dropNumber": "001",
+    "dropLabel": "BRAZIL HALF-ZIP TRAINING TOP",
+    "image": "assets/images/products/nonx-nx001-primary.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "assets/images/products/nonx-nx001-primary.jpg",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista frontal",
+        "role": "primary"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/products/nonx-nx001-back.jpg",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista trasera",
+        "role": "back"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/products/nonx-nx001-34.png",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 3/4",
+        "role": "3/4"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/products/nonx-nx001-detail.png",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — detalle de construcción",
+        "role": "detail"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/products/nonx-nx001-editorial.png",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — editorial",
+        "role": "editorial"
+      },
+      {
+        "type": "360",
+        "src": "assets/images/products/nonx-nx001-360.mp4",
+        "poster": "assets/images/products/nonx-nx001-primary.jpg",
+        "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 360°",
+        "role": "360°"
+      }
+    ],
+    "editorial": "A documented sportswear piece from DROP 001. Technical construction, contrast detailing and a clean athletic silhouette placed inside the NON X archive."
+  },
+  {
     "id": "oversized-black",
     "name": "Camiseta Oversized",
     "color": "Black",
@@ -182,11 +284,7 @@
       }
     },
     "shipping": "Despacho estimado: 3–7 días hábiles dentro de Chile.",
-    "dataStatus": "REFERENCIAL — reemplazar por datos reales antes de publicar",
-    "drop": true,
-    "dropNumber": "001",
-    "dropLabel": "ZIP-UP HOODIE",
-    "heroMedia": "assets/images/products/heavy-hoodie-video.mp4"
+    "dataStatus": "REFERENCIAL — reemplazar por datos reales antes de publicar"
   },
   {
     "id": "runner-01",
