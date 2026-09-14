@@ -1,10 +1,10 @@
-/* OUTFLOW V11 — DETALLE DE PRODUCTO / GALERÍA / VARIANTES */
+/* NON X V21 — DETALLE DE PRODUCTO / GALERÍA / VARIANTES */
 let selectedProduct = null;
 let selectedVariant = null;
 let detailQuantity = 1;
 let activeMediaIndex = 0;
 
-const T = (key) => window.outflowLanguage?.t(key) ?? key;
+const T = (key) => window.nonxLanguage?.t(key) ?? key;
 
 function productMedia(product){
   if(product?.media?.length) return product.media;
@@ -35,10 +35,12 @@ function renderProductMedia(product, index=0){
 
   const prevIndex = (activeMediaIndex - 1 + media.length) % media.length;
   const nextIndex = (activeMediaIndex + 1) % media.length;
-  const src = main.src || '';
+  const src = escapeHtml(main.src || '');
+  const posterAttr = escapeHtml(main.poster || '');
+  const altAttr = escapeHtml(main.alt || product.name);
   stage.className = `modal-product-media media-${main.type || 'image'}`;
   if(main.type === '360'){
-    stage.innerHTML = `<div class="product-object-stage product-360-object-stage"><video class="product-media-video product-360-video product-object-video" autoplay muted loop playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name} — 360 grados"><source src="${src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><div class="object-360-hint"><span>↔</span> ARRASTRA PARA ROTAR</div></div>`;
+    stage.innerHTML = `<div class="product-object-stage product-360-object-stage"><video class="product-media-video product-360-video product-object-video" autoplay muted loop playsinline preload="metadata" poster="${posterAttr}" aria-label="${altAttr} — 360 grados"><source src="${src}" type="video/mp4">${T('video_error')}</video><span class="product-360-badge">360°</span><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><div class="object-360-hint"><span>↔</span> ARRASTRA PARA ROTAR</div></div>`;
     const video=stage.querySelector('video');
     let dragging=false,lastX=0;
     const scrub=(x)=>{ if(!video.duration) return; const dx=x-lastX; if(Math.abs(dx)<1) return; video.pause(); video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime-dx*0.015)); lastX=x; };
@@ -47,9 +49,9 @@ function renderProductMedia(product, index=0){
     const stop=()=>{if(!dragging)return;dragging=false;stage.classList.remove('is-dragging');video.play().catch(()=>{})};
     video.addEventListener('pointerup',stop); video.addEventListener('pointercancel',stop); video.addEventListener('pointerleave',e=>{if(dragging&&e.buttons===0)stop()});
   } else if(main.type === 'video'){
-    stage.innerHTML = `<div class="product-object-stage"><video class="product-media-video product-object-video" controls playsinline preload="metadata" poster="${main.poster || ''}" aria-label="${main.alt || product.name}"><source src="${src}" type="video/mp4">${T('video_error')}</video><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`;
+    stage.innerHTML = `<div class="product-object-stage"><video class="product-media-video product-object-video" controls playsinline preload="metadata" poster="${posterAttr}" aria-label="${altAttr}"><source src="${src}" type="video/mp4">${T('video_error')}</video><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button></div>`;
   } else {
-    stage.innerHTML = `<div class="product-object-stage"><img class="product-media-image product-object-image" src="${src}" alt="${main.alt || product.name}" loading="eager" decoding="async"><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><button class="gallery-expand" type="button" data-media-jump="${activeMediaIndex}" aria-label="Ampliar imagen">⛶</button></div>`;
+    stage.innerHTML = `<div class="product-object-stage"><img class="product-media-image product-object-image" src="${src}" alt="${altAttr}" loading="eager" decoding="async"><button class="gallery-arrow gallery-arrow-prev" type="button" data-media-jump="${prevIndex}" aria-label="Vista anterior">‹</button><button class="gallery-arrow gallery-arrow-next" type="button" data-media-jump="${nextIndex}" aria-label="Vista siguiente">›</button><button class="gallery-expand" type="button" data-media-jump="${activeMediaIndex}" aria-label="Ampliar imagen">⛶</button></div>`;
     const img=stage.querySelector('img');
     const setRatio=()=>{ if(img.naturalWidth&&img.naturalHeight){ stage.style.setProperty('--media-ratio',`${img.naturalWidth}/${img.naturalHeight}`); } };
     if(img.complete)setRatio(); else img.addEventListener('load',setRatio,{once:true});
@@ -57,9 +59,9 @@ function renderProductMedia(product, index=0){
   stage.querySelectorAll('[data-media-jump]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaJump))));
   if(label) label.textContent=`${String(activeMediaIndex+1).padStart(2,'0')} / ${mediaRole(main,activeMediaIndex)}`;
   thumbs.innerHTML = media.map((item,i)=>`
-    <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${mediaRole(item,i)} — ${i+1}">
-      ${item.type==='360' ? `<span class="thumb-video thumb-360"><span>360°</span></span>` : item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
-      <span class="media-thumb-label">${String(i+1).padStart(2,'0')} ${mediaRole(item,i)}</span>
+    <button type="button" class="media-thumb ${i===activeMediaIndex?'selected':''}" data-media-index="${i}" aria-label="${escapeHtml(mediaRole(item,i))} — ${i+1}">
+      ${item.type==='360' ? `<span class="thumb-video thumb-360"><span>360°</span></span>` : item.type==='video' ? `<span class="thumb-video"><span>▶</span></span>` : `<img src="${escapeHtml(item.src)}" alt="" loading="lazy" decoding="async">`}
+      <span class="media-thumb-label">${String(i+1).padStart(2,'0')} ${escapeHtml(mediaRole(item,i))}</span>
     </button>`).join('');
   thumbs.querySelectorAll('[data-media-index]').forEach(btn=>btn.addEventListener('click',()=>renderProductMedia(product,Number(btn.dataset.mediaIndex))));
 }
@@ -78,6 +80,26 @@ function renderSizeGuide(product){
   const keys=Object.keys(first);
   const labels={cintura:'CINTURA',largo:'LARGO',pecho:'PECHO',ancho:'ANCHO',manga:'MANGA'};
   box.innerHTML=`<div class="size-guide-head"><span>${T('size_label')}</span>${keys.map(k=>`<span>${labels[k]||k.toUpperCase()}</span>`).join('')}</div>${entries.map(([size,values])=>`<div class="size-guide-row"><strong>${size}</strong>${keys.map(k=>`<span>${values[k] ?? '—'}</span>`).join('')}</div>`).join('')}<div class="size-guide-unit">${T('cm')}</div>`;
+}
+
+/* NON X V21 — TAMBIÉN TE PUEDE INTERESAR
+   Cross-sell simple con datos que ya existen en el catálogo: mismos categoría primero,
+   se completa con otros productos si la categoría no alcanza. No requiere backend. */
+function renderRelatedProducts(product){
+  const box=document.getElementById('modalRelated');
+  if(!box || !Array.isArray(products)) return;
+  const sameCategory=products.filter(p=>p.id!==product.id && p.category===product.category);
+  const others=products.filter(p=>p.id!==product.id && p.category!==product.category);
+  const related=[...sameCategory,...others].slice(0,3);
+  if(!related.length){ box.innerHTML=''; box.hidden=true; return; }
+  box.hidden=false;
+  box.innerHTML=`<div class="modal-related-head">${T('related_products')}</div><div class="modal-related-grid">${related.map(p=>`
+    <button type="button" class="modal-related-card" data-related-id="${escapeHtml(p.id)}">
+      <div class="modal-related-photo" style="${getProductImageStyle(p)}"></div>
+      <span class="modal-related-name">${escapeHtml(p.name)}</span>
+      <span class="modal-related-price">${money(p.price)}</span>
+    </button>`).join('')}</div>`;
+  box.querySelectorAll('[data-related-id]').forEach(btn=>btn.addEventListener('click',()=>openProduct(btn.dataset.relatedId)));
 }
 
 
@@ -122,17 +144,18 @@ function openProduct(productId){
   if(favBtn){ const isFav=favorites.includes(product.id); favBtn.textContent=isFav?'♥':'♡'; favBtn.classList.toggle('is-favorite',isFav); favBtn.setAttribute('aria-pressed',String(isFav)); favBtn.setAttribute('aria-label',isFav?'Quitar de favoritos':'Agregar a favoritos'); }
   const stockEl=document.getElementById('modalStock');
   if(stockEl) stockEl.textContent=product.stock===0?'AGOTADO':(product.stock && product.stock<=3?`ÚLTIMAS ${product.stock}`:'DISPONIBLE');
-  document.getElementById('modalDescription').textContent = product.description || 'Prenda seleccionada por OUTFLOW.';
+  document.getElementById('modalDescription').textContent = product.description || 'Prenda seleccionada por NON X.';
   document.getElementById('modalMaterial').textContent = product.composition || product.material || '—';
   document.getElementById('modalFit').textContent = product.fit || '—';
-  document.getElementById('modalDetails').innerHTML = (product.details || []).map(item => `<li>${item}</li>`).join('');
-  document.getElementById('modalCare').innerHTML = (product.care || []).map(item => `<li>${item}</li>`).join('');
+  document.getElementById('modalDetails').innerHTML = (product.details || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+  document.getElementById('modalCare').innerHTML = (product.care || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
   document.getElementById('modalShipping').textContent = product.shipping || T('shipping_default');
   renderSizeGuide(product);
-  document.getElementById('modalVariants').innerHTML = (product.sizes || []).map(size => `<button type="button" class="variant-btn" data-variant="${size}">${size}</button>`).join('');
+  document.getElementById('modalVariants').innerHTML = (product.sizes || []).map(size => `<button type="button" class="variant-btn" data-variant="${escapeHtml(size)}">${escapeHtml(size)}</button>`).join('');
   document.getElementById('detailQuantity').value = 1;
   document.getElementById('modalAdd').disabled = true;
   document.getElementById('modalVariantHint').textContent = T('select_size');
+  renderRelatedProducts(product);
 
   initAccordions();
   const firstAccordion = document.querySelector('[data-accordion-group] .accordion-item');
@@ -238,17 +261,17 @@ function renderProducts(filter){
     const sizes=(product.sizes||[]).join(' · ');
     const productIndex=Math.max(1, products.indexOf(product)+1);
     const productCode=`NX-${String(productIndex).padStart(3,'0')}`;
-    return `<article class="product" tabindex="0" role="button" aria-label="${T('view_product')} ${product.name}" data-product-id="${product.id}">
+    return `<article class="product" tabindex="0" role="button" aria-label="${T('view_product')} ${escapeHtml(product.name)}" data-product-id="${escapeHtml(product.id)}">
       <div class="product-photo" style="${getProductImageStyle(product)}">
         <div class="product-photo-shade" aria-hidden="true"></div>
-        <span class="tag ${isDrop?'tag-drop':''}">${tagLabel}</span>
-        <button type="button" class="heart ${fav?'is-favorite':''}" data-favorite="${product.id}" aria-label="${fav?'Quitar de favoritos':'Agregar a favoritos'}" aria-pressed="${fav}">${fav?'♥':'♡'}</button>
-        <button type="button" class="card-quick-view" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
+        <span class="tag ${isDrop?'tag-drop':''}">${escapeHtml(tagLabel)}</span>
+        <button type="button" class="heart ${fav?'is-favorite':''}" data-favorite="${escapeHtml(product.id)}" aria-label="${fav?'Quitar de favoritos':'Agregar a favoritos'}" aria-pressed="${fav}">${fav?'♥':'♡'}</button>
+        <button type="button" class="card-quick-view" data-view-product="${escapeHtml(product.id)}">${T('view_product')} <span>→</span></button>
       </div>
       <div class="product-info">
-        <div class="product-code">${productCode}</div><div class="product-name-row"><div class="product-name">${product.name}</div><span class="product-color">${product.color || product.category}</span></div>
-        <div class="product-meta"><span class="product-sizes">${sizes ? `TALLAS ${sizes}` : 'VER DETALLES'}</span><span class="price">${money(product.price)}</span></div>
-        <button type="button" class="view-product" data-view-product="${product.id}">${T('view_product')} <span>→</span></button>
+        <div class="product-code">${escapeHtml(productCode)}</div><div class="product-name-row"><div class="product-name">${escapeHtml(product.name)}</div><span class="product-color">${escapeHtml(product.color || product.category)}</span></div>
+        <div class="product-meta"><span class="product-sizes">${sizes ? `TALLAS ${escapeHtml(sizes)}` : 'VER DETALLES'}</span><span class="price">${money(product.price)}</span></div>
+        <button type="button" class="view-product" data-view-product="${escapeHtml(product.id)}">${T('view_product')} <span>→</span></button>
       </div>
     </article>`;
   }).join('') : `<div class="catalog-empty"><strong>NO HAY RESULTADOS</strong><span>Prueba otra búsqueda o limpia los filtros.</span></div>`;
@@ -268,7 +291,7 @@ function renderProducts(filter){
   }));
 }
 
-window.addEventListener('outflow:languagechange',()=>{
+window.addEventListener('nonx:languagechange',()=>{
   renderProducts(document.getElementById('search')?.value || '');
   if(selectedProduct && document.getElementById('productModal')?.classList.contains('open')) openProduct(selectedProduct.id);
 });

@@ -59,47 +59,48 @@
     "drop": true,
     "dropNumber": "001",
     "dropLabel": "BRAZIL HALF-ZIP TRAINING TOP",
-    "image": "assets/images/products/nonx-nx001-primary-object.png",
+    "image": "assets/images/products/nonx-nx001-primary-object.webp",
     "media": [
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-primary-object.png",
+        "src": "assets/images/products/nonx-nx001-primary-object.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista frontal",
         "role": "primary"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-back-object.png",
+        "src": "assets/images/products/nonx-nx001-back-object.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista trasera",
         "role": "back"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-34-object.png",
+        "src": "assets/images/products/nonx-nx001-34-object.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 3/4",
         "role": "3/4"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-detail.png",
+        "src": "assets/images/products/nonx-nx001-detail.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — detalle de construcción",
         "role": "detail"
       },
       {
         "type": "image",
-        "src": "assets/images/products/nonx-nx001-editorial.png",
+        "src": "assets/images/products/nonx-nx001-editorial.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — editorial",
         "role": "editorial"
       },
       {
         "type": "360",
         "src": "assets/images/products/nonx-nx001-360-final.mp4",
-        "poster": "assets/images/products/nonx-nx001-primary-object.png",
+        "poster": "assets/images/products/nonx-nx001-primary-object.webp",
         "alt": "BRAZIL HALF-ZIP TRAINING TOP — vista 360°",
         "role": "360°"
       }
     ],
-    "editorial": "A documented sportswear piece from DROP 001. Technical construction, contrast detailing and a clean athletic silhouette placed inside the NON X archive."
+    "editorial": "A documented sportswear piece from DROP 001. Technical construction, contrast detailing and a clean athletic silhouette placed inside the NON X archive.",
+    "heroMedia": "assets/images/products/heavy-hoodie-video.mp4"
   },
   {
     "id": "oversized-black",

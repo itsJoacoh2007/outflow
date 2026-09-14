@@ -1,6 +1,12 @@
-/* OUTFLOW V8 — CARRITO
+/* NON X V21 — CARRITO
    El carrito guarda producto + variante + cantidad. */
-let cart = JSON.parse(localStorage.getItem('nonx-cart') || localStorage.getItem('outflow-cart') || '[]');
+let cart = (() => {
+  let raw = [];
+  try { raw = JSON.parse(localStorage.getItem('nonx-cart') || localStorage.getItem('outflow-cart') || '[]'); } catch(e) { raw = []; }
+  if(!Array.isArray(raw)) return [];
+  return raw.filter(item => item && typeof item.id === 'string' && typeof item.variant === 'string' && typeof item.key === 'string')
+    .map(item => ({...item, q: Math.min(999, Math.max(1, Number.parseInt(item.q,10) || 1))}));
+})();
 const money = n => new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(n);
 
 function cartKey(productId, variant){
@@ -81,23 +87,23 @@ function renderCart(){
     const lineTotal = product.price * item.q;
     total += lineTotal;
     return `
-      <article class="cart-row" data-cart-key="${item.key}">
+      <article class="cart-row" data-cart-key="${escapeHtml(item.key)}">
         <div class="cart-thumb" style="${getProductImageStyle(product)}"></div>
         <div class="cart-item-info">
           <div class="cart-item-top">
             <div>
-              <h3>${product.name}</h3>
-              <p class="cart-price">Talla ${item.variant} · ${money(product.price)}</p>
+              <h3>${escapeHtml(product.name)}</h3>
+              <p class="cart-price">Talla ${escapeHtml(item.variant)} · ${money(product.price)}</p>
             </div>
             <strong class="cart-line-total">${money(lineTotal)}</strong>
           </div>
           <div class="cart-item-bottom">
-            <div class="quantity-control" aria-label="Cantidad de ${product.name}">
-              <button type="button" class="quantity-btn" aria-label="Disminuir cantidad" onclick="changeQuantity('${item.key}',-1)">−</button>
-              <input class="quantity-input" type="number" min="1" max="999" value="${item.q}" inputmode="numeric" aria-label="Cantidad" onchange="setQuantity('${item.key}',this.value)" onkeydown="if(event.key==='Enter'){this.blur()}" />
-              <button type="button" class="quantity-btn" aria-label="Aumentar cantidad" onclick="changeQuantity('${item.key}',1)">+</button>
+            <div class="quantity-control" aria-label="Cantidad de ${escapeHtml(product.name)}">
+              <button type="button" class="quantity-btn" aria-label="Disminuir cantidad" onclick="changeQuantity('${escapeHtml(item.key)}',-1)">−</button>
+              <input class="quantity-input" type="number" min="1" max="999" value="${item.q}" inputmode="numeric" aria-label="Cantidad" onchange="setQuantity('${escapeHtml(item.key)}',this.value)" onkeydown="if(event.key==='Enter'){this.blur()}" />
+              <button type="button" class="quantity-btn" aria-label="Aumentar cantidad" onclick="changeQuantity('${escapeHtml(item.key)}',1)">+</button>
             </div>
-            <button type="button" class="remove" onclick="removeItem('${item.key}')">Eliminar</button>
+            <button type="button" class="remove" onclick="removeItem('${escapeHtml(item.key)}')">Eliminar</button>
           </div>
         </div>
       </article>`;

@@ -1,20 +1,21 @@
 <!--
-NON X V7 — ARQUITECTURA
+NON X V21 — ARQUITECTURA
 - index.html = estructura de la página.
 - css/main.css = estilos y responsive.
 - js/app.js = comportamiento general, carrito y animaciones.
-- js/language.js = selector de idioma.
-- data/products.json = catálogo preparado para separar datos.
-- data/translations.json = textos preparados para traducciones.
+- js/language.js = selector de idioma (única fuente de traducciones ES/EN/PT).
+- js/products.js = carga del catálogo + helper escapeHtml().
+- js/cart.js = carrito de compra.
+- js/product-page.js = ficha de producto, filtros de catálogo y cross-sell.
+- data/products.json = catálogo (fuente real, vía fetch).
 - assets/images = imágenes del sitio.
-- pages = páginas adicionales futuras.
-- Shopify = integración futura, separada de la presentación.
+- Pasarela de pago = integración futura, separada de la presentación (ver botón "checkout").
 -->
 <!--
 ╔══════════════════════════════════════════════════════════════╗
 ║                    NON X — GUÍA DEL CÓDIGO               ║
 ╠══════════════════════════════════════════════════════════════╣
-║ ESTE ARCHIVO ES LA V7 VISUAL DE LA TIENDA.               ║
+║ ESTE ARCHIVO ES LA V21 VISUAL DE LA TIENDA.               ║
 ║                                                              ║
 ║ ATAJOS PARA ENCONTRAR COSAS (Ctrl + F):                     ║
 ║  [FUENTES Y COLORES]      → tipografías + paleta            ║
@@ -37,8 +38,9 @@ NON X V7 — ARQUITECTURA
 ║ products.jpg manteniendo el mismo nombre de archivo.        ║
 ║ CAMBIAR COLORES: ve a [FUENTES Y COLORES].                  ║
 ║                                                              ║
-║ ⚠️ Esta V7 sigue siendo un frontend/prototipo.              ║
-║ El checkout real todavía debe conectarse a Shopify.         ║
+║ ⚠️ Este front-end sigue sin pasarela de pago real.           ║
+║ El botón "checkout" solo muestra un aviso hasta que se       ║
+║ conecte a Shopify/Webpay/Transbank o a un backend propio.    ║
 ╚══════════════════════════════════════════════════════════════╝
 -->
 <!doctype html>
@@ -51,17 +53,50 @@ NON X V7 — ARQUITECTURA
 <meta name="theme-color" content="#080808" id="themeColor">
 <meta name="color-scheme" content="dark light">
 <meta name="robots" content="index,follow">
+<!-- TODO: reemplaza esta URL por el dominio real antes de publicar -->
+<link rel="canonical" href="https://nonx.cl/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="NON X — Streetwear">
 <meta property="og:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
 <meta property="og:site_name" content="NON X">
+<meta property="og:url" content="https://nonx.cl/">
+<meta property="og:image" content="https://nonx.cl/assets/images/hero.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NON X — Streetwear">
 <meta name="twitter:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
+<meta name="twitter:image" content="https://nonx.cl/assets/images/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<!-- ================================================================
+     ANALÍTICA — descomenta y reemplaza los IDs cuando tengas las
+     cuentas creadas. Se dejan comentados a propósito: un ID de
+     ejemplo activo enviaría datos basura a una cuenta que no existe.
+     ================================================================ -->
+<!--
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX'); // GA4 — reemplaza por tu Measurement ID
+</script>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'TU_META_PIXEL_ID'); // Meta Pixel — reemplaza por tu Pixel ID
+  fbq('track', 'PageView');
+</script>
+-->
 
 <script>
   (()=>{try{const t=localStorage.getItem('nonx-theme') || localStorage.getItem('outflow-theme');const system=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t||system}catch(e){document.documentElement.dataset.theme='dark'}})();
@@ -302,6 +337,7 @@ NON X V7 — ARQUITECTURA
         </div>
         <button class="modal-add" id="modalAdd" type="button" disabled data-i18n="add_to_cart">AGREGAR AL CARRITO →</button>
       </div>
+      <div class="modal-related" id="modalRelated" hidden></div>
     </div>
   </div>
 </div>
@@ -316,9 +352,10 @@ NON X V7 — ARQUITECTURA
 </aside>
 <div class="toast" id="toast">Añadido al carrito.</div>
 
-
-
-
+<!-- TODO: reemplaza 56900000000 por el número real de WhatsApp Business de NON X (formato: código país + número, sin +, sin espacios) -->
+<a class="whatsapp-float" href="https://wa.me/56900000000?text=Hola%2C%20tengo%20una%20consulta%20sobre%20NON%20X" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4c-4.9 0-8.87 3.97-8.87 8.87 0 1.56.4 3.02 1.14 4.31L3 21l3.94-1.03a8.83 8.83 0 0 0 5.11 1.62h.01c4.9 0 8.87-3.97 8.87-8.87 0-2.37-.93-4.6-2.33-6.4zM12.06 19.9h-.01a7.36 7.36 0 0 1-3.76-1.03l-.27-.16-2.79.73.75-2.72-.18-.28a7.34 7.34 0 0 1-1.13-3.93c0-4.06 3.31-7.37 7.4-7.37a7.35 7.35 0 0 1 7.37 7.38c0 4.06-3.31 7.38-7.38 7.38zm4.04-5.53c-.22-.11-1.3-.64-1.5-.71-.2-.07-.35-.11-.5.11-.15.22-.57.71-.7.86-.13.15-.26.16-.48.05-.22-.11-.93-.34-1.77-1.1-.65-.58-1.09-1.3-1.22-1.52-.13-.22-.01-.34.11-.45.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.16.04-.3-.03-.42-.07-.11-.62-1.5-.86-2.06-.23-.55-.46-.47-.63-.48-.16-.01-.35-.01-.54-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.28 0 1.35.98 2.65 1.12 2.83.13.18 1.83 2.79 4.43 3.8 2.6 1.02 2.6.68 3.06.64.47-.04 1.5-.61 1.71-1.2.21-.59.21-1.09.15-1.2-.07-.11-.24-.16-.48-.27z"/></svg>
+</a>
 
 <script src="js/language.js" defer></script>
 <script src="js/products.js" defer></script>

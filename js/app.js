@@ -27,12 +27,15 @@ function initTheme(){
   media.addEventListener?.('change',()=>{if(!localStorage.getItem('nonx-theme')) apply(system(),false)});
 }
 
-/* OUTFLOW V11 — APP / INICIALIZACIÓN / ANIMACIONES */
+/* NON X V21 — APP / INICIALIZACIÓN / ANIMACIONES
+   Todos los bindings usan encadenamiento opcional (?.) a propósito: si en una futura
+   edición se borra o renombra un id del HTML, ese binding puntual queda sin efecto
+   en vez de detener la ejecución de todo el archivo. */
 
-document.getElementById('openCart').onclick=openCart;
-document.getElementById('closeCart').onclick=closeCart;
-document.getElementById('overlay').onclick=closeCart;
-document.getElementById('checkout').onclick=()=>alert('El checkout real se conectará a Shopify en la siguiente etapa.');
+document.getElementById('openCart')?.addEventListener('click',openCart);
+document.getElementById('closeCart')?.addEventListener('click',closeCart);
+document.getElementById('overlay')?.addEventListener('click',closeCart);
+document.getElementById('checkout')?.addEventListener('click',()=>alert('El checkout real se conectará a la pasarela de pago en la siguiente etapa.'));
 document.getElementById('search')?.addEventListener('input',e=>renderProducts(e.target.value));
 const mobileSearch=document.getElementById('mobileSearch');
 mobileSearch?.addEventListener('input',e=>{
@@ -58,24 +61,24 @@ function initNavigation(){
   });
 }
 
-document.getElementById('newsletter').addEventListener('submit',e=>{
+document.getElementById('newsletter')?.addEventListener('submit',e=>{
   e.preventDefault();
   alert('¡Listo! Te avisaremos de los próximos drops.');
   e.target.reset();
 });
 
-document.getElementById('closeProduct').onclick=closeProduct;
-document.getElementById('productModal').addEventListener('click',event=>{
+document.getElementById('closeProduct')?.addEventListener('click',closeProduct);
+document.getElementById('productModal')?.addEventListener('click',event=>{
   if(event.target.id==='productModal') closeProduct();
 });
-document.getElementById('detailMinus').onclick=()=>changeDetailQuantity(-1);
-document.getElementById('detailPlus').onclick=()=>changeDetailQuantity(1);
-document.getElementById('detailQuantity').addEventListener('change',event=>{
+document.getElementById('detailMinus')?.addEventListener('click',()=>changeDetailQuantity(-1));
+document.getElementById('detailPlus')?.addEventListener('click',()=>changeDetailQuantity(1));
+document.getElementById('detailQuantity')?.addEventListener('change',event=>{
   const value=Number.parseInt(event.target.value,10);
   detailQuantity=Math.min(999,Math.max(1,Number.isFinite(value)?value:1));
   event.target.value=detailQuantity;
 });
-document.getElementById('modalAdd').onclick=addSelectedProduct;
+document.getElementById('modalAdd')?.addEventListener('click',addSelectedProduct);
 
 document.addEventListener('keydown',event=>{ if(event.key==='Escape'){ closeProduct(); closeCart(); } });
 
@@ -127,9 +130,10 @@ function initDropHero(){
   const video=document.getElementById('heroVideo');
   if(!hero || !video || !Array.isArray(products)) return;
   const drop=products.find(product=>product.drop && product.heroMedia) || products.find(product=>product.heroMedia);
-  if(!drop) return;
+  const heroSource = drop?.heroMedia || 'assets/images/products/heavy-hoodie-video.mp4';
+  if(!heroSource) return;
 
-  video.src=drop.heroMedia;
+  video.src=heroSource;
   video.muted=true;
   video.loop=true;
   video.playsInline=true;
@@ -186,12 +190,12 @@ function initDropShowcase(){
   const cards=[drop,...related];
   root.innerHTML=cards.map((p,i)=>{
     const image=p.image || p.media?.find(m=>m.type==='image')?.src || 'assets/images/products.jpg';
-    return `<article class="drop-card ${i===0?'drop-card-featured':''}" data-product-id="${p.id}">
-      <button class="drop-card-media" type="button" aria-label="Ver ${p.name}" data-open-product="${p.id}">
-        <img src="${image}" alt="${p.name} — ${p.color||''}" loading="lazy" decoding="async">
+    return `<article class="drop-card ${i===0?'drop-card-featured':''}" data-product-id="${escapeHtml(p.id)}">
+      <button class="drop-card-media" type="button" aria-label="Ver ${escapeHtml(p.name)}" data-open-product="${escapeHtml(p.id)}">
+        <img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)} — ${escapeHtml(p.color||'')}" loading="lazy" decoding="async">
         ${p.id===drop.id && p.heroMedia ? '<span class="drop-play">▶ VIDEO</span>' : ''}
       </button>
-      <div class="drop-card-info"><div><span>${String(p.category||'').toUpperCase()}</span><h3>${p.name}</h3></div><button type="button" data-open-product="${p.id}">VER PRODUCTO →</button></div>
+      <div class="drop-card-info"><div><span>${escapeHtml(String(p.category||'').toUpperCase())}</span><h3>${escapeHtml(p.name)}</h3></div><button type="button" data-open-product="${escapeHtml(p.id)}">VER PRODUCTO →</button></div>
     </article>`;
   }).join('');
   root.querySelectorAll('[data-open-product]').forEach(btn=>btn.addEventListener('click',()=>openProduct(btn.dataset.openProduct)));

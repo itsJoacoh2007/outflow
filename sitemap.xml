@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NOTA: esta tienda es hoy una SPA de una sola página — el catálogo se
+  renderiza por JavaScript dentro de #tienda y no tiene URLs propias por
+  producto. Este sitemap solo puede listar la home mientras eso no cambie.
+  Para que cada producto sea indexable individualmente en Google (recomendado
+  para SEO real de catálogo), se necesita una URL/slug real por producto
+  (ver auditoría: sección de SEO). Reemplaza el dominio antes de publicar.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://nonx.cl/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
