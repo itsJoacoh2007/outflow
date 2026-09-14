@@ -61,6 +61,9 @@ function initNavigation(){
   });
 }
 
+/* NON X V22 — permite saltar el intro con un clic/tap, por si alguien vuelve a probar rápido */
+document.getElementById('archiveIntro')?.addEventListener('click',function(){ this.classList.add('archive-intro--skip'); });
+
 document.getElementById('newsletter')?.addEventListener('submit',e=>{
   e.preventDefault();
   alert('¡Listo! Te avisaremos de los próximos drops.');

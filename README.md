@@ -1,6 +1,5 @@
-# NON X V21 — AUDITORÍA TÉCNICA Y HARDENING
+# NON X V22 — EXPERIENCIA DE ENTRADA + ADMIN
 
-Patch sobre V20.1: seguridad (XSS), corrección de fugas de marca OUTFLOW→NON X,
-optimización de medios (−89% de peso), metadatos SEO/social, cross-sell y
-botón de WhatsApp. Ver `V21_CHANGELOG.md` para el detalle completo, incluido
-un pendiente crítico no técnico que hay que resolver antes de publicar.
+Sobre V21: secuencia de entrada "archive access" (intro → wipe → hero),
+textura de grano, número de WhatsApp real, y `admin.html` — herramienta
+para gestionar el catálogo sin editar JSON a mano. Ver `V22_CHANGELOG.md`.

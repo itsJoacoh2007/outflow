@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NON X — Admin de catálogo (interno)</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{--bg:#0b0b0b;--card:#141414;--line:#2a2a2a;--text:#f2f2ef;--muted:#8f8f8c;--accent:#f2f2ef}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:14px;line-height:1.5}
+  header{padding:22px 28px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,11,11,.95);backdrop-filter:blur(8px);z-index:10}
+  header h1{font-size:16px;margin:0 0 4px;letter-spacing:-.01em}
+  header p{margin:0;color:var(--muted);font-size:12px}
+  .banner{background:#231a06;border:1px solid #4a3a10;color:#f0c04a;padding:12px 16px;margin:18px 28px;font-size:12.5px;border-radius:4px}
+  main{max-width:1100px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
+  @media(max-width:900px){main{grid-template-columns:1fr}}
+  section{margin-top:26px}
+  h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+  .field label small{color:#666;font-weight:400}
+  input[type=text],input[type=number],select,textarea{width:100%;background:#0f0f0f;border:1px solid var(--line);color:var(--text);padding:9px 10px;font-size:13px;border-radius:4px;font-family:inherit}
+  textarea{resize:vertical;min-height:64px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+  button{cursor:pointer;font-family:inherit}
+  .btn{background:var(--accent);color:#0b0b0b;border:0;padding:11px 16px;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:4px}
+  .btn:hover{opacity:.9}
+  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--line);padding:11px 16px;font-size:12px;font-weight:700;border-radius:4px}
+  .btn-outline:hover{border-color:#666}
+  .btn-danger{background:transparent;color:#e06060;border:1px solid #4a2020;padding:6px 10px;font-size:11px;border-radius:4px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .product-item{background:#111;border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .product-item strong{font-size:13px}
+  .product-item span{color:var(--muted);font-size:11px;display:block;margin-top:2px}
+  .product-item-actions{display:flex;gap:8px;flex-shrink:0}
+  .btn-edit{background:transparent;color:var(--text);border:1px solid var(--line);padding:6px 10px;font-size:11px;border-radius:4px;cursor:pointer}
+  pre{background:#0a0a0a;border:1px solid var(--line);border-radius:6px;padding:14px;font-size:11px;line-height:1.6;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+  .empty{color:var(--muted);font-size:12px;padding:20px;text-align:center;border:1px dashed var(--line);border-radius:6px}
+  .count-pill{background:#1c1c1c;border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--muted)}
+  footer{text-align:center;color:#555;font-size:11px;padding:30px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>NON X — Admin de catálogo <span class="count-pill" id="countPill">0 productos</span></h1>
+  <p>Herramienta interna, sin backend. No la subas a tu sitio público ni la enlaces desde el menú.</p>
+</header>
+
+<div class="banner">
+  ⚠️ Esta herramienta corre 100% en tu navegador — no guarda nada en un servidor.
+  Flujo de trabajo: <strong>1)</strong> sube tu <code>products.json</code> actual abajo (o parte de cero) →
+  <strong>2)</strong> agrega/edita/elimina productos con el formulario → <strong>3)</strong> descarga el archivo
+  actualizado → <strong>4)</strong> súbelo a tu hosting reemplazando <code>data/products.json</code>.
+  Si tu equipo trabaja desde computadores distintos, cada persona debe partir del último
+  <code>products.json</code> que subieron para no pisar el trabajo de otro
+  (ver más abajo la idea de un admin real conectado a una base de datos).
+</div>
+
+<main>
+  <div>
+    <section>
+      <h2>1 · Cargar catálogo existente</h2>
+      <div class="card">
+        <div class="field">
+          <label>Sube tu <code>products.json</code> actual <small>(opcional — si no subes nada, partes de una lista vacía)</small></label>
+          <input type="file" id="fileInput" accept="application/json">
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>O pega el JSON directamente</label>
+          <textarea id="pasteJson" placeholder="[ { &quot;id&quot;: ... } ]" style="min-height:90px"></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn-outline" id="loadPasted">Cargar JSON pegado</button>
+          <button class="btn-outline" id="startEmpty">Empezar de cero</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="formTitle">2 · Agregar producto</h2>
+      <div class="card">
+        <div class="row">
+          <div class="field">
+            <label>Nombre *</label>
+            <input type="text" id="f_name" placeholder="Ej: Hoodie Archivo 002">
+          </div>
+          <div class="field">
+            <label>Color / variante</label>
+            <input type="text" id="f_color" placeholder="Ej: Black">
+          </div>
+        </div>
+        <div class="row3">
+          <div class="field">
+            <label>Precio (CLP) *</label>
+            <input type="number" id="f_price" placeholder="54990">
+          </div>
+          <div class="field">
+            <label>Categoría *</label>
+            <select id="f_category">
+              <option value="Camisetas">Camisetas</option>
+              <option value="Jeans">Jeans</option>
+              <option value="Polerones">Polerones</option>
+              <option value="Zapatillas">Zapatillas</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Código <small>(auto si se deja vacío)</small></label>
+            <input type="text" id="f_code" placeholder="NX-002">
+          </div>
+        </div>
+        <div class="field">
+          <label>Tallas <small>(separadas por coma: S, M, L, XL)</small></label>
+          <input type="text" id="f_sizes" placeholder="S, M, L, XL">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Material</label>
+            <input type="text" id="f_material" placeholder="100% algodón">
+          </div>
+          <div class="field">
+            <label>Fit</label>
+            <input type="text" id="f_fit" placeholder="Oversized / relajado">
+          </div>
+        </div>
+        <div class="field">
+          <label>Descripción</label>
+          <textarea id="f_description" placeholder="Descripción del producto..."></textarea>
+        </div>
+        <div class="field">
+          <label>Detalles del producto <small>(una línea por viñeta)</small></label>
+          <textarea id="f_details" placeholder="Capucha de doble capa&#10;Cierre frontal metálico"></textarea>
+        </div>
+        <div class="field">
+          <label>Cuidados <small>(una línea por viñeta)</small></label>
+          <textarea id="f_care" placeholder="Lavar a máquina con agua fría&#10;No usar cloro"></textarea>
+        </div>
+        <div class="field">
+          <label>Imagen principal <small>(ruta relativa, ej: assets/images/products/mi-foto.webp)</small></label>
+          <input type="text" id="f_image" placeholder="assets/images/products/nombre-archivo.webp">
+        </div>
+        <div class="field">
+          <label>Galería adicional <small>(opcional — una línea por foto: tipo|ruta|texto alternativo. tipo = image/video/360)</small></label>
+          <textarea id="f_media" placeholder="image|assets/images/products/foto-2.webp|Vista trasera&#10;video|assets/images/products/video.mp4|Video del producto"></textarea>
+        </div>
+        <div class="field">
+          <label>Guía de tallas <small>(opcional — una línea por talla: TALLA: campo=valor, campo=valor)</small></label>
+          <textarea id="f_sizeguide" placeholder="S: largo=68, pecho=54&#10;M: largo=70, pecho=57"></textarea>
+        </div>
+        <div class="check" style="margin-bottom:14px">
+          <input type="checkbox" id="f_drop">
+          <label for="f_drop" style="margin:0">Marcar como Drop destacado (aparece en el hero / drop showcase)</label>
+        </div>
+        <div class="row" id="dropFields" style="display:none">
+          <div class="field">
+            <label>Número de drop</label>
+            <input type="text" id="f_dropnumber" placeholder="002">
+          </div>
+          <div class="field">
+            <label>Video del hero <small>(ruta del video de portada)</small></label>
+            <input type="text" id="f_heromedia" placeholder="assets/images/products/mi-video-hero.mp4">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="saveProduct">Agregar producto</button>
+          <button class="btn-outline" id="cancelEdit" style="display:none">Cancelar edición</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <section>
+      <h2>3 · Catálogo actual</h2>
+      <div id="productList"></div>
+    </section>
+
+    <section>
+      <h2>4 · Descargar</h2>
+      <div class="card">
+        <p style="color:var(--muted);font-size:12px;margin-top:0">
+          Descarga el archivo y súbelo a <code>data/products.json</code> en tu hosting, reemplazando el actual.
+        </p>
+        <div class="actions">
+          <button class="btn" id="downloadJson">Descargar products.json</button>
+          <button class="btn-outline" id="togglePreview">Ver/ocultar JSON</button>
+        </div>
+        <pre id="jsonPreview" style="display:none;margin-top:14px"></pre>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>NON X · herramienta interna · no reemplaza un admin con base de datos real</footer>
+
+<script>
+let products = [];
+let editingIndex = null;
+
+function slugify(name){
+  return String(name||'').toLowerCase().trim()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'producto';
+}
+function uniqueId(base){
+  let id = base, n = 2;
+  while(products.some((p,i)=>p.id===id && i!==editingIndex)){ id = `${base}-${n}`; n++; }
+  return id;
+}
+function parseLines(text){ return String(text||'').split('\n').map(l=>l.trim()).filter(Boolean); }
+function parseSizes(text){ return String(text||'').split(',').map(s=>s.trim()).filter(Boolean); }
+function parseMedia(text, mainImage){
+  const lines = parseLines(text);
+  const media = [];
+  if(mainImage) media.push({type:'image', src:mainImage, alt:'', role:'primary'});
+  lines.forEach(line=>{
+    const parts = line.split('|').map(p=>p.trim());
+    if(parts[1]) media.push({type:parts[0]||'image', src:parts[1], alt:parts[2]||''});
+  });
+  return media;
+}
+function parseSizeGuide(text){
+  const guide = {};
+  parseLines(text).forEach(line=>{
+    const [size, rest] = line.split(':');
+    if(!size || !rest) return;
+    const fields = rest.split(',').map(f=>f.trim()).filter(Boolean);
+    if(fields.length===1 && !fields[0].includes('=')){
+      guide[size.trim()] = Number(fields[0]) || fields[0];
+      return;
+    }
+    const obj = {};
+    fields.forEach(f=>{
+      const [k,v] = f.split('=').map(x=>x.trim());
+      if(k) obj[k] = Number(v) || v;
+    });
+    guide[size.trim()] = obj;
+  });
+  return guide;
+}
+function mediaToText(media, mainImage){
+  return (media||[]).filter(m=>m.src!==mainImage).map(m=>`${m.type}|${m.src}|${m.alt||''}`).join('\n');
+}
+function sizeGuideToText(guide){
+  return Object.entries(guide||{}).map(([size,val])=>{
+    if(typeof val==='number') return `${size}: ${val}`;
+    return `${size}: ${Object.entries(val).map(([k,v])=>`${k}=${v}`).join(', ')}`;
+  }).join('\n');
+}
+
+function render(){
+  const list = document.getElementById('productList');
+  document.getElementById('countPill').textContent = `${products.length} producto${products.length===1?'':'s'}`;
+  if(!products.length){
+    list.innerHTML = '<div class="empty">Todavía no hay productos cargados.</div>';
+  } else {
+    list.innerHTML = products.map((p,i)=>`
+      <div class="product-item">
+        <div>
+          <strong>${p.name||'(sin nombre)'}</strong>
+          <span>${p.code||p.id} · ${p.category||'—'} · $${Number(p.price||0).toLocaleString('es-CL')} ${p.drop?'· DROP':''}</span>
+        </div>
+        <div class="product-item-actions">
+          <button class="btn-edit" data-edit="${i}">Editar</button>
+          <button class="btn-danger" data-delete="${i}">Eliminar</button>
+        </div>
+      </div>`).join('');
+    list.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>startEdit(Number(btn.dataset.edit))));
+    list.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>{
+      if(confirm('¿Eliminar este producto de la lista?')){ products.splice(Number(btn.dataset.delete),1); render(); updatePreview(); }
+    }));
+  }
+  updatePreview();
+}
+function updatePreview(){
+  document.getElementById('jsonPreview').textContent = JSON.stringify(products, null, 2);
+}
+
+function clearForm(){
+  ['f_name','f_color','f_price','f_code','f_sizes','f_material','f_fit','f_description','f_details','f_care','f_image','f_media','f_sizeguide','f_dropnumber','f_heromedia']
+    .forEach(id=>{ document.getElementById(id).value=''; });
+  document.getElementById('f_category').value='Camisetas';
+  document.getElementById('f_drop').checked=false;
+  document.getElementById('dropFields').style.display='none';
+  editingIndex = null;
+  document.getElementById('formTitle').textContent = '2 · Agregar producto';
+  document.getElementById('saveProduct').textContent = 'Agregar producto';
+  document.getElementById('cancelEdit').style.display='none';
+}
+
+function startEdit(i){
+  const p = products[i];
+  editingIndex = i;
+  document.getElementById('f_name').value = p.name||'';
+  document.getElementById('f_color').value = p.color||'';
+  document.getElementById('f_price').value = p.price||'';
+  document.getElementById('f_code').value = p.code||'';
+  document.getElementById('f_category').value = p.category||'Camisetas';
+  document.getElementById('f_sizes').value = (p.sizes||[]).join(', ');
+  document.getElementById('f_material').value = p.material||'';
+  document.getElementById('f_fit').value = p.fit||'';
+  document.getElementById('f_description').value = p.description||'';
+  document.getElementById('f_details').value = (p.details||[]).join('\n');
+  document.getElementById('f_care').value = (p.care||[]).join('\n');
+  document.getElementById('f_image').value = p.image||'';
+  document.getElementById('f_media').value = mediaToText(p.media, p.image);
+  document.getElementById('f_sizeguide').value = sizeGuideToText(p.sizeGuide);
+  document.getElementById('f_drop').checked = Boolean(p.drop);
+  document.getElementById('dropFields').style.display = p.drop ? 'grid' : 'none';
+  document.getElementById('f_dropnumber').value = p.dropNumber||'';
+  document.getElementById('f_heromedia').value = p.heroMedia||'';
+  document.getElementById('formTitle').textContent = `2 · Editando: ${p.name}`;
+  document.getElementById('saveProduct').textContent = 'Guardar cambios';
+  document.getElementById('cancelEdit').style.display='inline-block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.getElementById('f_drop').addEventListener('change', e=>{
+  document.getElementById('dropFields').style.display = e.target.checked ? 'grid' : 'none';
+});
+
+document.getElementById('cancelEdit').addEventListener('click', clearForm);
+
+document.getElementById('saveProduct').addEventListener('click', ()=>{
+  const name = document.getElementById('f_name').value.trim();
+  const price = Number(document.getElementById('f_price').value);
+  if(!name){ alert('El nombre es obligatorio.'); return; }
+  if(!price){ alert('El precio es obligatorio y debe ser un número.'); return; }
+
+  const image = document.getElementById('f_image').value.trim();
+  const isDrop = document.getElementById('f_drop').checked;
+  const existing = editingIndex!==null ? products[editingIndex] : null;
+  const id = existing?.id || uniqueId(slugify(name));
+
+  const product = {
+    id,
+    code: document.getElementById('f_code').value.trim() || `NX-${String(products.length+1).padStart(3,'0')}`,
+    name,
+    color: document.getElementById('f_color').value.trim(),
+    price,
+    currency: 'CLP',
+    category: document.getElementById('f_category').value,
+    sizes: parseSizes(document.getElementById('f_sizes').value),
+    material: document.getElementById('f_material').value.trim(),
+    description: document.getElementById('f_description').value.trim(),
+    fit: document.getElementById('f_fit').value.trim(),
+    composition: document.getElementById('f_material').value.trim(),
+    care: parseLines(document.getElementById('f_care').value),
+    details: parseLines(document.getElementById('f_details').value),
+    sizeGuide: parseSizeGuide(document.getElementById('f_sizeguide').value),
+    shipping: 'Despacho estimado: 3–7 días hábiles dentro de Chile.',
+    dataStatus: 'Cargado desde admin — revisar antes de publicar',
+    image,
+    media: parseMedia(document.getElementById('f_media').value, image)
+  };
+  if(isDrop){
+    product.drop = true;
+    product.dropNumber = document.getElementById('f_dropnumber').value.trim() || String(products.length+1).padStart(3,'0');
+    product.dropLabel = name;
+    product.heroMedia = document.getElementById('f_heromedia').value.trim();
+  }
+
+  if(editingIndex!==null){ products[editingIndex] = product; }
+  else { products.push(product); }
+  clearForm();
+  render();
+});
+
+document.getElementById('fileInput').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    try{
+      const parsed = JSON.parse(ev.target.result);
+      if(!Array.isArray(parsed)) throw new Error('El archivo debe contener un array de productos.');
+      products = parsed;
+      render();
+      alert(`Catálogo cargado: ${products.length} productos.`);
+    }catch(err){ alert('No se pudo leer el archivo: ' + err.message); }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('loadPasted').addEventListener('click', ()=>{
+  const text = document.getElementById('pasteJson').value.trim();
+  if(!text) return;
+  try{
+    const parsed = JSON.parse(text);
+    if(!Array.isArray(parsed)) throw new Error('Debe ser un array de productos.');
+    products = parsed;
+    render();
+  }catch(err){ alert('JSON inválido: ' + err.message); }
+});
+
+document.getElementById('startEmpty').addEventListener('click', ()=>{
+  if(products.length && !confirm('Esto borra la lista actual en pantalla. ¿Continuar?')) return;
+  products = [];
+  render();
+});
+
+document.getElementById('togglePreview').addEventListener('click', ()=>{
+  const pre = document.getElementById('jsonPreview');
+  pre.style.display = pre.style.display==='none' ? 'block' : 'none';
+});
+
+document.getElementById('downloadJson').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(products, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'products.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+
+render();
+</script>
+</body>
+</html>
