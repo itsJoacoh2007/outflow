@@ -1,5 +1,6 @@
-# NON X V22 — EXPERIENCIA DE ENTRADA + ADMIN
+# NON X V24 — INTEGRACIÓN SHOPIFY
 
-Sobre V21: secuencia de entrada "archive access" (intro → wipe → hero),
-textura de grano, número de WhatsApp real, y `admin.html` — herramienta
-para gestionar el catálogo sin editar JSON a mano. Ver `V22_CHANGELOG.md`.
+Admin rediseñado con la identidad real de NON X + reordenamiento
+drag-and-drop, y `js/shopify-checkout.js` listo para conectar un
+checkout real (Shopify + Webpay/Flow) apenas exista la tienda. Ver
+`V24_CHANGELOG.md` para el detalle y los pasos de activación.

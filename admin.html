@@ -3,76 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NON X — Admin de catálogo (interno)</title>
+<title>NON X — Admin de catálogo</title>
 <meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
-  :root{--bg:#0b0b0b;--card:#141414;--line:#2a2a2a;--text:#f2f2ef;--muted:#8f8f8c;--accent:#f2f2ef}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:14px;line-height:1.5}
-  header{padding:22px 28px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,11,11,.95);backdrop-filter:blur(8px);z-index:10}
-  header h1{font-size:16px;margin:0 0 4px;letter-spacing:-.01em}
-  header p{margin:0;color:var(--muted);font-size:12px}
-  .banner{background:#231a06;border:1px solid #4a3a10;color:#f0c04a;padding:12px 16px;margin:18px 28px;font-size:12.5px;border-radius:4px}
-  main{max-width:1100px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
-  @media(max-width:900px){main{grid-template-columns:1fr}}
-  section{margin-top:26px}
-  h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
-  .field label small{color:#666;font-weight:400}
-  input[type=text],input[type=number],select,textarea{width:100%;background:#0f0f0f;border:1px solid var(--line);color:var(--text);padding:9px 10px;font-size:13px;border-radius:4px;font-family:inherit}
-  textarea{resize:vertical;min-height:64px}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-  .check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-  button{cursor:pointer;font-family:inherit}
-  .btn{background:var(--accent);color:#0b0b0b;border:0;padding:11px 16px;font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:4px}
-  .btn:hover{opacity:.9}
-  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--line);padding:11px 16px;font-size:12px;font-weight:700;border-radius:4px}
-  .btn-outline:hover{border-color:#666}
-  .btn-danger{background:transparent;color:#e06060;border:1px solid #4a2020;padding:6px 10px;font-size:11px;border-radius:4px}
-  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-  .product-item{background:#111;border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-  .product-item strong{font-size:13px}
-  .product-item span{color:var(--muted);font-size:11px;display:block;margin-top:2px}
-  .product-item-actions{display:flex;gap:8px;flex-shrink:0}
-  .btn-edit{background:transparent;color:var(--text);border:1px solid var(--line);padding:6px 10px;font-size:11px;border-radius:4px;cursor:pointer}
-  pre{background:#0a0a0a;border:1px solid var(--line);border-radius:6px;padding:14px;font-size:11px;line-height:1.6;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word}
-  .empty{color:var(--muted);font-size:12px;padding:20px;text-align:center;border:1px dashed var(--line);border-radius:6px}
-  .count-pill{background:#1c1c1c;border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--muted)}
-  footer{text-align:center;color:#555;font-size:11px;padding:30px 0}
+:root{color-scheme:dark;--bg:#080808;--card:#121212;--text:#f4f4f2;--muted:#9c9c99;--line:#292929;--panel:#101010;--input:#151515}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:14px;line-height:1.55}
+a{color:inherit}
+
+header{padding:20px 4vw;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,8,8,.92);backdrop-filter:blur(10px);z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.brandmark{font:26px/1 "Archivo Black";letter-spacing:-.03em}
+.brandmark span{color:var(--muted);font:11px/1 Inter,sans-serif;letter-spacing:.14em;font-weight:800;display:block;margin-top:6px}
+.count-pill{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+
+.banner{background:var(--panel);border:1px solid var(--line);border-left:3px solid #f2f2ef;color:#ccc;padding:16px 20px;margin:22px 4vw 0;font-size:12.5px;line-height:1.7}
+.banner strong{color:#fff}
+.banner code{background:#1c1c1c;padding:1px 6px;border-radius:3px;font-size:11.5px}
+
+main{max-width:1180px;margin:0 auto;padding:0 4vw 100px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media(max-width:960px){main{grid-template-columns:1fr}}
+
+section{margin-top:34px}
+h2{font:22px/1 "Archivo Black";letter-spacing:-.02em;margin:0 0 6px}
+.section-sub{font-size:9px;font-weight:800;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:0 0 16px}
+
+.card{background:var(--card);border:1px solid var(--line);padding:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field label small{color:#666;font-weight:400;text-transform:none;letter-spacing:0}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--input);border:1px solid var(--line);color:var(--text);padding:11px 12px;font-size:13px;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:0;border-color:#666}
+textarea{resize:vertical;min-height:64px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.check{display:flex;align-items:center;gap:10px;font-size:12px;color:#ccc;margin-bottom:16px}
+
+button{cursor:pointer;font-family:inherit}
+.btn{background:#f2f2ef;color:#090909;border:0;padding:13px 18px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.btn:hover{background:#fff}
+.btn-outline{background:transparent;color:var(--text);border:1px solid #444;padding:12px 18px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:.2s}
+.btn-outline:hover{border-color:#888}
+.btn-danger{background:transparent;color:#e07a7a;border:1px solid #3a2222;padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.btn-danger:hover{border-color:#e07a7a}
+.btn-icon{background:transparent;border:1px solid var(--line);color:var(--text);width:30px;height:30px;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.btn-icon:hover{border-color:#777}
+.btn-icon:disabled{opacity:.25;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+.product-list{display:flex;flex-direction:column;gap:8px}
+.product-item{background:var(--card);border:1px solid var(--line);padding:12px 14px;display:flex;align-items:center;gap:12px;transition:border-color .2s}
+.product-item.dragging{opacity:.35}
+.product-item.drag-over{border-color:#f2f2ef}
+.drag-handle{cursor:grab;color:#555;font-size:15px;letter-spacing:2px;flex:none;padding:0 2px;user-select:none}
+.drag-handle:active{cursor:grabbing}
+.order-num{font-family:Inter,sans-serif;font-size:9px;font-weight:800;color:var(--muted);background:var(--panel);border:1px solid var(--line);width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.product-item-info{flex:1;min-width:0}
+.product-item-info strong{font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.product-item-info span{color:var(--muted);font-size:10.5px;display:flex;gap:8px;align-items:center;margin-top:3px;flex-wrap:wrap}
+.mini-tag{border:1px solid var(--line);padding:2px 7px;font-size:8.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mini-tag.hero{color:#f2f2ef;border-color:#f2f2ef}
+.order-controls{display:flex;flex-direction:column;gap:2px;flex:none}
+.order-controls button{padding:0;height:14px;width:20px;font-size:9px;line-height:1;background:transparent;border:1px solid var(--line);color:var(--muted)}
+.product-item-actions{display:flex;gap:6px;flex:none}
+.btn-edit{background:transparent;color:var(--text);border:1px solid var(--line);padding:7px 11px;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.btn-edit:hover{border-color:#777}
+
+pre{background:#050505;border:1px solid var(--line);padding:16px;font-size:11px;line-height:1.6;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,monospace}
+.empty{color:var(--muted);font-size:12px;padding:30px;text-align:center;border:1px dashed var(--line)}
+footer{text-align:center;color:#4a4a4a;font-size:10px;letter-spacing:.06em;padding:36px 0;text-transform:uppercase}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>NON X — Admin de catálogo <span class="count-pill" id="countPill">0 productos</span></h1>
-  <p>Herramienta interna, sin backend. No la subas a tu sitio público ni la enlaces desde el menú.</p>
+  <div class="brandmark">NON X <span>ADMIN DE CATÁLOGO — HERRAMIENTA INTERNA</span></div>
+  <span class="count-pill" id="countPill">0 PRODUCTOS</span>
 </header>
 
 <div class="banner">
-  ⚠️ Esta herramienta corre 100% en tu navegador — no guarda nada en un servidor.
-  Flujo de trabajo: <strong>1)</strong> sube tu <code>products.json</code> actual abajo (o parte de cero) →
-  <strong>2)</strong> agrega/edita/elimina productos con el formulario → <strong>3)</strong> descarga el archivo
-  actualizado → <strong>4)</strong> súbelo a tu hosting reemplazando <code>data/products.json</code>.
-  Si tu equipo trabaja desde computadores distintos, cada persona debe partir del último
-  <code>products.json</code> que subieron para no pisar el trabajo de otro
-  (ver más abajo la idea de un admin real conectado a una base de datos).
+  ⚠️ Corre 100% en tu navegador, sin servidor — no la subas al dominio público de la tienda ni la enlaces desde el menú.<br>
+  Flujo: <strong>1)</strong> sube tu <code>products.json</code> actual → <strong>2)</strong> agrega/edita/ordena productos →
+  <strong>3)</strong> descarga el archivo → <strong>4)</strong> súbelo a <code>data/products.json</code> en tu hosting.
+  El <strong>orden de la lista</strong> (abajo, arrastra o usa las flechas) es el orden real en que aparecen en la tienda —
+  el primero de la lista es el primero que ve el cliente.
 </div>
 
 <main>
   <div>
     <section>
-      <h2>1 · Cargar catálogo existente</h2>
+      <h2>Cargar catálogo</h2>
+      <p class="section-sub">Paso 1</p>
       <div class="card">
         <div class="field">
-          <label>Sube tu <code>products.json</code> actual <small>(opcional — si no subes nada, partes de una lista vacía)</small></label>
+          <label>Subir products.json <small>(opcional)</small></label>
           <input type="file" id="fileInput" accept="application/json">
         </div>
         <div class="field" style="margin-bottom:0">
-          <label>O pega el JSON directamente</label>
-          <textarea id="pasteJson" placeholder="[ { &quot;id&quot;: ... } ]" style="min-height:90px"></textarea>
+          <label>O pegar JSON directamente</label>
+          <textarea id="pasteJson" placeholder="[ { &quot;id&quot;: ... } ]" style="min-height:80px"></textarea>
         </div>
         <div class="actions">
           <button class="btn-outline" id="loadPasted">Cargar JSON pegado</button>
@@ -82,25 +113,16 @@
     </section>
 
     <section>
-      <h2 id="formTitle">2 · Agregar producto</h2>
+      <h2 id="formTitle">Agregar producto</h2>
+      <p class="section-sub">Paso 2</p>
       <div class="card">
         <div class="row">
-          <div class="field">
-            <label>Nombre *</label>
-            <input type="text" id="f_name" placeholder="Ej: Hoodie Archivo 002">
-          </div>
-          <div class="field">
-            <label>Color / variante</label>
-            <input type="text" id="f_color" placeholder="Ej: Black">
-          </div>
+          <div class="field"><label>Nombre *</label><input type="text" id="f_name" placeholder="Ej: Hoodie Archivo 002"></div>
+          <div class="field"><label>Color / variante</label><input type="text" id="f_color" placeholder="Ej: Black"></div>
         </div>
         <div class="row3">
-          <div class="field">
-            <label>Precio (CLP) *</label>
-            <input type="number" id="f_price" placeholder="54990">
-          </div>
-          <div class="field">
-            <label>Categoría *</label>
+          <div class="field"><label>Precio (CLP) *</label><input type="number" id="f_price" placeholder="54990"></div>
+          <div class="field"><label>Categoría *</label>
             <select id="f_category">
               <option value="Camisetas">Camisetas</option>
               <option value="Jeans">Jeans</option>
@@ -108,62 +130,23 @@
               <option value="Zapatillas">Zapatillas</option>
             </select>
           </div>
-          <div class="field">
-            <label>Código <small>(auto si se deja vacío)</small></label>
-            <input type="text" id="f_code" placeholder="NX-002">
-          </div>
+          <div class="field"><label>Código <small>(auto)</small></label><input type="text" id="f_code" placeholder="NX-002"></div>
         </div>
-        <div class="field">
-          <label>Tallas <small>(separadas por coma: S, M, L, XL)</small></label>
-          <input type="text" id="f_sizes" placeholder="S, M, L, XL">
-        </div>
+        <div class="field"><label>Tallas <small>(separadas por coma)</small></label><input type="text" id="f_sizes" placeholder="S, M, L, XL"></div>
         <div class="row">
-          <div class="field">
-            <label>Material</label>
-            <input type="text" id="f_material" placeholder="100% algodón">
-          </div>
-          <div class="field">
-            <label>Fit</label>
-            <input type="text" id="f_fit" placeholder="Oversized / relajado">
-          </div>
+          <div class="field"><label>Material</label><input type="text" id="f_material" placeholder="100% algodón"></div>
+          <div class="field"><label>Fit</label><input type="text" id="f_fit" placeholder="Oversized"></div>
         </div>
-        <div class="field">
-          <label>Descripción</label>
-          <textarea id="f_description" placeholder="Descripción del producto..."></textarea>
-        </div>
-        <div class="field">
-          <label>Detalles del producto <small>(una línea por viñeta)</small></label>
-          <textarea id="f_details" placeholder="Capucha de doble capa&#10;Cierre frontal metálico"></textarea>
-        </div>
-        <div class="field">
-          <label>Cuidados <small>(una línea por viñeta)</small></label>
-          <textarea id="f_care" placeholder="Lavar a máquina con agua fría&#10;No usar cloro"></textarea>
-        </div>
-        <div class="field">
-          <label>Imagen principal <small>(ruta relativa, ej: assets/images/products/mi-foto.webp)</small></label>
-          <input type="text" id="f_image" placeholder="assets/images/products/nombre-archivo.webp">
-        </div>
-        <div class="field">
-          <label>Galería adicional <small>(opcional — una línea por foto: tipo|ruta|texto alternativo. tipo = image/video/360)</small></label>
-          <textarea id="f_media" placeholder="image|assets/images/products/foto-2.webp|Vista trasera&#10;video|assets/images/products/video.mp4|Video del producto"></textarea>
-        </div>
-        <div class="field">
-          <label>Guía de tallas <small>(opcional — una línea por talla: TALLA: campo=valor, campo=valor)</small></label>
-          <textarea id="f_sizeguide" placeholder="S: largo=68, pecho=54&#10;M: largo=70, pecho=57"></textarea>
-        </div>
-        <div class="check" style="margin-bottom:14px">
-          <input type="checkbox" id="f_drop">
-          <label for="f_drop" style="margin:0">Marcar como Drop destacado (aparece en el hero / drop showcase)</label>
-        </div>
+        <div class="field"><label>Descripción</label><textarea id="f_description"></textarea></div>
+        <div class="field"><label>Detalles <small>(una línea por viñeta)</small></label><textarea id="f_details"></textarea></div>
+        <div class="field"><label>Cuidados <small>(una línea por viñeta)</small></label><textarea id="f_care"></textarea></div>
+        <div class="field"><label>Imagen principal <small>(ruta relativa)</small></label><input type="text" id="f_image" placeholder="assets/images/products/archivo.webp"></div>
+        <div class="field"><label>Galería adicional <small>(tipo|ruta|alt, una por línea)</small></label><textarea id="f_media" placeholder="image|assets/images/products/foto-2.webp|Vista trasera"></textarea></div>
+        <div class="field"><label>Guía de tallas <small>(TALLA: campo=valor, campo=valor)</small></label><textarea id="f_sizeguide" placeholder="S: largo=68, pecho=54"></textarea></div>
+        <div class="check"><input type="checkbox" id="f_drop"><label for="f_drop" style="margin:0;text-transform:none;font-weight:400;letter-spacing:0;font-size:12px;color:#ccc">Marcar como Drop destacado (hero de portada)</label></div>
         <div class="row" id="dropFields" style="display:none">
-          <div class="field">
-            <label>Número de drop</label>
-            <input type="text" id="f_dropnumber" placeholder="002">
-          </div>
-          <div class="field">
-            <label>Video del hero <small>(ruta del video de portada)</small></label>
-            <input type="text" id="f_heromedia" placeholder="assets/images/products/mi-video-hero.mp4">
-          </div>
+          <div class="field"><label>Número de drop</label><input type="text" id="f_dropnumber" placeholder="002"></div>
+          <div class="field"><label>Video del hero</label><input type="text" id="f_heromedia" placeholder="assets/images/products/video-hero.mp4"></div>
         </div>
         <div class="actions">
           <button class="btn" id="saveProduct">Agregar producto</button>
@@ -175,21 +158,21 @@
 
   <div>
     <section>
-      <h2>3 · Catálogo actual</h2>
-      <div id="productList"></div>
+      <h2>Catálogo y orden</h2>
+      <p class="section-sub">Paso 3 — arrastra ⠿ o usa las flechas para reordenar</p>
+      <div class="product-list" id="productList"></div>
     </section>
 
     <section>
-      <h2>4 · Descargar</h2>
+      <h2>Descargar</h2>
+      <p class="section-sub">Paso 4</p>
       <div class="card">
-        <p style="color:var(--muted);font-size:12px;margin-top:0">
-          Descarga el archivo y súbelo a <code>data/products.json</code> en tu hosting, reemplazando el actual.
-        </p>
+        <p style="color:var(--muted);font-size:12px;margin-top:0">Sube el archivo a <code>data/products.json</code> reemplazando el actual.</p>
         <div class="actions">
           <button class="btn" id="downloadJson">Descargar products.json</button>
-          <button class="btn-outline" id="togglePreview">Ver/ocultar JSON</button>
+          <button class="btn-outline" id="togglePreview">Ver / ocultar JSON</button>
         </div>
-        <pre id="jsonPreview" style="display:none;margin-top:14px"></pre>
+        <pre id="jsonPreview" style="display:none;margin-top:16px"></pre>
       </div>
     </section>
   </div>
@@ -200,10 +183,10 @@
 <script>
 let products = [];
 let editingIndex = null;
+let dragFromIndex = null;
 
 function slugify(name){
-  return String(name||'').toLowerCase().trim()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  return String(name||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'producto';
 }
 function uniqueId(base){
@@ -229,22 +212,14 @@ function parseSizeGuide(text){
     const [size, rest] = line.split(':');
     if(!size || !rest) return;
     const fields = rest.split(',').map(f=>f.trim()).filter(Boolean);
-    if(fields.length===1 && !fields[0].includes('=')){
-      guide[size.trim()] = Number(fields[0]) || fields[0];
-      return;
-    }
+    if(fields.length===1 && !fields[0].includes('=')){ guide[size.trim()] = Number(fields[0]) || fields[0]; return; }
     const obj = {};
-    fields.forEach(f=>{
-      const [k,v] = f.split('=').map(x=>x.trim());
-      if(k) obj[k] = Number(v) || v;
-    });
+    fields.forEach(f=>{ const [k,v] = f.split('=').map(x=>x.trim()); if(k) obj[k] = Number(v) || v; });
     guide[size.trim()] = obj;
   });
   return guide;
 }
-function mediaToText(media, mainImage){
-  return (media||[]).filter(m=>m.src!==mainImage).map(m=>`${m.type}|${m.src}|${m.alt||''}`).join('\n');
-}
+function mediaToText(media, mainImage){ return (media||[]).filter(m=>m.src!==mainImage).map(m=>`${m.type}|${m.src}|${m.alt||''}`).join('\n'); }
 function sizeGuideToText(guide){
   return Object.entries(guide||{}).map(([size,val])=>{
     if(typeof val==='number') return `${size}: ${val}`;
@@ -254,47 +229,75 @@ function sizeGuideToText(guide){
 
 function render(){
   const list = document.getElementById('productList');
-  document.getElementById('countPill').textContent = `${products.length} producto${products.length===1?'':'s'}`;
+  document.getElementById('countPill').textContent = `${products.length} PRODUCTO${products.length===1?'':'S'}`;
   if(!products.length){
     list.innerHTML = '<div class="empty">Todavía no hay productos cargados.</div>';
-  } else {
-    list.innerHTML = products.map((p,i)=>`
-      <div class="product-item">
-        <div>
-          <strong>${p.name||'(sin nombre)'}</strong>
-          <span>${p.code||p.id} · ${p.category||'—'} · $${Number(p.price||0).toLocaleString('es-CL')} ${p.drop?'· DROP':''}</span>
-        </div>
-        <div class="product-item-actions">
-          <button class="btn-edit" data-edit="${i}">Editar</button>
-          <button class="btn-danger" data-delete="${i}">Eliminar</button>
-        </div>
-      </div>`).join('');
-    list.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>startEdit(Number(btn.dataset.edit))));
-    list.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>{
-      if(confirm('¿Eliminar este producto de la lista?')){ products.splice(Number(btn.dataset.delete),1); render(); updatePreview(); }
-    }));
+    updatePreview();
+    return;
   }
+  list.innerHTML = products.map((p,i)=>`
+    <div class="product-item" draggable="true" data-index="${i}">
+      <span class="drag-handle" title="Arrastra para reordenar">⠿</span>
+      <span class="order-num">${i+1}</span>
+      <div class="product-item-info">
+        <strong>${p.name||'(sin nombre)'}</strong>
+        <span>${p.code||p.id} · ${p.category||'—'} · $${Number(p.price||0).toLocaleString('es-CL')} ${p.drop?'<span class="mini-tag hero">HERO / DROP</span>':''}</span>
+      </div>
+      <div class="order-controls">
+        <button data-up="${i}" ${i===0?'disabled':''} title="Subir">▲</button>
+        <button data-down="${i}" ${i===products.length-1?'disabled':''} title="Bajar">▼</button>
+      </div>
+      <div class="product-item-actions">
+        <button class="btn-edit" data-edit="${i}">Editar</button>
+        <button class="btn-danger" data-delete="${i}">Eliminar</button>
+      </div>
+    </div>`).join('');
+
+  list.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>startEdit(Number(btn.dataset.edit))));
+  list.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>{
+    if(confirm('¿Eliminar este producto de la lista?')){ products.splice(Number(btn.dataset.delete),1); render(); }
+  }));
+  list.querySelectorAll('[data-up]').forEach(btn=>btn.addEventListener('click',()=>moveProduct(Number(btn.dataset.up), -1)));
+  list.querySelectorAll('[data-down]').forEach(btn=>btn.addEventListener('click',()=>moveProduct(Number(btn.dataset.down), 1)));
+
+  list.querySelectorAll('.product-item').forEach(row=>{
+    row.addEventListener('dragstart', ()=>{ dragFromIndex = Number(row.dataset.index); row.classList.add('dragging'); });
+    row.addEventListener('dragend', ()=>{ row.classList.remove('dragging'); list.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over')); });
+    row.addEventListener('dragover', e=>{ e.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', ()=>row.classList.remove('drag-over'));
+    row.addEventListener('drop', e=>{
+      e.preventDefault();
+      const toIndex = Number(row.dataset.index);
+      if(dragFromIndex===null || dragFromIndex===toIndex) return;
+      const [moved] = products.splice(dragFromIndex,1);
+      products.splice(toIndex,0,moved);
+      dragFromIndex = null;
+      render();
+    });
+  });
   updatePreview();
 }
-function updatePreview(){
-  document.getElementById('jsonPreview').textContent = JSON.stringify(products, null, 2);
+function moveProduct(i, dir){
+  const target = i+dir;
+  if(target<0 || target>=products.length) return;
+  [products[i], products[target]] = [products[target], products[i]];
+  render();
 }
+function updatePreview(){ document.getElementById('jsonPreview').textContent = JSON.stringify(products, null, 2); }
 
 function clearForm(){
   ['f_name','f_color','f_price','f_code','f_sizes','f_material','f_fit','f_description','f_details','f_care','f_image','f_media','f_sizeguide','f_dropnumber','f_heromedia']
-    .forEach(id=>{ document.getElementById(id).value=''; });
+    .forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_category').value='Camisetas';
   document.getElementById('f_drop').checked=false;
   document.getElementById('dropFields').style.display='none';
   editingIndex = null;
-  document.getElementById('formTitle').textContent = '2 · Agregar producto';
+  document.getElementById('formTitle').textContent = 'Agregar producto';
   document.getElementById('saveProduct').textContent = 'Agregar producto';
   document.getElementById('cancelEdit').style.display='none';
 }
-
 function startEdit(i){
-  const p = products[i];
-  editingIndex = i;
+  const p = products[i]; editingIndex = i;
   document.getElementById('f_name').value = p.name||'';
   document.getElementById('f_color').value = p.color||'';
   document.getElementById('f_price').value = p.price||'';
@@ -313,16 +316,13 @@ function startEdit(i){
   document.getElementById('dropFields').style.display = p.drop ? 'grid' : 'none';
   document.getElementById('f_dropnumber').value = p.dropNumber||'';
   document.getElementById('f_heromedia').value = p.heroMedia||'';
-  document.getElementById('formTitle').textContent = `2 · Editando: ${p.name}`;
+  document.getElementById('formTitle').textContent = `Editando: ${p.name}`;
   document.getElementById('saveProduct').textContent = 'Guardar cambios';
   document.getElementById('cancelEdit').style.display='inline-block';
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-document.getElementById('f_drop').addEventListener('change', e=>{
-  document.getElementById('dropFields').style.display = e.target.checked ? 'grid' : 'none';
-});
-
+document.getElementById('f_drop').addEventListener('change', e=>{ document.getElementById('dropFields').style.display = e.target.checked ? 'grid' : 'none'; });
 document.getElementById('cancelEdit').addEventListener('click', clearForm);
 
 document.getElementById('saveProduct').addEventListener('click', ()=>{
@@ -330,19 +330,13 @@ document.getElementById('saveProduct').addEventListener('click', ()=>{
   const price = Number(document.getElementById('f_price').value);
   if(!name){ alert('El nombre es obligatorio.'); return; }
   if(!price){ alert('El precio es obligatorio y debe ser un número.'); return; }
-
   const image = document.getElementById('f_image').value.trim();
   const isDrop = document.getElementById('f_drop').checked;
   const existing = editingIndex!==null ? products[editingIndex] : null;
   const id = existing?.id || uniqueId(slugify(name));
-
   const product = {
-    id,
-    code: document.getElementById('f_code').value.trim() || `NX-${String(products.length+1).padStart(3,'0')}`,
-    name,
-    color: document.getElementById('f_color').value.trim(),
-    price,
-    currency: 'CLP',
+    id, code: document.getElementById('f_code').value.trim() || `NX-${String(products.length+1).padStart(3,'0')}`,
+    name, color: document.getElementById('f_color').value.trim(), price, currency:'CLP',
     category: document.getElementById('f_category').value,
     sizes: parseSizes(document.getElementById('f_sizes').value),
     material: document.getElementById('f_material').value.trim(),
@@ -354,8 +348,7 @@ document.getElementById('saveProduct').addEventListener('click', ()=>{
     sizeGuide: parseSizeGuide(document.getElementById('f_sizeguide').value),
     shipping: 'Despacho estimado: 3–7 días hábiles dentro de Chile.',
     dataStatus: 'Cargado desde admin — revisar antes de publicar',
-    image,
-    media: parseMedia(document.getElementById('f_media').value, image)
+    image, media: parseMedia(document.getElementById('f_media').value, image)
   };
   if(isDrop){
     product.drop = true;
@@ -363,58 +356,44 @@ document.getElementById('saveProduct').addEventListener('click', ()=>{
     product.dropLabel = name;
     product.heroMedia = document.getElementById('f_heromedia').value.trim();
   }
-
-  if(editingIndex!==null){ products[editingIndex] = product; }
-  else { products.push(product); }
-  clearForm();
-  render();
+  if(editingIndex!==null){ products[editingIndex] = product; } else { products.push(product); }
+  clearForm(); render();
 });
 
 document.getElementById('fileInput').addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(!file) return;
+  const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = ev=>{
     try{
       const parsed = JSON.parse(ev.target.result);
       if(!Array.isArray(parsed)) throw new Error('El archivo debe contener un array de productos.');
-      products = parsed;
-      render();
+      products = parsed; render();
       alert(`Catálogo cargado: ${products.length} productos.`);
     }catch(err){ alert('No se pudo leer el archivo: ' + err.message); }
   };
   reader.readAsText(file);
 });
-
 document.getElementById('loadPasted').addEventListener('click', ()=>{
-  const text = document.getElementById('pasteJson').value.trim();
-  if(!text) return;
+  const text = document.getElementById('pasteJson').value.trim(); if(!text) return;
   try{
     const parsed = JSON.parse(text);
     if(!Array.isArray(parsed)) throw new Error('Debe ser un array de productos.');
-    products = parsed;
-    render();
+    products = parsed; render();
   }catch(err){ alert('JSON inválido: ' + err.message); }
 });
-
 document.getElementById('startEmpty').addEventListener('click', ()=>{
   if(products.length && !confirm('Esto borra la lista actual en pantalla. ¿Continuar?')) return;
-  products = [];
-  render();
+  products = []; render();
 });
-
 document.getElementById('togglePreview').addEventListener('click', ()=>{
   const pre = document.getElementById('jsonPreview');
   pre.style.display = pre.style.display==='none' ? 'block' : 'none';
 });
-
 document.getElementById('downloadJson').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify(products, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'products.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = url; a.download = 'products.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
 
 render();

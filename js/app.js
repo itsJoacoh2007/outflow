@@ -35,7 +35,8 @@ function initTheme(){
 document.getElementById('openCart')?.addEventListener('click',openCart);
 document.getElementById('closeCart')?.addEventListener('click',closeCart);
 document.getElementById('overlay')?.addEventListener('click',closeCart);
-document.getElementById('checkout')?.addEventListener('click',()=>alert('El checkout real se conectará a la pasarela de pago en la siguiente etapa.'));
+/* El botón de checkout ahora lo maneja js/shopify-checkout.js (usa Shopify
+   si ya está configurado, o muestra el mismo aviso mientras tanto). */
 document.getElementById('search')?.addEventListener('input',e=>renderProducts(e.target.value));
 const mobileSearch=document.getElementById('mobileSearch');
 mobileSearch?.addEventListener('input',e=>{
