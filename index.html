@@ -33,9 +33,7 @@ NON X V21 — ARQUITECTURA
 ║  [ANIMACIONES]             → entrada / scroll / hover       ║
 ║                                                              ║
 ║ CAMBIAR TEXTO: busca el texto y reemplázalo.                ║
-║ CAMBIAR PRECIO: busca p:29990, etc.                         ║
-║ CAMBIAR IMÁGENES: reemplaza hero.jpg / categories.jpg /    ║
-║ products.jpg manteniendo el mismo nombre de archivo.        ║
+║ AGREGAR PRODUCTOS: usa admin.html (no se edita a mano).     ║
 ║ CAMBIAR COLORES: ve a [FUENTES Y COLORES].                  ║
 ║                                                              ║
 ║ ⚠️ Este front-end sigue sin pasarela de pago real.           ║
@@ -60,13 +58,13 @@ NON X V21 — ARQUITECTURA
 <meta property="og:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
 <meta property="og:site_name" content="NON X">
 <meta property="og:url" content="https://nonx.cl/">
-<meta property="og:image" content="https://nonx.cl/assets/images/hero.jpg">
+<meta property="og:image" content="https://nonx.cl/assets/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NON X — Streetwear">
 <meta name="twitter:description" content="NON X — streetwear, jeans, camisetas, polerones y zapatillas.">
-<meta name="twitter:image" content="https://nonx.cl/assets/images/hero.jpg">
+<meta name="twitter:image" content="https://nonx.cl/assets/images/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
@@ -177,7 +175,7 @@ NON X V21 — ARQUITECTURA
 
 <!-- [HERO] PORTADA PRINCIPAL -->
 <section class="hero" id="novedades" data-drop="001">
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/images/products/heavy-hoodie-front.jpg" aria-hidden="true"></video>
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-copy">
     <p class="eyebrow" id="heroDropLabel">NON X / 001</p>
@@ -220,10 +218,22 @@ NON X V21 — ARQUITECTURA
 <section class="section reveal" id="categorias">
   <div class="section-title"><h2 data-i18n="categories_title">CATEGORÍAS</h2><a class="see" href="#tienda" data-i18n="see_all">VER TODAS →</a></div>
   <div class="categories stagger">
-    <a class="cat" href="#tienda" data-category-link="Camisetas"><div class="cat-info"><h3><span data-i18n="tshirts">CAMISETAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
-    <a class="cat" href="#tienda" data-category-link="Jeans"><div class="cat-info"><h3 data-i18n="jeans">JEANS</h3><span data-i18n="view_collection">Ver colección →</span></div></a>
-    <a class="cat" href="#tienda" data-category-link="Polerones"><div class="cat-info"><h3><span data-i18n="hoodies">POLERONES</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
-    <a class="cat" href="#tienda" data-category-link="Zapatillas"><div class="cat-info"><h3><span data-i18n="sneakers">ZAPATILLAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div></a>
+    <a class="cat" href="#tienda" data-category-link="Camisetas">
+      <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M40 10 L25 10 L8 27 L23 37 L23 92 L77 92 L77 37 L92 27 L75 10 L60 10 Q50 18 40 10 Z"/></svg></span>
+      <div class="cat-info"><h3><span data-i18n="tshirts">CAMISETAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div>
+    </a>
+    <a class="cat" href="#tienda" data-category-link="Jeans">
+      <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M32 8 L68 8 L70 30 L64 92 L54 92 L52 40 L48 40 L46 92 L36 92 L30 30 Z"/></svg></span>
+      <div class="cat-info"><h3 data-i18n="jeans">JEANS</h3><span data-i18n="view_collection">Ver colección →</span></div>
+    </a>
+    <a class="cat" href="#tienda" data-category-link="Polerones">
+      <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M30 18 L38 10 L62 10 L70 18 L88 26 L80 42 L70 36 L70 92 L30 92 L30 36 L20 42 L12 26 Z"/><circle cx="50" cy="24" r="6"/></svg></span>
+      <div class="cat-info"><h3><span data-i18n="hoodies">POLERONES</span></h3><span data-i18n="view_collection">Ver colección →</span></div>
+    </a>
+    <a class="cat" href="#tienda" data-category-link="Zapatillas">
+      <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M10 60 Q10 50 22 48 L34 44 Q42 40 50 40 Q58 40 66 44 L78 48 Q90 50 90 60 L90 68 Q90 74 82 74 L18 74 Q10 74 10 68 Z"/><path d="M22 48 L26 62 M78 48 L74 62"/></svg></span>
+      <div class="cat-info"><h3><span data-i18n="sneakers">ZAPATILLAS</span></h3><span data-i18n="view_collection">Ver colección →</span></div>
+    </a>
   </div>
 </section>
 

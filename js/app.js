@@ -128,16 +128,54 @@ function injectStructuredData(){
   document.head.appendChild(script);
 }
 
-/* HERO / DROP FEATURE — el video del producto marcado como drop=true se muestra en portada. */
+/* HERO / DROP FEATURE — el video del producto marcado como drop=true se muestra en portada.
+   Si todavía no hay ningún producto así (catálogo vacío o recién empezando), el hero
+   pasa a un estado "próximamente" sin video ni foto de producto: no hay forma honesta
+   de mostrar una prenda que todavía no existe en el catálogo. Los textos de ese estado
+   usan T() para que sigan correctos si el visitante cambia de idioma. */
+function applyEmptyHeroText(){
+  const eyebrow=document.getElementById('heroDropLabel');
+  const label=document.getElementById('heroProductLabel');
+  const cta=document.getElementById('heroDropCta');
+  const heroTitle=document.querySelector('.hero-copy h1');
+  const heroDesc=document.querySelector('.hero-copy [data-i18n="hero_description"]');
+  if(eyebrow) eyebrow.textContent='NON X / ARCHIVE';
+  if(label) label.textContent=T('hero_empty_label');
+  if(heroTitle) heroTitle.innerHTML=T('hero_empty_title').split('|').join('<br>');
+  if(heroDesc) heroDesc.textContent=T('hero_empty_description');
+  if(cta) cta.textContent=T('hero_empty_cta');
+}
+
 function initDropHero(){
   const hero=document.querySelector('.hero');
   const video=document.getElementById('heroVideo');
   if(!hero || !video || !Array.isArray(products)) return;
-  const drop=products.find(product=>product.drop && product.heroMedia) || products.find(product=>product.heroMedia);
-  const heroSource = drop?.heroMedia || 'assets/images/products/heavy-hoodie-video.mp4';
-  if(!heroSource) return;
+  const drop=products.find(product=>product.drop && product.heroMedia);
 
-  video.src=heroSource;
+  const eyebrow=document.getElementById('heroDropLabel');
+  const label=document.getElementById('heroProductLabel');
+  const cta=document.getElementById('heroDropCta');
+
+  if(!drop){
+    hero.classList.add('hero-empty');
+    video.removeAttribute('src'); video.load?.();
+    applyEmptyHeroText();
+    if(cta){
+      cta.setAttribute('href','#newsletter');
+      cta.addEventListener('click',e=>{
+        e.preventDefault();
+        document.getElementById('newsletter')?.scrollIntoView({behavior:'smooth',block:'center'});
+        document.querySelector('#newsletter input[type="email"]')?.focus();
+      });
+    }
+    window.addEventListener('nonx:languagechange',()=>{
+      if(hero.classList.contains('hero-empty')) applyEmptyHeroText();
+    });
+    return;
+  }
+
+  hero.classList.remove('hero-empty');
+  video.src=drop.heroMedia;
   video.muted=true;
   video.loop=true;
   video.playsInline=true;
@@ -145,9 +183,6 @@ function initDropHero(){
   video.play().catch(()=>{});
 
   hero.dataset.drop=drop.dropNumber || '001';
-  const eyebrow=document.getElementById('heroDropLabel');
-  const label=document.getElementById('heroProductLabel');
-  const cta=document.getElementById('heroDropCta');
   if(eyebrow) eyebrow.textContent=`NON X / ${drop.dropNumber || '001'}`;
   if(label) label.textContent=`${String(drop.dropLabel || drop.name).toUpperCase()} · DROP ${drop.dropNumber || '001'}`;
   if(cta) cta.addEventListener('click',()=>{
@@ -189,11 +224,17 @@ function initDropShowcase(){
   const root=document.getElementById('dropProducts');
   if(!root || !Array.isArray(products)) return;
   const drop=products.find(p=>p.drop) || products[0];
-  if(!drop) return;
+  if(!drop){
+    root.innerHTML=`<div class="drop-empty">
+      <strong>TODAVÍA NO HAY PIEZAS PUBLICADAS</strong>
+      <span>El equipo está confeccionando el primer drop. Vuelve pronto o déjanos tu correo más abajo.</span>
+    </div>`;
+    return;
+  }
   const related=products.filter(p=>p.id!==drop.id).slice(0,2);
   const cards=[drop,...related];
   root.innerHTML=cards.map((p,i)=>{
-    const image=p.image || p.media?.find(m=>m.type==='image')?.src || 'assets/images/products.jpg';
+    const image=p.image || p.media?.find(m=>m.type==='image')?.src || NX_PLACEHOLDER_IMAGE;
     return `<article class="drop-card ${i===0?'drop-card-featured':''}" data-product-id="${escapeHtml(p.id)}">
       <button class="drop-card-media" type="button" aria-label="Ver ${escapeHtml(p.name)}" data-open-product="${escapeHtml(p.id)}">
         <img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)} — ${escapeHtml(p.color||'')}" loading="lazy" decoding="async">

@@ -27,7 +27,7 @@
 /* [SECCIONES GENERALES] — espaciado y títulos */
 .section{padding:62px 3.8vw}.section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:24px}.section-title h2{font:36px "Archivo Black";letter-spacing:-.055em;margin:0}.see{font-size:10px;font-weight:800;letter-spacing:.08em}
 /* [CATEGORÍAS] — bloques visuales de camisetas/jeans/etc. */
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.cat{height:180px;position:relative;overflow:hidden;background:#222;background-image:url("categories.jpg");background-size:400% 100%;filter:grayscale(.2)}.cat:nth-child(1){background-position:0 50%}.cat:nth-child(2){background-position:33.33% 50%}.cat:nth-child(3){background-position:66.66% 50%}.cat:nth-child(4){background-position:100% 50%}.cat:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82),transparent 70%)}.cat-info{position:absolute;z-index:2;bottom:16px;left:18px}.cat-info h3{font:22px "Archivo Black";margin:0 0 7px}.cat-info span{font-size:10px;font-weight:700}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.cat{height:180px;position:relative;overflow:hidden;background:linear-gradient(155deg,#181818,#0a0a0a);filter:grayscale(.2)}.cat:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82),transparent 70%)}.cat-info{position:absolute;z-index:2;bottom:16px;left:18px}.cat-info h3{font:22px "Archivo Black";margin:0 0 7px}.cat-info span{font-size:10px;font-weight:700}
 /* [PRODUCTOS] — grilla de productos */
 .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.product{background:var(--card);position:relative;cursor:pointer}.product-photo{height:390px;background-size:cover;background-position:center;position:relative;overflow:hidden}.product:nth-child(1) .product-photo{background-position:0 50%}.product:nth-child(2) .product-photo{background-position:33.33% 50%}.product:nth-child(3) .product-photo{background-position:66.66% 50%}.product:nth-child(4) .product-photo{background-position:100% 50%}.tag{position:absolute;top:12px;left:12px;background:#202020;border:1px solid #444;border-radius:20px;padding:7px 11px;font-size:8px;font-weight:800;letter-spacing:.08em}.heart{position:absolute;top:12px;right:12px;font-size:19px}.product-info{padding:14px 15px 17px}.product-name{font-size:12px;font-weight:700}.product-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:#aaa}.price{color:#fff;font-weight:700}
 /* [MANIFIESTO] — filosofía / identidad de marca */
@@ -479,3 +479,14 @@ html.nonx-intro-active .hero-copy .cta{animation-delay:2.3s}
 
 /* Grano sutil sobre el hero — textura "archivo/VHS", no decoración animada */
 .hero:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+
+/* NON X V25 — ESTADOS VACÍOS (catálogo sin productos todavía) */
+.hero-empty .hero-video-status,.hero-empty .hero-scroll{opacity:.35}
+.hero-empty .hero-video{opacity:0}
+.drop-empty{grid-column:1/-1;min-height:220px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#666;text-align:center;padding:30px}
+.drop-empty strong{color:#aaa;font:18px 'Archivo Black';letter-spacing:-.01em}
+.drop-empty span{font-size:11px;max-width:320px;line-height:1.6}
+
+/* Categorías sin fotografía — panel + icono de línea, hasta tener fotos reales */
+.cat-icon{position:absolute;top:16px;right:16px;width:34px;height:34px;opacity:.5}
+.cat-icon svg{width:100%;height:100%;stroke:#fff;fill:none;stroke-width:1.2}

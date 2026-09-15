@@ -22,7 +22,11 @@
       new_tag:'NUEVO', view_product:'VER PRODUCTO →', no_size_guide:'No disponible.', size_label:'TALLA', foot_cm:'PIE (CM)',
       cm:'CM', shipping_default:'Despacho estimado: 3–7 días hábiles dentro de Chile.',
       video_error:'Tu navegador no puede reproducir este video.', image_label:'imagen', video_label:'video',
-      related_products:'TAMBIÉN TE PUEDE INTERESAR'
+      related_products:'TAMBIÉN TE PUEDE INTERESAR',
+      hero_empty_label:'PRÓXIMAMENTE', hero_empty_title:'EL ARCHIVO|SE ABRE|PRONTO.',
+      hero_empty_description:'Estamos confeccionando las primeras piezas. Únete a la lista o escríbenos y te avisamos apenas esté disponible el primer drop.',
+      hero_empty_cta:'UNIRME A LA LISTA →',
+      tshirts:'CAMISETAS', jeans:'JEANS', hoodies:'POLERONES', sneakers:'ZAPATILLAS'
     },
     en: {
       topbar:'SHIPPING WORLDWIDE · NEW DROPS EVERY WEEK',
@@ -42,7 +46,11 @@
       new_tag:'NEW', view_product:'VIEW PRODUCT →', no_size_guide:'Not available.', size_label:'SIZE', foot_cm:'FOOT (CM)',
       cm:'CM', shipping_default:'Estimated delivery: 3–7 business days within Chile.',
       video_error:'Your browser cannot play this video.', image_label:'image', video_label:'video',
-      related_products:'YOU MIGHT ALSO LIKE'
+      related_products:'YOU MIGHT ALSO LIKE',
+      hero_empty_label:'COMING SOON', hero_empty_title:'THE ARCHIVE|OPENS|SOON.',
+      hero_empty_description:'We are making the first pieces. Join the list or message us and we will let you know the moment the first drop is live.',
+      hero_empty_cta:'JOIN THE LIST →',
+      tshirts:'T-SHIRTS', jeans:'JEANS', hoodies:'HOODIES', sneakers:'SNEAKERS'
     },
     pt: {
       topbar:'ENVIO PARA TODO O MUNDO · NOVAS ENTRADAS TODA SEMANA',
@@ -62,7 +70,11 @@
       new_tag:'NOVO', view_product:'VER PRODUTO →', no_size_guide:'Não disponível.', size_label:'TAMANHO', foot_cm:'PÉ (CM)',
       cm:'CM', shipping_default:'Entrega estimada: 3–7 dias úteis no Chile.',
       video_error:'Seu navegador não pode reproduzir este vídeo.', image_label:'imagem', video_label:'vídeo',
-      related_products:'VOCÊ TAMBÉM PODE GOSTAR'
+      related_products:'VOCÊ TAMBÉM PODE GOSTAR',
+      hero_empty_label:'EM BREVE', hero_empty_title:'O ARQUIVO|ABRE EM|BREVE.',
+      hero_empty_description:'Estamos confeccionando as primeiras peças. Junte-se à lista ou nos escreva e avisamos assim que o primeiro drop estiver disponível.',
+      hero_empty_cta:'ENTRAR NA LISTA →',
+      tshirts:'CAMISETAS', jeans:'JEANS', hoodies:'MOLETONS', sneakers:'TÊNIS'
     }
   };
 

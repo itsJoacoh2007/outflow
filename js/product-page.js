@@ -9,7 +9,7 @@ const T = (key) => window.nonxLanguage?.t(key) ?? key;
 function productMedia(product){
   if(product?.media?.length) return product.media;
   if(product?.image) return [{type:'image',src:product.image,alt:product.name,role:'primary'}];
-  return [{type:'image',src:'assets/images/products.jpg',alt:product?.name || 'Producto NON X',role:'primary'}];
+  return [{type:'image',src:NX_PLACEHOLDER_IMAGE,alt:product?.name || 'Producto NON X',role:'primary'}];
 }
 
 function mediaRole(item, index){
@@ -274,7 +274,9 @@ function renderProducts(filter){
         <button type="button" class="view-product" data-view-product="${escapeHtml(product.id)}">${T('view_product')} <span>→</span></button>
       </div>
     </article>`;
-  }).join('') : `<div class="catalog-empty"><strong>NO HAY RESULTADOS</strong><span>Prueba otra búsqueda o limpia los filtros.</span></div>`;
+  }).join('') : (products.length===0
+    ? `<div class="catalog-empty"><strong>EL ARCHIVO TODAVÍA NO TIENE PIEZAS PUBLICADAS</strong><span>El equipo está confeccionando el primer drop — vuelve pronto.</span></div>`
+    : `<div class="catalog-empty"><strong>NO HAY RESULTADOS</strong><span>Prueba otra búsqueda o limpia los filtros.</span></div>`);
   grid.querySelectorAll('.product').forEach(card=>{
     card.addEventListener('click',()=>openProduct(card.dataset.productId));
     card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openProduct(card.dataset.productId)}});
