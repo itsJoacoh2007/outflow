@@ -1,10 +1,9 @@
-# NON X V25 — LISTA PARA PRODUCTOS REALES
+# NON X
 
-Catálogo vacío a propósito (`data/products.json` = `[]`) — se eliminaron
-las 9 piezas de referencia (fotos reales de Nike/Jordan/CBF y Polo Ralph
-Lauren) y también otras 3 imágenes de fondo que tenían el mismo problema
-y no se habían detectado antes (hero.jpg, products.jpg, categories.jpg).
-Todo lo que dependía de esas fotos ahora usa gráficos propios o estados
-"próximamente" honestos. Ver `V25_CHANGELOG.md` para el detalle completo.
+Lee **`ESTADO_Y_PROXIMOS_PASOS.md`** primero — es el documento de
+referencia con qué funciona hoy, qué falta, y el orden exacto de pasos
+para conectar Shopify y Klaviyo cuando estén listos.
 
 Para agregar el primer producto real: abre `admin.html`.
+
+El detalle técnico versión por versión está en `changelog/`.
