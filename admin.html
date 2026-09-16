@@ -74,6 +74,23 @@ button{cursor:pointer;font-family:inherit}
 pre{background:#050505;border:1px solid var(--line);padding:16px;font-size:11px;line-height:1.6;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,monospace}
 .empty{color:var(--muted);font-size:12px;padding:30px;text-align:center;border:1px dashed var(--line)}
 footer{text-align:center;color:#4a4a4a;font-size:10px;letter-spacing:.06em;padding:36px 0;text-transform:uppercase}
+
+.dropzone{position:relative;border:1px dashed #3a3a3a;background:var(--input);min-height:150px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;overflow:hidden}
+.dropzone:hover,.dropzone:focus-visible{border-color:#777}
+.dropzone.drag-over{border-color:#f2f2ef;background:#1a1a1a}
+.dropzone-small{min-height:64px}
+.dropzone-empty{color:#666;font-size:11.5px;text-align:center;line-height:1.6;padding:14px}
+.dropzone-empty span{display:block;font-size:20px;margin-bottom:4px;color:#555}
+.dropzone img{width:100%;height:220px;object-fit:contain;background:#050505}
+.dropzone-remove{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:#111;border:1px solid #444;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dropzone-remove:hover{border-color:#e07a7a;color:#e07a7a}
+.gallery-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.gallery-thumb{position:relative;width:64px;height:80px;border:1px solid var(--line);overflow:hidden}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+.gallery-thumb button{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.75);border:1px solid #555;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.gallery-thumb button:hover{border-color:#e07a7a;color:#e07a7a}
+.item-thumb{width:40px;height:48px;object-fit:cover;flex:none;background:#050505;border:1px solid var(--line)}
+.item-thumb-empty{display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:800;color:#555;text-align:center;letter-spacing:.02em}
 </style>
 </head>
 <body>
@@ -141,8 +158,24 @@ footer{text-align:center;color:#4a4a4a;font-size:10px;letter-spacing:.06em;paddi
         <div class="field"><label>Descripción</label><textarea id="f_description"></textarea></div>
         <div class="field"><label>Detalles <small>(una línea por viñeta)</small></label><textarea id="f_details"></textarea></div>
         <div class="field"><label>Cuidados <small>(una línea por viñeta)</small></label><textarea id="f_care"></textarea></div>
-        <div class="field"><label>Imagen principal <small>(ruta relativa)</small></label><input type="text" id="f_image" placeholder="assets/images/products/archivo.webp"></div>
-        <div class="field"><label>Galería adicional <small>(tipo|ruta|alt, una por línea)</small></label><textarea id="f_media" placeholder="image|assets/images/products/foto-2.webp|Vista trasera"></textarea></div>
+        <div class="field">
+          <label>Foto principal <small>(arrastra o haz clic — se comprime automáticamente)</small></label>
+          <div class="dropzone" id="mainDrop" tabindex="0">
+            <div class="dropzone-empty" id="mainDropEmpty"><span>⬆</span> Arrastra una foto aquí<br>o haz clic para elegir</div>
+            <img id="mainPreview" style="display:none">
+            <button type="button" class="dropzone-remove" id="mainRemove" style="display:none" title="Quitar foto">✕</button>
+          </div>
+          <input type="file" id="mainFileInput" accept="image/*" style="display:none">
+        </div>
+        <div class="field">
+          <label>Fotos adicionales <small>(vista trasera, detalle, 3/4 — opcional, varias a la vez)</small></label>
+          <div class="dropzone dropzone-small" id="galleryDrop" tabindex="0">
+            <div class="dropzone-empty"><span>⬆</span> Agregar más fotos</div>
+          </div>
+          <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none">
+          <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
+        <div class="field"><label>Video <small>(opcional — pega un link a un .mp4 ya alojado en algún lado; los videos no se comprimen aquí)</small></label><input type="text" id="f_media" placeholder="https://... o assets/images/products/video.mp4"></div>
         <div class="field"><label>Guía de tallas <small>(TALLA: campo=valor, campo=valor)</small></label><textarea id="f_sizeguide" placeholder="S: largo=68, pecho=54"></textarea></div>
         <div class="check"><input type="checkbox" id="f_drop"><label for="f_drop" style="margin:0;text-transform:none;font-weight:400;letter-spacing:0;font-size:12px;color:#ccc">Marcar como Drop destacado (hero de portada)</label></div>
         <div class="row" id="dropFields" style="display:none">
@@ -169,6 +202,7 @@ footer{text-align:center;color:#4a4a4a;font-size:10px;letter-spacing:.06em;paddi
       <p class="section-sub">Paso 4</p>
       <div class="card">
         <p style="color:var(--muted);font-size:12px;margin-top:0">Sube el archivo a <code>data/products.json</code> reemplazando el actual.</p>
+        <p id="sizeNote" style="color:#666;font-size:10.5px;margin:-8px 0 14px">Peso estimado del archivo: 0 KB</p>
         <div class="actions">
           <button class="btn" id="downloadJson">Descargar products.json</button>
           <button class="btn-outline" id="togglePreview">Ver / ocultar JSON</button>
@@ -185,6 +219,8 @@ footer{text-align:center;color:#4a4a4a;font-size:10px;letter-spacing:.06em;paddi
 let products = [];
 let editingIndex = null;
 let dragFromIndex = null;
+let mainImageData = null;
+let galleryImages = []; // [{src, alt}]
 
 function slugify(name){
   return String(name||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -197,16 +233,31 @@ function uniqueId(base){
 }
 function parseLines(text){ return String(text||'').split('\n').map(l=>l.trim()).filter(Boolean); }
 function parseSizes(text){ return String(text||'').split(',').map(s=>s.trim()).filter(Boolean); }
-function parseMedia(text, mainImage){
-  const lines = parseLines(text);
-  const media = [];
-  if(mainImage) media.push({type:'image', src:mainImage, alt:'', role:'primary'});
-  lines.forEach(line=>{
-    const parts = line.split('|').map(p=>p.trim());
-    if(parts[1]) media.push({type:parts[0]||'image', src:parts[1], alt:parts[2]||''});
+
+/* Comprime una foto en el navegador (canvas) antes de guardarla como data-URI
+   dentro de products.json. No sube nada a ningún servidor — todo ocurre localmente. */
+function compressImage(file, maxWidth=1400, quality=0.82){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const scale = Math.min(1, maxWidth / img.width);
+        const w = Math.max(1, Math.round(img.width * scale));
+        const h = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/webp', quality));
+      };
+      img.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsDataURL(file);
   });
-  return media;
 }
+
 function parseSizeGuide(text){
   const guide = {};
   parseLines(text).forEach(line=>{
@@ -220,13 +271,64 @@ function parseSizeGuide(text){
   });
   return guide;
 }
-function mediaToText(media, mainImage){ return (media||[]).filter(m=>m.src!==mainImage).map(m=>`${m.type}|${m.src}|${m.alt||''}`).join('\n'); }
 function sizeGuideToText(guide){
   return Object.entries(guide||{}).map(([size,val])=>{
     if(typeof val==='number') return `${size}: ${val}`;
     return `${size}: ${Object.entries(val).map(([k,v])=>`${k}=${v}`).join(', ')}`;
   }).join('\n');
 }
+
+/* ---------- foto principal (dropzone) ---------- */
+const mainDrop=document.getElementById('mainDrop'), mainFileInput=document.getElementById('mainFileInput'),
+      mainPreview=document.getElementById('mainPreview'), mainDropEmpty=document.getElementById('mainDropEmpty'),
+      mainRemove=document.getElementById('mainRemove');
+
+async function setMainImage(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  mainDropEmpty.innerHTML = 'Procesando…';
+  try{
+    mainImageData = await compressImage(file);
+    mainPreview.src = mainImageData; mainPreview.style.display='block';
+    mainDropEmpty.style.display='none'; mainRemove.style.display='flex';
+  }catch(err){ alert(err.message); }
+  finally{ mainDropEmpty.innerHTML = '<span>⬆</span> Arrastra una foto aquí<br>o haz clic para elegir'; }
+}
+mainDrop.addEventListener('click', e=>{ if(e.target!==mainRemove) mainFileInput.click(); });
+mainDrop.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); mainFileInput.click(); } });
+mainFileInput.addEventListener('change', e=>setMainImage(e.target.files[0]));
+mainDrop.addEventListener('dragover', e=>{ e.preventDefault(); mainDrop.classList.add('drag-over'); });
+mainDrop.addEventListener('dragleave', ()=>mainDrop.classList.remove('drag-over'));
+mainDrop.addEventListener('drop', e=>{ e.preventDefault(); mainDrop.classList.remove('drag-over'); setMainImage(e.dataTransfer.files[0]); });
+mainRemove.addEventListener('click', e=>{
+  e.stopPropagation(); mainImageData=null; mainFileInput.value='';
+  mainPreview.style.display='none'; mainDropEmpty.style.display='block'; mainRemove.style.display='none';
+});
+
+/* ---------- fotos adicionales (dropzone multi) ---------- */
+const galleryDrop=document.getElementById('galleryDrop'), galleryFileInput=document.getElementById('galleryFileInput'),
+      galleryThumbs=document.getElementById('galleryThumbs');
+
+async function addGalleryFiles(fileList){
+  const files = Array.from(fileList||[]).filter(f=>f.type.startsWith('image/'));
+  for(const file of files){
+    try{ galleryImages.push({src: await compressImage(file), alt:''}); }catch(err){ console.error(err); }
+  }
+  renderGalleryThumbs();
+}
+function renderGalleryThumbs(){
+  galleryThumbs.innerHTML = galleryImages.map((img,i)=>
+    `<div class="gallery-thumb"><img src="${img.src}"><button type="button" data-remove-gallery="${i}" title="Quitar">✕</button></div>`
+  ).join('');
+  galleryThumbs.querySelectorAll('[data-remove-gallery]').forEach(btn=>btn.addEventListener('click',()=>{
+    galleryImages.splice(Number(btn.dataset.removeGallery),1); renderGalleryThumbs();
+  }));
+}
+galleryDrop.addEventListener('click', ()=>galleryFileInput.click());
+galleryDrop.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); galleryFileInput.click(); } });
+galleryFileInput.addEventListener('change', e=>{ addGalleryFiles(e.target.files); galleryFileInput.value=''; });
+galleryDrop.addEventListener('dragover', e=>{ e.preventDefault(); galleryDrop.classList.add('drag-over'); });
+galleryDrop.addEventListener('dragleave', ()=>galleryDrop.classList.remove('drag-over'));
+galleryDrop.addEventListener('drop', e=>{ e.preventDefault(); galleryDrop.classList.remove('drag-over'); addGalleryFiles(e.dataTransfer.files); });
 
 function render(){
   const list = document.getElementById('productList');
@@ -240,6 +342,7 @@ function render(){
     <div class="product-item" draggable="true" data-index="${i}">
       <span class="drag-handle" title="Arrastra para reordenar">⠿</span>
       <span class="order-num">${i+1}</span>
+      ${p.image ? `<img class="item-thumb" src="${p.image}" alt="">` : `<span class="item-thumb item-thumb-empty">SIN FOTO</span>`}
       <div class="product-item-info">
         <strong>${p.name||'(sin nombre)'}</strong>
         <span>${p.code||p.id} · ${p.category||'—'} · $${Number(p.price||0).toLocaleString('es-CL')} ${p.drop?'<span class="mini-tag hero">HERO / DROP</span>':''}</span>
@@ -284,14 +387,23 @@ function moveProduct(i, dir){
   [products[i], products[target]] = [products[target], products[i]];
   render();
 }
-function updatePreview(){ document.getElementById('jsonPreview').textContent = JSON.stringify(products, null, 2); }
+function updatePreview(){
+  const json = JSON.stringify(products, null, 2);
+  document.getElementById('jsonPreview').textContent = json;
+  const kb = (new Blob([json]).size / 1024).toFixed(0);
+  const sizeNote = document.getElementById('sizeNote');
+  if(sizeNote) sizeNote.textContent = `Peso estimado del archivo: ${kb} KB`;
+}
 
 function clearForm(){
-  ['f_name','f_color','f_price','f_code','f_sizes','f_material','f_fit','f_description','f_details','f_care','f_image','f_media','f_sizeguide','f_dropnumber','f_heromedia']
+  ['f_name','f_color','f_price','f_code','f_sizes','f_material','f_fit','f_description','f_details','f_care','f_media','f_sizeguide','f_dropnumber','f_heromedia']
     .forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_category').value='Camisetas';
   document.getElementById('f_drop').checked=false;
   document.getElementById('dropFields').style.display='none';
+  mainImageData=null; mainFileInput.value='';
+  mainPreview.style.display='none'; mainDropEmpty.style.display='block'; mainRemove.style.display='none';
+  galleryImages=[]; renderGalleryThumbs();
   editingIndex = null;
   document.getElementById('formTitle').textContent = 'Agregar producto';
   document.getElementById('saveProduct').textContent = 'Agregar producto';
@@ -310,8 +422,15 @@ function startEdit(i){
   document.getElementById('f_description').value = p.description||'';
   document.getElementById('f_details').value = (p.details||[]).join('\n');
   document.getElementById('f_care').value = (p.care||[]).join('\n');
-  document.getElementById('f_image').value = p.image||'';
-  document.getElementById('f_media').value = mediaToText(p.media, p.image);
+
+  mainImageData = p.image || null;
+  if(mainImageData){ mainPreview.src=mainImageData; mainPreview.style.display='block'; mainDropEmpty.style.display='none'; mainRemove.style.display='flex'; }
+  else { mainPreview.style.display='none'; mainDropEmpty.style.display='block'; mainRemove.style.display='none'; }
+  galleryImages = (p.media||[]).filter(m=>m.type==='image' && m.src!==p.image).map(m=>({src:m.src, alt:m.alt||''}));
+  renderGalleryThumbs();
+  const video = (p.media||[]).find(m=>m.type==='video' || m.type==='360');
+  document.getElementById('f_media').value = video?.src || '';
+
   document.getElementById('f_sizeguide').value = sizeGuideToText(p.sizeGuide);
   document.getElementById('f_drop').checked = Boolean(p.drop);
   document.getElementById('dropFields').style.display = p.drop ? 'grid' : 'none';
@@ -331,10 +450,15 @@ document.getElementById('saveProduct').addEventListener('click', ()=>{
   const price = Number(document.getElementById('f_price').value);
   if(!name){ alert('El nombre es obligatorio.'); return; }
   if(!price){ alert('El precio es obligatorio y debe ser un número.'); return; }
-  const image = document.getElementById('f_image').value.trim();
   const isDrop = document.getElementById('f_drop').checked;
   const existing = editingIndex!==null ? products[editingIndex] : null;
   const id = existing?.id || uniqueId(slugify(name));
+  const videoUrl = document.getElementById('f_media').value.trim();
+  const media = [
+    ...(mainImageData ? [{type:'image', src:mainImageData, alt:name, role:'primary'}] : []),
+    ...galleryImages.map((g,i)=>({type:'image', src:g.src, alt:g.alt||`${name} — vista ${i+2}`})),
+    ...(videoUrl ? [{type:'video', src:videoUrl, alt:`Video de ${name}`}] : [])
+  ];
   const product = {
     id, code: document.getElementById('f_code').value.trim() || `NX-${String(products.length+1).padStart(3,'0')}`,
     name, color: document.getElementById('f_color').value.trim(), price, currency:'CLP',
@@ -349,7 +473,7 @@ document.getElementById('saveProduct').addEventListener('click', ()=>{
     sizeGuide: parseSizeGuide(document.getElementById('f_sizeguide').value),
     shipping: 'Despacho estimado: 3–7 días hábiles dentro de Chile.',
     dataStatus: 'Cargado desde admin — revisar antes de publicar',
-    image, media: parseMedia(document.getElementById('f_media').value, image)
+    image: mainImageData || '', media
   };
   if(isDrop){
     product.drop = true;

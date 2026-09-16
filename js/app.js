@@ -62,14 +62,26 @@ function initNavigation(){
   });
 }
 
-/* NON X V22 — permite saltar el intro con un clic/tap, por si alguien vuelve a probar rápido */
+/* NON X V26 — permite saltar el intro con un clic/tap, por si alguien vuelve a probar rápido */
 document.getElementById('archiveIntro')?.addEventListener('click',function(){ this.classList.add('archive-intro--skip'); });
 
-document.getElementById('newsletter')?.addEventListener('submit',e=>{
-  e.preventDefault();
-  alert('¡Listo! Te avisaremos de los próximos drops.');
-  e.target.reset();
-});
+/* Barra de progreso de scroll — indicador sutil de cuánto queda de página. */
+(function initScrollProgress(){
+  const bar=document.getElementById('scrollProgress');
+  if(!bar) return;
+  const update=()=>{
+    const h=document.documentElement;
+    const scrolled=h.scrollTop || document.body.scrollTop;
+    const total=(h.scrollHeight - h.clientHeight) || 1;
+    bar.style.transform=`scaleX(${Math.min(1, Math.max(0, scrolled/total))})`;
+  };
+  update();
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+})();
+
+/* El formulario de newsletter ahora lo maneja js/newsletter-signup.js
+   (usa Klaviyo si ya está configurado, o muestra el mismo aviso mientras tanto). */
 
 document.getElementById('closeProduct')?.addEventListener('click',closeProduct);
 document.getElementById('productModal')?.addEventListener('click',event=>{
@@ -85,6 +97,20 @@ document.getElementById('detailQuantity')?.addEventListener('change',event=>{
 document.getElementById('modalAdd')?.addEventListener('click',addSelectedProduct);
 
 document.addEventListener('keydown',event=>{ if(event.key==='Escape'){ closeProduct(); closeCart(); } });
+
+/* Skeleton de carga — se ve mientras se hace fetch() de data/products.json,
+   en vez de que la grilla quede en blanco esos primeros milisegundos. */
+function showCatalogSkeleton(count=8){
+  const grid=document.getElementById('products');
+  if(!grid) return;
+  grid.innerHTML=Array.from({length:count}).map(()=>`
+    <div class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-photo"></div>
+      <div class="skeleton-line w60"></div>
+      <div class="skeleton-line w40"></div>
+    </div>`).join('');
+}
+showCatalogSkeleton();
 
 (async()=>{
   await loadProducts();
