@@ -112,6 +112,25 @@ function showCatalogSkeleton(count=8){
 }
 showCatalogSkeleton();
 
+/* NON X V28 — abre y resalta la pregunta del FAQ correcta si se llega por hash
+   (ej. al hacer clic en los badges de envíos/pago/seguridad/cambios). */
+function openFaqFromHash(){
+  const id = location.hash.replace('#','');
+  if(!id.startsWith('faq-')) return;
+  const item = document.getElementById(id);
+  if(!item) return;
+  document.querySelectorAll('.faq-accordions .accordion-item').forEach(other=>{
+    other.classList.remove('is-open');
+    other.querySelector('.accordion-trigger')?.setAttribute('aria-expanded','false');
+  });
+  item.classList.add('is-open');
+  item.querySelector('.accordion-trigger')?.setAttribute('aria-expanded','true');
+  item.classList.add('faq-highlight');
+  setTimeout(()=>item.classList.remove('faq-highlight'), 1700);
+  requestAnimationFrame(()=>item.scrollIntoView({behavior:'smooth',block:'center'}));
+}
+window.addEventListener('hashchange', openFaqFromHash);
+
 (async()=>{
   await loadProducts();
   initCatalogFilters();
@@ -123,6 +142,8 @@ showCatalogSkeleton();
   initNavigation();
   initTheme();
   injectStructuredData();
+  initAccordions();
+  openFaqFromHash();
 })();
 
 

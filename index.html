@@ -130,7 +130,7 @@ NON X V21 — ARQUITECTURA
 <header class="header">
   <a class="logo" href="#">NON X<sup>®</sup></a>
   <nav class="nav">
-    <a href="#tienda" data-i18n="nav_shop">Tienda</a><a href="#novedades" data-i18n="nav_new">Novedades</a><a href="#archive">Archive</a><a href="#lab">Lab</a><div class="nav-dropdown"><button type="button" class="nav-drop-btn" data-i18n="nav_categories">Categorías⌄</button><div class="nav-drop-menu"><button type="button" data-category-link="all">TODAS</button><button type="button" data-category-link="Camisetas">CAMISETAS</button><button type="button" data-category-link="Jeans">JEANS</button><button type="button" data-category-link="Polerones">POLERONES</button><button type="button" data-category-link="Zapatillas">ZAPATILLAS</button></div></div><a href="#nosotros" data-i18n="nav_about">Nosotros</a>
+    <a href="#tienda" data-i18n="nav_shop">Tienda</a><a href="#novedades" data-i18n="nav_new">Novedades</a><a href="#archive">Archive</a><a href="#lab">Lab</a><div class="nav-dropdown"><button type="button" class="nav-drop-btn" data-i18n="nav_categories">Categorías⌄</button><div class="nav-drop-menu"><button type="button" data-category-link="all">TODAS</button><button type="button" data-category-link="Camisetas">CAMISETAS</button><button type="button" data-category-link="Jeans">JEANS</button><button type="button" data-category-link="Polerones">POLERONES</button><button type="button" data-category-link="Zapatillas">ZAPATILLAS</button></div></div><a href="#nosotros" data-i18n="nav_about">Nosotros</a><a href="#faq" class="nav-help" data-i18n="nav_help">Ayuda</a>
   
 <!-- [SELECTOR DE IDIOMA] -->
 <div class="language-switcher" aria-label="Language selector">
@@ -153,7 +153,7 @@ NON X V21 — ARQUITECTURA
 </header>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-head"><span>NON X</span><button id="mobileMenuClose" type="button" aria-label="Cerrar menú">×</button></div>
-  <a href="#tienda" data-mobile-nav>TIENDA</a><a href="#novedades" data-mobile-nav>NOVEDADES</a><a href="#archive" data-mobile-nav>ARCHIVE</a><a href="#lab" data-mobile-nav>LAB</a><a href="#categorias" data-mobile-nav>CATEGORÍAS</a><a href="#nosotros" data-mobile-nav>NOSOTROS</a>
+  <a href="#tienda" data-mobile-nav>TIENDA</a><a href="#novedades" data-mobile-nav>NOVEDADES</a><a href="#archive" data-mobile-nav>ARCHIVE</a><a href="#lab" data-mobile-nav>LAB</a><a href="#categorias" data-mobile-nav>CATEGORÍAS</a><a href="#nosotros" data-mobile-nav>NOSOTROS</a><a href="#faq" data-mobile-nav class="mobile-nav-help">AYUDA / FAQ</a>
   <div class="mobile-category-label">CATEGORÍAS</div>
   <div class="mobile-category-links"><button data-category-link="Camisetas">CAMISETAS</button><button data-category-link="Jeans">JEANS</button><button data-category-link="Polerones">POLERONES</button><button data-category-link="Zapatillas">ZAPATILLAS</button></div>
   <div class="mobile-search-wrap">
@@ -197,10 +197,10 @@ NON X V21 — ARQUITECTURA
 
 <!-- [BENEFICIOS] -->
 <section class="benefits">
-  <div class="benefit"><div class="ico">♧</div><div><strong><span data-i18n="shipping_chile">ENVÍOS A TODO CHILE</span></strong><small data-i18n="shipping_sub">Rápidos y seguros.</small></div></div>
-  <div class="benefit"><div class="ico">▣</div><div><strong><span data-i18n="pay">PAGA COMO QUIERAS</span></strong><small data-i18n="pay_sub">Webpay, transferencia, etc.</small></div></div>
-  <div class="benefit"><div class="ico">♢</div><div><strong><span data-i18n="secure">COMPRA SEGURA</span></strong><small data-i18n="secure_sub">Tus datos protegidos.</small></div></div>
-  <div class="benefit"><div class="ico">□</div><div><strong><span data-i18n="returns">CAMBIOS Y DEVOLUCIONES</span></strong><small data-i18n="returns_sub">Sin complicaciones.</small></div></div>
+  <a class="benefit" href="#faq-envios"><div class="ico">♧</div><div><strong><span data-i18n="shipping_chile">ENVÍOS A TODO CHILE</span></strong><small data-i18n="shipping_sub">Rápidos y seguros.</small></div></a>
+  <a class="benefit" href="#faq-pago"><div class="ico">▣</div><div><strong><span data-i18n="pay">PAGA COMO QUIERAS</span></strong><small data-i18n="pay_sub">Webpay, transferencia, etc.</small></div></a>
+  <a class="benefit" href="#faq-seguridad"><div class="ico">♢</div><div><strong><span data-i18n="secure">COMPRA SEGURA</span></strong><small data-i18n="secure_sub">Tus datos protegidos.</small></div></a>
+  <a class="benefit" href="#faq-cambios"><div class="ico">□</div><div><strong><span data-i18n="returns">CAMBIOS Y DEVOLUCIONES</span></strong><small data-i18n="returns_sub">Sin complicaciones.</small></div></a>
 </section>
 
 
@@ -299,6 +299,45 @@ NON X V21 — ARQUITECTURA
 </section>
 
 <!-- [NEWSLETTER] -->
+<!-- [FAQ] Preguntas frecuentes — accesible desde el menú (AYUDA), los 4 badges de arriba, y el footer -->
+<section class="section reveal faq-section" id="faq">
+  <div class="nonx-section-head"><div><p class="eyebrow" data-i18n="faq_eyebrow">NON X / AYUDA</p><h2 data-i18n="faq_title">PREGUNTAS<br>FRECUENTES</h2></div></div>
+  <div class="faq-accordions" data-accordion-group>
+    <div class="accordion-item is-open" id="faq-envios">
+      <button class="accordion-trigger" type="button" aria-expanded="true"><span data-i18n="faq_q_shipping">¿Cuánto tarda y cuánto cuesta el envío?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_shipping">Despacho estimado de 3 a 7 días hábiles dentro de Chile. El costo se calcula en el checkout según tu comuna.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-pago">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_payment">¿Qué métodos de pago aceptan?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_payment">Webpay, transferencia bancaria y otros medios que se habilitarán en el checkout. Toda transacción se procesa mediante pasarelas de pago certificadas — NON X nunca ve ni guarda los datos de tu tarjeta.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-seguridad">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_security">¿Es seguro comprar en NON X?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_security">Sí. El pago se procesa a través de pasarelas certificadas (no en un formulario propio), y tus datos personales solo se usan para procesar tu pedido y avisarte de nuevos drops si te suscribes.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-cambios">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_returns">¿Puedo cambiar o devolver una prenda?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_returns">Sí, dentro de los primeros días después de recibir tu pedido, siempre que la prenda esté sin uso y con sus etiquetas. Escríbenos por WhatsApp para coordinar el cambio.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-tallas">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_sizing">¿Cómo sé qué talla pedir?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_sizing">Cada producto tiene su propia guía de tallas con medidas en cm dentro de la ficha del producto (sección "Guía de tallas"). Si aun así tienes dudas, escríbenos y te ayudamos a elegir.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-drops">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_drops">¿Por qué hay tan pocas unidades de cada pieza?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_drops">Porque confeccionamos cada drop en lotes pequeños. Cuando una talla se agota, se agotó — no hay reposición automática de esa misma pieza.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-avisos">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_notify">¿Cómo me entero cuando hay un drop nuevo?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_notify">Únete a la lista más abajo — quienes están suscritos reciben el aviso antes que el resto.</p></div></div>
+    </div>
+    <div class="accordion-item" id="faq-contacto">
+      <button class="accordion-trigger" type="button" aria-expanded="false"><span data-i18n="faq_q_contact">¿Cómo los contacto?</span><span class="accordion-icon">＋</span></button>
+      <div class="accordion-panel"><div class="accordion-inner"><p data-i18n="faq_a_contact">Por el botón de WhatsApp en la esquina inferior, o escribiendo directamente a nuestro correo/redes cuando estén activos.</p></div></div>
+    </div>
+  </div>
+</section>
+
 <section class="newsletter reveal">
   <h2 data-i18n="newsletter_title">ENTRA AL DROP.</h2>
   <form class="form" id="newsletter"><input type="email" required data-i18n-placeholder="email_placeholder" placeholder="Tu correo electrónico"><button data-i18n="join">UNIRME →</button></form>

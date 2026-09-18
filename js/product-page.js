@@ -158,9 +158,9 @@ function openProduct(productId){
   renderRelatedProducts(product);
 
   initAccordions();
-  const firstAccordion = document.querySelector('[data-accordion-group] .accordion-item');
+  const firstAccordion = document.querySelector('.product-accordions[data-accordion-group] .accordion-item');
   if(firstAccordion){
-    document.querySelectorAll('[data-accordion-group] .accordion-item').forEach((item,i)=>{
+    document.querySelectorAll('.product-accordions[data-accordion-group] .accordion-item').forEach((item,i)=>{
       const open=i===0;
       item.classList.toggle('is-open',open);
       item.querySelector('.accordion-trigger')?.setAttribute('aria-expanded',String(open));

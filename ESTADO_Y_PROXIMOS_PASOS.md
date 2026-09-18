@@ -10,7 +10,8 @@ falta?", este archivo es el que hay que leer.
 
 - **Sitio completo**: hero, categorías, catálogo, ficha de producto,
   carrito, favoritos, buscador, filtros, selector de idioma (ES/EN/PT),
-  tema claro/oscuro — todo funcional y probado.
+  tema claro/oscuro, **FAQ** (accesible desde "AYUDA" en el menú y desde
+  los 4 badges de confianza de la home) — todo funcional y probado.
 - **Catálogo vacío a propósito** (`data/products.json` = `[]`), con
   estados "el archivo se abre pronto" en vez de pantallas rotas o en
   blanco. Listo para recibir productos reales.
@@ -75,7 +76,8 @@ tags de cliente de Shopify + segmentos de Klaviyo.
 ## ⚠️ Todavía pendiente / decisión tuya
 
 - Política real de envíos y cambios/devoluciones (hoy son textos
-  genéricos de ejemplo).
+  genéricos de ejemplo — el mismo texto se repite en el FAQ, así que
+  al confirmarlos hay que actualizarlos en los dos lugares).
 - Tabla de tallas con medidas reales en cm (por producto, se carga
   desde `admin.html`).
 - Dominio y hosting (aún no existen — cuando los tengas, actualiza la
